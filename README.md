@@ -1,2 +1,3 @@
 # GMC
-Middleware for group communication
+GMC is a middleware for group communication based on a peer-to-peer system.
+
