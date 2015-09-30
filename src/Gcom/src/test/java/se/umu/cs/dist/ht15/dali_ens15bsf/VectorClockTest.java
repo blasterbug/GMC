@@ -43,7 +43,7 @@ public class VectorClockTest {
 		VectorClock c1 = new VectorClock();
 		VectorClock c2 = new VectorClock();
 		c1.increment("id1");
-		Assert.assertTrue(VectorClock.compare(c1, c2)>0);
+		Assert.assertTrue(VectorClock.compare(c1, c2) == 1);
 
 	}
 
@@ -73,5 +73,14 @@ public class VectorClockTest {
 		c2.increment("id2");
 		c1.increment("id1");
 		Assert.assertTrue(VectorClock.compare(c1, c2) < 0);
+	}
+
+	@Test
+	public void shouldBeConcurrentOnTwoDifferentKeys() {
+		VectorClock c1 = new VectorClock();
+		VectorClock c2 = new VectorClock();
+		c2.increment("id2");
+		c1.increment("id1");
+		Assert.assertTrue(VectorClock.compare(c1, c2) == 2);
 	}
 }
