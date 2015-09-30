@@ -43,7 +43,7 @@ public class VectorClockTest {
 		VectorClock c1 = new VectorClock();
 		VectorClock c2 = new VectorClock();
 		c1.increment("id1");
-		Assert.assertTrue(VectorClock.compare(c1, c2) == 1);
+		Assert.assertTrue(VectorClock.compare(c1, c2) == 1 );
 
 	}
 
