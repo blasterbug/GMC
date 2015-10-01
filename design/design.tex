@@ -65,3 +65,10 @@ Along with this, errors should propagate upwards until it can
 be handled in a correct way. For example, a timeout in the 
 communication layer should propagate to the group management layer
 in order to e.g. inform others of a crashed member.
+
+A final note for the structure of the product.
+As Gcom is a middleware this will be built as an independent JAR
+dependency so that when the chat application is constructed
+Gcom acts as an external dependency imported as a JAR.
+This will also make for a cleaner design and implementation
+if these are properly separated.
