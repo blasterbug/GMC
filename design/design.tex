@@ -3,8 +3,8 @@
 \paragraph{}{
 	The GCom application is basically made up of three layers as
  we can see on figure \ref{fig:architecture}.
- Each layer has different reponsabilities. The layers allow 
- making abstraction and shared out responsabilities.
+ Each layer has different responsibilities. The layers allow 
+ making abstraction and shared out responsibilities.
 }
 
 \begin{figure}[!ht]
@@ -23,7 +23,7 @@
 }
 
 \paragraph{Message ordering}{
-	The message ordering layer determinates in which order
+	The message ordering layer determines in which order
  messages are delivered to the next layer according different
  strategies. For instance, we can order messages according to the
  "First In, First out" policy, use a causal order or a mix
@@ -31,15 +31,15 @@
 }
 
 \paragraph{Communication}{
-	The communication service is the lowerest level. It deals
- with the Java RMI objects. It allows differents type of
+	The communication service is the lowest level. It deals
+ with the Java RMI objects. It allows different type of
  communication like multicasting and, maybe, a tree based
  communication. \newline
  Moreover, the debug interface will be mainly implemented here.
 }
 
 \paragraph{Debugging}{
-	Additionaly, the communication module offers an interface
+	Additionally, the communication module offers an interface
  to set up how to simulate network latency and failures.
 }
 
