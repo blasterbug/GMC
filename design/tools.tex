@@ -1,0 +1,38 @@
+\Subsection{Tools}
+	In this section a couple of different tools will be described.
+
+	\Subsection{GIT}
+		For version control and collaboration we will use Git along with Github
+		to manage issue tracking and development history.
+	\Subsection{Java RMI}
+		Java RMI is used as a middleware to allow for remote method invocation and remote event notification.
+		This solves the problem of distributed communication, whereas the task for Gcom is to produce a group communication middleware.
+
+		Java RMI is a part of the standard Java APIs and is therefore easily accessable and well documented.
+		We chose this over e.g. Corba as small experiments with Java RMI was
+		successful and we decided to look no further.
+	\Subsection{Maven}
+		Maven is chosen as the build tool for the Gcom middleware.
+		This provides both a build environment as well as it
+		handles things like external dependencies and building
+		large suits of software well while being easy to use.
+
+	\Subsection{JUnit}
+		JUnit is used together with Maven to allow for easy unit testing as 
+		well as well integrated testing in the build environment.
+		Other 
+
+	\Subsection{IntelliJ}
+		The main IDE that will be used is IntelliJ IDEA, as Maven and Git interfaces well with this amongst other things.
+
+	\Subsection{Java Swing}
+		The debug and example chat applications need a graphical user interface.
+		This will be built with Java Swing as we have previous experience with this.
+
+	\Subsection{Missing}
+		Tools that we might need to look for during the project are listed here
+		\begin{itemize}
+			\item Integration testing
+			\item Local simulations of multiple members (without having to test against members on physically remote machines.
+			\item Mockup testing tools
+		\end{itemize}
