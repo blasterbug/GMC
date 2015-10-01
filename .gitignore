@@ -18,3 +18,9 @@ target/
 .nfs*
 *.swp
 *.swo
+
+# LaTeX files
+*.log
+*.aux
+*.toc
+*.pdf
