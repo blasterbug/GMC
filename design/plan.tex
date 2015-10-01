@@ -1,0 +1,69 @@
+\Section{Project Plan}
+
+	In this section a project plan for the GCom project is presented, including task deadlines and how the work should be carried out.
+
+	\Subsection{Identified tasks}
+		Here is a list of identified tasks (not ordered) which needs to be completed in order for the project to meet its requirements.
+		\begin{itemize}
+			\item Implement vector clocks
+			\item Implement FIFO ordering
+			\item Implement Casual ordering
+			\item Implement Total ordering
+			\item Implement Non-reliable multicast
+			\item Implement Reliable multicast
+			\item Implement Tree-based multicast
+			\item Implement naming service
+			\item Create interfaces between layers
+			\item Construct interface for debug application
+			\item Build distributed group chat application
+			\item Build debug application
+			\item Specify test protocol
+			\item Get to know Java RMI
+			\item Handle communication errors
+			\item Handle group membership changes
+			\item Resolve group names
+			\item Write final report
+			\item Demonstrate solution
+		\end{itemize}
+
+		These tasks can in turn be broken down into smaller subtasks which are presented in the following time plan.
+
+		\begin{tabular}{lcc}
+			\centering
+			\textbf{Date} & \textbf{Task} & \textbf{Details} \\
+			\hline
+			Oct 2, Fri & Get to know Java RMI \\
+			\hline
+			Oct 5, Mon & Impl. Vector clocks & With tests \\
+			& Impl. Non-reliable mutlicast & With tests \\
+			& Impl. FIFO ordering & With tests \\
+			& Impl. naming service & Connect to NS and create new group \\
+			& Give interfaces between layers &  \\
+			& Prepare debug interface & In communication module \\
+			& Adjustments to design from feedback & \\
+			\hline
+			Oct 7, Wed & Impl. Casual ordering & With tests \\
+			& Impl. naming service & Resolve group name to leader \\
+			& Integrate whole basic chain & Should be able to send basic message \\
+			\hline
+			Oct 9, Fri & First version of debug application &  \\
+			& First draft of test protocol & LaTeX doc. \\
+			& Impl. re-election & With tests \\
+			& Error handling & Handle communication errors properly \\
+			& Handle group membership changes & Join, leave \\
+			\hline
+			Oct 12, Mon & First draft of group chat app. & With GUI \\
+			& First draft of final report & At least disposition done \\
+			& Final draft of test protocol & Used for demo \\
+			& System tests & \\
+			& Tree based multicast & If there is time \\
+			\hline
+			Oct 13, Tues & Maintenance & Bug fixes et c.\\
+			& Final version of chat app. & \\
+			& Report 80\% done & \\
+			\hline
+			Oct 14, Wed & Deadline for submission & \\
+
+		\end{tabular}
+
+		What is not presented here is the time plan for the design phase of the project, it feels like a waste\footnote{See Agile development methods} to add this here as that phase is over\footnote{Not saying that we should stop designing tho'}.
