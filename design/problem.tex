@@ -1,8 +1,8 @@
 \section{Problem}
 
 \paragraph{}{
-	GCom is a middleware for group communication. It means,
- GCom has to be scallable and robbust.
+	GCom is a middle ware for group communication. It means,
+ GCom has to be scallable and robust.
 }
 
 \subsection{Requirements}
@@ -10,7 +10,7 @@
 \paragraph{Scallability}{
 	To be scallable, GCom uses Peer to Peer based features.
  Typically, data is not centralized on a server but shared 
- between the nodes whitin groups. The implementation of the
+ between the nodes within groups. The implementation of the
  middleware uses Java programming language and Java RMI API to
  ensure portability over different operation systems.
 }
@@ -19,7 +19,7 @@
 	The front end user, or the programmer who will use our
  library, GCom should be seen as a service they can use to
  exchange messages between several computer regardless the
- type of the used networks or the type of the apllication.
+ type of the used networks or the type of the application.
  GCom must offer a simple interface and hide how, for
  instance, messages are delivered.
 }
@@ -27,7 +27,7 @@
 \paragraph{Openness}{
 	GCom must be designed to be extensible. Adding or changing 
  components should not be a problem. for instance, using a FIFO
- or a causual order for messages delivering should interfer or
+ or a causal order for messages delivering should interface or
  compromise the whole application.
 }
 
@@ -40,9 +40,9 @@
 \subsection{Efficiency and fault tolerance}
 
 \paragraph{}{
-	GCom is a middleware, so to be usefull, GCom must process
+	GCom is a middleware, so to be useful, GCom must process
  data and handle common errors quickly. Regardless the number 
- of conected nodes in a group, adding or removing members within
+ of connected nodes in a group, adding or removing members within
  the group as well as electing a new leader must be done
  quickly and don't be noticed by front-end users.
 }
@@ -60,6 +60,6 @@
 \paragraph{}{
 	Several questions must be solved during the application
  development. For instance, how elect a new leader? How often?
- What happen when the group is cuted into pieces (because of a
- network failure) and then the network is once again realiable?
+ What happen when the group is cut into pieces (because of a
+ network failure) and then the network is once again reliable?
 }
