@@ -24,3 +24,8 @@ target/
 *.aux
 *.toc
 *.pdf
+
+
+# IDEA stuff
+.idea/
+.eclipse*
