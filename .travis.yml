@@ -7,4 +7,4 @@ notifications:
     on_failure: always  # options: [always|never|change] default: always
 language: java
 compiler: javac
-#script: make
+script: mvn
