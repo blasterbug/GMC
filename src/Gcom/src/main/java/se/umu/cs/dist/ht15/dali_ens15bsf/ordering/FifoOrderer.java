@@ -8,28 +8,36 @@ import java.util.LinkedList;
 import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
 
 public class FifoOrderer implements Orderer {
-	private Map<String, Queue> orderings; 
+	private Map<String, Queue> holdbackQueues; 
 	private VectorClock orderClock;
 
 	public FifoOrderer() {
-		orderings = new HashMap<String, Queue>();
+		holdbackQueues = new HashMap<String, Queue>();
 		orderClock = new VectorClock();
 	}
 
 	@Override
-	public void addMessageToOrder(Message msg) {
+	public void addMessage(Message msg) {
 		String senderId = msg.getId();
 		VectorClock senderClock = msg.getClock();
 
-		if(!orderings.containsKey(senderId)) {
-			orderings.put(senderId, new LinkedList<Message>());
+		if(!holdbackQueues.containsKey(senderId)) {
+			holdbackQueues.put(senderId, new LinkedList<Message>());
 		}
 
-		if ( !orderClock.get(senderId) ||
-			senderClock.get(senderId) == (orderClock.get(senderId)+1)
+		Integer senderSeqNr = senderClock.get(senderId);
+		Integer orderSeqNr = orderClock.get(senderId);
 
-		Queue q = orderings.get(senderId);
-		q.add(msg);
+		Queue q = holdbackQueues.get(senderId);
+		if ( orderSeqNr.equals(0) ||
+			senderSeqNr.equals(orderSeqNr.intValue()+1)) {
+			orderClock.updateTime(senderId, senderSeqNr);
+			for 
+
+		} else {
+			q.add(msg);
+		}
+
 
 	}
 
@@ -39,6 +47,6 @@ public class FifoOrderer implements Orderer {
 
 	@Override
 	public Queue getHoldbackQueue(String id) {
-		return orderings.get(id);
+		return holdbackQueues.get(id);
 	}
 }
