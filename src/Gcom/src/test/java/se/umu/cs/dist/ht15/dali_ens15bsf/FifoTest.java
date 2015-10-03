@@ -118,24 +118,16 @@ public class FifoTest {
 		Message leapMsg = new Message("id1", "content4", leapClock);
 		fifo.addMessage(leapMsg);
 
-		System.err.println("SIZE: "+fifo.getHoldbackQueue("id1").size());
 		VectorClock clock2 = new VectorClock();
 		clock2.updateTime("id1", 1);
 
 		Message msg2 = new Message("id1", "content2", clock2);
 		fifo.addMessage(msg2);
 
-		System.err.println("SIZE: "+fifo.getHoldbackQueue("id1").size());
 		VectorClock clock1 = new VectorClock();
 		Message msg1 = new Message("id1", "content1", clock1);
 		fifo.addMessage(msg1);
 
-		System.err.println("SIZE: "+fifo.getHoldbackQueue("id1").size());
-
-		for( Object o : fifo.getHoldbackQueue("id1")) {
-			Message m = (Message)o;
-			System.out.println("Message: ID = " + m.getId() + ", Content = " + m.getContent());
-		}
 
 		Assert.assertTrue(fifo.getHoldbackQueue("id1").size() == 1);
 	}
