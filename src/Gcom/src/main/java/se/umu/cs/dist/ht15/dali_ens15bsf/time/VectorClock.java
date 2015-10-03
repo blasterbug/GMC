@@ -8,6 +8,10 @@ public class VectorClock extends HashMap<String, Integer>  {
 		super();
 	}
 
+	public void updateTime(String id, Integer time) {
+		super.put(id, time);
+	}
+
 	public void increment(String id) {
 		Integer time = super.get(id);
 		if(time == null) {
