@@ -32,7 +32,9 @@ public class FifoTest {
 		Assert.assertTrue(!fifo.getHoldbackQueue("id1").isEmpty());
 	}
 
-	@Test
-	public void should
 
+	@Test
+	public void shouldEmptyHoldbackOnTwoConsecutiveMsg() {
+
+	}
 }

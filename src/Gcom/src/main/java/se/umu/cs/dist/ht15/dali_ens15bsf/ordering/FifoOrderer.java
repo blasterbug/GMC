@@ -5,6 +5,7 @@ import java.util.Queue;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.LinkedList;
+import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
 
 public class FifoOrderer implements Orderer {
 	private Map<String, Queue> orderings; 
@@ -12,7 +13,7 @@ public class FifoOrderer implements Orderer {
 
 	public FifoOrderer() {
 		orderings = new HashMap<String, Queue>();
-		orderClock = new vectorClock();
+		orderClock = new VectorClock();
 	}
 
 	@Override
