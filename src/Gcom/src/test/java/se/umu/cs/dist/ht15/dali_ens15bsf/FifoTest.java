@@ -8,28 +8,31 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 
 public class FifoTest {
 	@Test
-	public void shouldReturnNullQueueAfterInit() {
+	public void shouldReturnNullHoldbackAfterInit() {
 		Orderer fifo = new FifoOrderer();
-		Assert.assertTrue(fifo.getOrdering("id1") == null);
+		Assert.assertTrue(fifo.getHoldbackQueue("id1") == null);
 	}
 
 
 	@Test
-	public void shouldNotReturnNullQueueAfterMessage() {
+	public void shouldNotReturnNullHoldbackAfterMessage() {
 		Orderer fifo = new FifoOrderer();
 		Message msg = new Message("id1", null, null);
 		fifo.addMessageToOrder(msg);
 		
-		Assert.assertTrue(fifo.getOrdering("id1") != null);
+		Assert.assertTrue(fifo.getHoldbackQueue("id1") != null);
 	}
 
 	@Test
-	public void shouldReturnNonEmptyQueueAfterMessage() {
+	public void shouldReturnNonEmptyHoldbackAfterMessage() {
 		Orderer fifo = new FifoOrderer();
 		Message msg = new Message("id1", null, null);
 		fifo.addMessageToOrder(msg);
 		
-		Assert.assertTrue(!fifo.getOrdering("id1").isEmpty());
+		Assert.assertTrue(!fifo.getHoldbackQueue("id1").isEmpty());
 	}
+
+	@Test
+	public void should
 
 }

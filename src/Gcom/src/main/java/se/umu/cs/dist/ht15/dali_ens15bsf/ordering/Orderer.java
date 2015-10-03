@@ -5,5 +5,5 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 
 public interface Orderer {
 	public void addMessageToOrder(Message msg);
-	public Queue getOrdering();
+	public Queue getHoldbackQueue(String id);
 }

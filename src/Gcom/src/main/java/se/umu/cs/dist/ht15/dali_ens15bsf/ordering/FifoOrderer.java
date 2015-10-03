@@ -26,8 +26,12 @@ public class FifoOrderer implements Orderer {
 
 	}
 
+	private void deliver() {
+
+	}
+
 	@Override
-	public Queue getOrdering(String id) {
+	public Queue getHoldbackQueue(String id) {
 		return orderings.get(id);
 	}
 }
