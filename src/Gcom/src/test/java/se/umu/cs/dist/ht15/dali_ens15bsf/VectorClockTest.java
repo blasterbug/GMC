@@ -2,7 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import org.junit.Test;
 import junit.framework.Assert;
-import se.umu.cs.dist.ht15.dali_ens15bsf.time.clocks.VectorClock;
+import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
 
 public class VectorClockTest {
 
