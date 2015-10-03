@@ -18,7 +18,7 @@ public class FifoTest {
 	public void shouldNotReturnNullHoldbackAfterMessage() {
 		Orderer fifo = new FifoOrderer();
 		Message msg = new Message("id1", null, null);
-		fifo.addMessageToOrder(msg);
+		fifo.addMessage(msg);
 		
 		Assert.assertTrue(fifo.getHoldbackQueue("id1") != null);
 	}
@@ -27,7 +27,7 @@ public class FifoTest {
 	public void shouldReturnNonEmptyHoldbackAfterMessage() {
 		Orderer fifo = new FifoOrderer();
 		Message msg = new Message("id1", null, null);
-		fifo.addMessageToOrder(msg);
+		fifo.addMessage(msg);
 		
 		Assert.assertTrue(!fifo.getHoldbackQueue("id1").isEmpty());
 	}
@@ -35,6 +35,11 @@ public class FifoTest {
 
 	@Test
 	public void shouldEmptyHoldbackOnTwoConsecutiveMsg() {
+		Orderer fifo = new FifoOrderer();
+		VectorClock clock = new VectorClock();
+		clock.increment("id1");
+		Message msg = new Message("id1", null, clock);
+		fifo.addMessage(msg);
 
 	}
 }

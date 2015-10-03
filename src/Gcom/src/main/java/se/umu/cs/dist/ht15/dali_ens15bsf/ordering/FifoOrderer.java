@@ -18,11 +18,17 @@ public class FifoOrderer implements Orderer {
 
 	@Override
 	public void addMessageToOrder(Message msg) {
-		String msgId = msg.getId();
-		if(!orderings.containsKey(msgId)) {
-			orderings.put(msgId, new LinkedList<Message>());
+		String senderId = msg.getId();
+		VectorClock senderClock = msg.getClock();
+
+		if(!orderings.containsKey(senderId)) {
+			orderings.put(senderId, new LinkedList<Message>());
 		}
-		Queue q = orderings.get(msgId);
+
+		if ( !orderClock.get(senderId) ||
+			senderClock.get(senderId) == (orderClock.get(senderId)+1)
+
+		Queue q = orderings.get(senderId);
 		q.add(msg);
 
 	}
