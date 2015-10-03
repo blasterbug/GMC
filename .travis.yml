@@ -7,6 +7,5 @@ notifications:
     on_failure: always  # options: [always|never|change] default: always
 language: java
 compiler: javac
-before_script:
-	- cd src/Gcom
+before_script:  cd src/Gcom
 script: mvn install
