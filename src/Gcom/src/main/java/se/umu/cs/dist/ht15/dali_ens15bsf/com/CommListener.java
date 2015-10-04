@@ -13,6 +13,7 @@ public interface CommListener
      * Notify a listener when new messages are ready
      * to be processed.
      */
+    @Override
     public void notify();
     /**
      * Add a message in the listener queue

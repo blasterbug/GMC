@@ -6,10 +6,23 @@ package Gcom.src.main.java.se.umu.cs.dist.ht15.dali_ens15bsf.com;
 public interface CommunicationService
 {
     /**
-     * 
-     * @param msg
+     * Send a message
+     *
+     * @param msg Message to send
      */
     public void post( CommMessage msg );
+
+    /**
+     * Register a new listener to be notify when new
+     * messages arrived
+     *
+     * @param listener Listener to notify
+     */
     public void register( CommListener listener );
+
+    /**
+     * Remove a listener
+     * @param listener Listener to stop notifying
+     */
     public void remove( CommListener listener );
 }
