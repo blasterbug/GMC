@@ -15,7 +15,7 @@ public class FifoTest {
 
 	private class DummyObserver implements Observer {
 		private Observable observable;
-		private Collection<Message> messages;
+		private LinkedList<Message> messages;
 
 		public DummyObserver(Observable o) {
 			observable = o;
@@ -30,6 +30,12 @@ public class FifoTest {
 
 		public boolean contains(Message m) {
 			return messages.contains(m);
+		}
+
+		public boolean containsAt(Message m, int i) {
+			if(contains(m))
+				return messages.get(i).equals(m);
+			return false;
 		}
 	}
 
@@ -218,6 +224,42 @@ public class FifoTest {
 					dummy.contains(msg2) &&
 					dummy.contains(msg3) &&
 					dummy.contains(msg4));
+	}
+
+
+	@Test
+	public void shouldDeliverSequenceInFifoOrder() {
+		FifoOrderer fifo = new FifoOrderer();
+		DummyObserver dummy = new DummyObserver(fifo);
+		fifo.addObserver(dummy);
+
+		VectorClock clock1 = new VectorClock();
+
+		VectorClock clock2 = new VectorClock();
+		clock2.updateTime("id1", 1);
+
+		VectorClock clock3 = new VectorClock();
+		clock3.updateTime("id1", 2);
+
+		VectorClock clock4 = new VectorClock();
+		clock4.updateTime("id1", 3);
+
+
+		Message msg1 = new Message("id1", "content1", clock1);
+		Message msg2 = new Message("id1", "content2", clock2);
+		Message msg3 = new Message("id1", "content3", clock3);
+		Message msg4 = new Message("id1", "content4", clock4);
+
+		fifo.addMessage(msg3);
+		fifo.addMessage(msg4);
+		fifo.addMessage(msg1);
+		fifo.addMessage(msg2);
+
+
+		Assert.assertTrue(	dummy.containsAt(msg1,0) && 
+					dummy.containsAt(msg2, 1) &&
+					dummy.containsAt(msg3, 2) &&
+					dummy.containsAt(msg4, 3));
 	}
 
 
