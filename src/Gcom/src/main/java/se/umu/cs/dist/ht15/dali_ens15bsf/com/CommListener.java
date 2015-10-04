@@ -7,7 +7,8 @@ package Gcom.src.main.java.se.umu.cs.dist.ht15.dali_ens15bsf.com;
  *
  *
  */
-public interface CommListener {
+public interface CommListener
+{
     /**
      * Notify a listener when new messages are ready
      * to be processed.
