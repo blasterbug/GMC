@@ -33,7 +33,7 @@ public class VectorClock extends HashMap<String, Integer>  {
 	}
 
 	/**
-		* @return 0 == concurrent
+		* @return 0 -> c1 == c2, -1 -> c1 < c2, 1-> c2 < c1 , 2 -> concurrent
 	  */
 
 	public static int compare(VectorClock c1, VectorClock c2) {
