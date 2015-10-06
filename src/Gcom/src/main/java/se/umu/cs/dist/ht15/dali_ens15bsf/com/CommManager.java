@@ -1,5 +1,6 @@
 package Gcom.src.main.java.se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -9,18 +10,32 @@ public class CommManager implements CommunicationService
 {
     /// Listeners to notify
     private Collection<CommListener> listeners;
-
+    /**
+     * Constructor
+     */
     public CommManager()
     {
-
+        listeners = new ArrayList<CommListener>( );
     }
 
     /**
      * Send a message
      * @param msg Message to send
      */
-    public void post(CommMessage msg)
+    public void post( CommMessage msg )
     {
+    }
+
+    /**
+     * Queue messages to listeners
+     * @param msg Message to queue
+     */
+    public void receive( CommMessage msg )
+    {
+        for( CommListener listener : listeners )
+        {
+            listener.queueCommMessage( msg );
+        }
     }
 
     /**
@@ -29,7 +44,7 @@ public class CommManager implements CommunicationService
      */
     public void register( CommListener listener )
     {
-
+        listeners.add( listener );
     }
 
     /**
@@ -38,6 +53,6 @@ public class CommManager implements CommunicationService
      */
     public void remove( CommListener listener )
     {
-
+        listeners.remove( listener );
     }
 }
