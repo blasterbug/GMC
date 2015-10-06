@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class RMIService extends UnicastRemoteObject implements Remote, Serializable
 {
   /**
-   * @see java.io.Serializable
+   * @see java.rmi.server.UnicastRemoteObject
    */
   protected RMIService ( int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf ) throws RemoteException
   {
@@ -21,14 +21,14 @@ public class RMIService extends UnicastRemoteObject implements Remote, Serializa
   }
 
   /**
-   * @see java.io.Serializable
+   * @see java.rmi.server.UnicastRemoteObject
    */
   protected RMIService () throws RemoteException
   {
   }
 
   /**
-   * @see java.io.Serializable
+   * @see java.rmi.server.UnicastRemoteObject
    */
   protected RMIService ( int port ) throws RemoteException
   {
