@@ -1,29 +1,37 @@
-package Gcom.src.main.java.se.umu.cs.dist.ht15.dali_ens15bsf.com;
+package se.umu.cs.dist.ht15.dali_ens15bsf.com;
+
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.AbstractNode;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.BasicNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by benjamin on 04/10/15.
+ * Remote object to send qnd receive messages by java RMI
  */
 public class CommManager implements CommunicationService
 {
     /// Listeners to notify
     private Collection<CommListener> listeners;
+    private AbstractNode node;
+
     /**
      * Constructor
      */
     public CommManager()
     {
         listeners = new ArrayList<CommListener>( );
+        node = new BasicNode( this );
     }
 
     /**
      * Send a message
      * @param msg Message to send
      */
-    public void post( CommMessage msg )
+    public void send( CommMessage msg )
     {
+        node.post( msg );
     }
 
     /**
