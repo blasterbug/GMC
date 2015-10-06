@@ -32,6 +32,16 @@ public class VectorClock extends HashMap<String, Integer>  {
 		return i;
 	}
 
+	public static int compareId(VectorClock c1, VectorClock c2, String id) {
+		int v1 = c1.get(id).intValue();
+		int v2 = c2.get(id).intValue();
+		if (v1 == v2)
+			return 0;
+		if (v1 < v2)
+			return -1;
+		return 1;
+	}
+
 	/**
 		* @return 0 -> c1 == c2, -1 -> c1 < c2, 1-> c2 < c1 , 2 -> concurrent
 	  */
@@ -72,5 +82,7 @@ public class VectorClock extends HashMap<String, Integer>  {
 		
 		return 2;
 	}
+
+
 
 }
