@@ -39,7 +39,7 @@ public class CausalTest {
 			return false;
 		}
 	}
-
+/*
 	@Test
 	public void shouldReturnNullHoldbackAfterInit() {
 		Orderer causal = new CausalOrderer();
@@ -59,10 +59,95 @@ public class CausalTest {
 	public void shouldNotReturnNullHoldbackAfterMessage() {
 		Orderer causal = new CausalOrderer();
 		VectorClock clock = new VectorClock();
+		clock.increment("id1");
 		Message msg = new Message("id1", null, clock);
 		causal.addMessage(msg);
 		
 		Assert.assertTrue(causal.getHoldbackQueue("id1") != null);
+	}
+
+	@Test
+	public void shouldNotHoldFirstEverMessage() {
+		Orderer causal = new CausalOrderer();
+		VectorClock clock = new VectorClock();
+		clock.increment("id1");
+		Message msg = new Message("id1", null, clock);
+
+		causal.addMessage(msg);
+
+		Assert.assertTrue(causal.getHoldbackQueue("id1").isEmpty());
+	}
+
+	@Test
+	public void shouldHoldFutureMessage() {
+		Orderer causal = new CausalOrderer();
+		VectorClock clock = new VectorClock();
+		clock.increment("id1");
+		clock.increment("id1");
+		Message msg = new Message("id1", null, clock);
+
+		causal.addMessage(msg);
+
+		Assert.assertTrue(!causal.getHoldbackQueue("id1").isEmpty());
+	}
+	@Test
+	public void shouldNotHoldFutureMessageOnceReached() {
+		Orderer causal = new CausalOrderer();
+		VectorClock clock = new VectorClock();
+		clock.increment("id1");
+		clock.increment("id1");
+		Message msg = new Message("id1", null, clock);
+
+		causal.addMessage(msg);
+
+		VectorClock clock2 = new VectorClock();
+		clock2.increment("id1");
+		Message msg2 = new Message("id1", null, clock2);
+
+		causal.addMessage(msg2);
+
+		Assert.assertTrue(causal.getHoldbackQueue("id1").isEmpty());
+	}
+
+*/
+	@Test
+	public void shouldNotHoldWithHigherOtherSeqNr() {
+		Orderer causal = new CausalOrderer();
+
+		VectorClock c0 = new VectorClock();
+		c0.increment("id2");
+
+		/* Setup scenario */
+		VectorClock c1 = new VectorClock();
+		c1.updateTime("id2", 2);
+
+		VectorClock c2 = new VectorClock();
+		c2.updateTime("id2", 3);
+
+		Message m0 = new Message("id2", "m0", c0);
+		Message m1 = new Message("id2", "m1", c1);
+		Message m2 = new Message("id2", "m2", c2);
+
+
+		VectorClock clock = new VectorClock();
+		clock.updateTime("id1", 2);
+		clock.updateTime("id2", 3);
+		Message msg = new Message("id1", "m4", clock);
+
+		VectorClock clock2 = new VectorClock();
+		clock2.updateTime("id1",1);
+		clock2.updateTime("id2", 3);
+
+		Message msg2 = new Message("id1", "m4", clock2);
+
+		causal.addMessage(m0);
+		causal.addMessage(m1);
+		causal.addMessage(m2);
+		causal.addMessage(msg);
+		causal.addMessage(msg2);
+
+		Assert.assertTrue(causal.getHoldbackQueue("id1").isEmpty());
+
 	}
 
 
