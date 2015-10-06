@@ -1,4 +1,4 @@
-package Gcom.src.main.java.se.umu.cs.dist.ht15.dali_ens15bsf.com;
+package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import java.io.Serializable;
 
@@ -10,8 +10,21 @@ import java.io.Serializable;
  */
 public class CommMessage implements Serializable
 {
-    public CommMessage()
-    {
+    protected Object content;
 
+    /**
+     * Create a new Communication Message
+     * @param content Content of the nez message
+     */
+    public CommMessage( Object content )
+    {}
+
+    /**
+     * What is the content of the message ?
+     * @return Object representation of the content
+     */
+    public Object getContent()
+    {
+        return content;
     }
 }
