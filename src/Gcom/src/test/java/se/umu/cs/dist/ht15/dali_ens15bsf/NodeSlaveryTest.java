@@ -19,7 +19,6 @@ public class NodeSlaveryTest implements CommListener
     cm.send( new CommMessage( "message" ) );
   }
 
-  public 
 
   /**
    * Notify a listener when new messages are ready
