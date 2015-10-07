@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 /**
  * Created by ens15bsf on 2015-10-06.
+ *
  * @serial
  */
 public class BasicNode extends Node
@@ -34,22 +35,21 @@ public class BasicNode extends Node
   @Override
   public void post ( CommMessage msg ) throws UnreachableNodesException
   {
-    // if the message was not posted by me
-    //if(  )
+    // create the message to send
+    NodeMessage toSend = new NodeMessage( msg, this );
     // broadcast it
     LinkedList<String> unreachableNodes = new LinkedList<String>();
-    for( String nodeID : network.keySet() )
+    for ( String nodeID : network.keySet() )
     {
       try
       {
-        network.get( nodeID ).deliver( msg );
-      }
-      catch ( RemoteException e )
+        network.get( nodeID ).deliver( toSend );
+      } catch ( RemoteException e )
       {
         unreachableNodes.add( nodeID );
       }
     }
-    if ( !(unreachableNodes.isEmpty()) )
+    if ( !( unreachableNodes.isEmpty() ) )
     {
       throw new UnreachableNodesException( unreachableNodes );
     }

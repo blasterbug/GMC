@@ -1,6 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com.network;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.NodeMessage;
 
 import java.rmi.RemoteException;
 
@@ -21,7 +21,7 @@ public interface NodeRemote
    * @param msg Message to receive
    * @throws RemoteException
    */
-  public void deliver( CommMessage msg ) throws RemoteException;
+  public void deliver( NodeMessage msg ) throws RemoteException;
 
   /**
    * Add a member in the node's network representation

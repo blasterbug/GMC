@@ -11,7 +11,7 @@ import java.util.LinkedList;
 /**
  * Created by ens15bsf on 2015-10-06.
  */
-public interface MasterNodeRemote extends Remote
+interface MasterNodeRemote extends Remote
 {
   /**
    * Register a new node

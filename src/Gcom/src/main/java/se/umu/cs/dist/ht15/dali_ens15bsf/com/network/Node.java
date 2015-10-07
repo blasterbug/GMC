@@ -65,9 +65,9 @@ public abstract class Node implements Serializable, NodeRemote
   public abstract void post( CommMessage msg ) throws UnreachableNodesException;
 
   @Override
-  public void deliver( CommMessage msg ) throws RemoteException
+  public void deliver( NodeMessage msg ) throws RemoteException
   {
-    owner.receive( msg );
+    owner.receive( msg.getContent() );
   }
 
   @Override
