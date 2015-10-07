@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 public class CommMessage implements Serializable
 {
+
+    private static final long serialVersionUID = -2156596892752157683L;
     protected Object content;
 
     /**

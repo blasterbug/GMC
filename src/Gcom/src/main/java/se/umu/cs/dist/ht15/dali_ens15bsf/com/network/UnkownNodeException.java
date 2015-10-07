@@ -4,9 +4,13 @@ import java.io.Serializable;
 
 /**
  * Created by ens15bsf on 2015-10-06.
+ * @serial
  */
 public class UnkownNodeException extends Exception implements Serializable
 {
+
+  private static final long serialVersionUID = 2479035822473468514L;
+
   public UnkownNodeException ()
   {
   }

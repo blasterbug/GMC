@@ -4,10 +4,6 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommManager;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 
 import java.io.Serializable;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.RemoteObject;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -16,9 +12,12 @@ import java.util.Random;
 /**
  * Created by ens15bsf on 2015-10-06.
  * A node is a remote object used by java RMI
+ * @serial
  */
 public abstract class AbstractNode extends RemoteObject implements Serializable
 {
+
+  private static final long serialVersionUID = 6305983442326469023L;
   protected String name;
   /**
    * list of known nodes

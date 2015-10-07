@@ -5,9 +5,12 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 
 /**
  * Created by ens15bsf on 2015-10-06.
+ * @serial
  */
 public class BasicNode extends AbstractNode
 {
+  private static final long serialVersionUID = -8662641569121124733L;
+
   /**
    * Create a new node
    *

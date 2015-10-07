@@ -2,13 +2,12 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.com.network;
 
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -16,13 +15,15 @@ import java.util.Map;
  * RMI server, start when no other master node exists or crashed
  * The server keep a list and reference to all the remote objects (nodes)
  * within the network
+ * @serial
  */
-public class NodeMaster implements NodeMasterInterface
+public class NodeMaster implements Serializable, NodeMasterInterface
 {
+  private static final long serialVersionUID = -2088012373960946539L;
   //// Name of the GCOM Node server
   public static final String SERVER_NAME = "GCOM_MASTER_NODE";
   /// port for the master node
-  public static final int SERVER_PORT = 2000;
+  public static final int SERVER_PORT = 1200;
   /// List of the nodes
   protected Map<String, AbstractNode> nodes;
   /// Server to create
@@ -33,17 +34,19 @@ public class NodeMaster implements NodeMasterInterface
   /**
    * Create a new master node
    * @throws RemoteException
+   * @throws NodeAlreadyBoundException
    */
-  protected NodeMaster() throws NodeAlreadyBoundException
+  public NodeMaster () throws NodeAlreadyBoundException, RemoteException
   {
     nodes = new HashMap<String, AbstractNode>();
     // make the server reachable
     try
     {
-      NodeMaster mn = (NodeMaster) UnicastRemoteObject.exportObject( this, 0 );
+      NodeMasterInterface mn = (NodeMasterInterface) UnicastRemoteObject.exportObject( this, 0 );
       //server.exportObject( this );
       directory = LocateRegistry.createRegistry( SERVER_PORT );
       directory.bind( SERVER_NAME, this );
+      System.out.println("Server is running...");
     }
     // if the server is already bind
     catch ( AlreadyBoundException e )
@@ -56,12 +59,13 @@ public class NodeMaster implements NodeMasterInterface
     {
       // throw an exception
       // Maybe not the suitable exception
-      throw new NodeAlreadyBoundException( e );
+      e.printStackTrace();
+      throw new NodeAlreadyBoundException( e.getMessage(), e.getCause() );
     }
   }
 
   @Override
-  public void register( AbstractNode node ) throws NodeAlreadyBoundException
+  public void register( AbstractNode node ) throws NodeAlreadyBoundException, RemoteException
   {
     if( nodes.containsKey( node.getName() ) )
     {
@@ -69,11 +73,12 @@ public class NodeMaster implements NodeMasterInterface
     }
     else {
       nodes.put( node.getName(), node );
+      System.out.println("Server : Node " + node.getName() + " registered");
     }
   }
 
   @Override
-  public void unregister( String nodeName )
+  public void unregister( String nodeName ) throws RemoteException
   {
     AbstractNode n = nodes.remove( nodeName );
     if( null == n )
@@ -83,13 +88,13 @@ public class NodeMaster implements NodeMasterInterface
   }
 
   @Override
-  public Collection<String> getRegisteredNodes()
+  public LinkedList<String> getRegisteredNodes()  throws RemoteException
   {
-    return nodes.keySet();
+    return new LinkedList<String>( nodes.keySet() );
   }
 
   @Override
-  public AbstractNode getRemoteNode( String name ) throws UnkownNodeException
+  public AbstractNode getRemoteNode( String name ) throws UnkownNodeException, RemoteException
   {
     if( nodes.containsKey( name ) )
     {
@@ -98,10 +103,5 @@ public class NodeMaster implements NodeMasterInterface
     else {
       throw new UnkownNodeException( "No node register under " + name );
     }
-  }
-
-  public static void main(String args[]) throws NodeAlreadyBoundException
-  {
-    NodeMaster master = new NodeMaster();
   }
 }
