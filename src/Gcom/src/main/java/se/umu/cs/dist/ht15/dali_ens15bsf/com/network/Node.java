@@ -4,9 +4,9 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommManager;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 
 import java.io.Serializable;
-import java.rmi.server.RemoteObject;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Random;
  * A node is a remote object used by java RMI
  * @serial
  */
-public abstract class AbstractNode extends RemoteObject implements Serializable
+public abstract class Node implements Serializable, NodeRemote
 {
 
   private static final long serialVersionUID = 6305983442326469023L;
@@ -22,7 +22,7 @@ public abstract class AbstractNode extends RemoteObject implements Serializable
   /**
    * list of known nodes
    */
-  protected Collection<AbstractNode> network;
+  protected Map<String, NodeRemote> network;
   /**
    * Communication manager for the node
    */
@@ -32,12 +32,12 @@ public abstract class AbstractNode extends RemoteObject implements Serializable
    * Create a new node
    * @param owner Communication manager owning the node
    */
-  public AbstractNode( CommManager owner )
+  public Node( CommManager owner )
   {
     /// TODO: Use socket instead
     name = String.valueOf( new Random().nextInt() );
     this.owner = owner;
-    network = new LinkedList<AbstractNode>( );
+    network = new HashMap<String, NodeRemote>();
     /*
     try
     {
@@ -50,37 +50,35 @@ public abstract class AbstractNode extends RemoteObject implements Serializable
     */
   }
 
-  /**
-   * What is the name of the node ?
-   * @return Name of the node in a String
-   */
-  public String getName()
+
+  @Override
+  public String getName() throws RemoteException
   {
     return name;
   }
+
   /**
    * Send a message by multicast to the other nodes
    * @param msg Message to multicast
+   * @throws UnreachableNodesException
    */
-  public abstract void post( CommMessage msg );
+  public abstract void post( CommMessage msg ) throws UnreachableNodesException;
 
-  /**
-   * Receive a Communication message from another node
-   * @param msg Message to receive
-   */
-  public void deliver( CommMessage msg )
+  @Override
+  public void deliver( NodeMessage msg ) throws RemoteException
   {
-
-    owner.receive( msg );
+    owner.receive( msg.getContent() );
   }
 
-  public void addMember( AbstractNode newM )
+  @Override
+  public void addMember( NodeRemote newM ) throws RemoteException
   {
-    network.add( newM );
+    network.put( newM.getName(), newM );
   }
 
-  public void removeMember( AbstractNode newM )
+  @Override
+  public void removeMember( NodeRemote oldM ) throws RemoteException
   {
-    network.remove( newM );
+    network.remove( oldM.getName() );
   }
 }
