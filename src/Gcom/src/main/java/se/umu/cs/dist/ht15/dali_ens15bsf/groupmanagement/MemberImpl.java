@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 public class MemberImpl implements Member {
 	private Map<String, Member> members;
-	private CommunicationService commService;
 
 	public MemberImpl() {
 		members = new HashMap<String, Member>();
@@ -22,7 +21,6 @@ public class MemberImpl implements Member {
 
 	@Override
 	public void sendMessage(Message m) {
-		commService.send(new CommMessage(m));
 
 
 	}
