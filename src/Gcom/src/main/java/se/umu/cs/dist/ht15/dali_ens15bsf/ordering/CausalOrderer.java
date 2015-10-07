@@ -86,38 +86,12 @@ public class CausalOrderer extends Observable implements Orderer {
 
 		}
 
-
-
-
-
-
-	}
-	private void deliver(Message m, String id) {
-		//System.out.println("Delivering message: "+m.getContent());
-
 	}
 
-	private void deliverClearMessageSequence(Queue q, String senderId) {
-		boolean didChange;
-		int removed;
-		do{
-			didChange = false;
-			removed = 0;
-			for (int i = 0; i < q.size()-removed; i++) {
-				Message m = (Message) q.poll();
-				if(m.getClock().get(senderId)
-						<= orderClock.get(senderId)) {
-					deliver(m, senderId);
-					didChange = true;
-					removed++;
-
-				} else {
-					q.add(m);
-				}
-			}
-		}while(didChange);
+	private void deliver(Message m, String senderId) {
+		setChanged();
+		notifyObservers(m);
 	}
-
 
 	@Override
 	public Queue getHoldbackQueue(String id) {

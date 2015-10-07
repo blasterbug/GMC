@@ -39,7 +39,7 @@ public class CausalTest {
 			return false;
 		}
 	}
-/*
+
 	@Test
 	public void shouldReturnNullHoldbackAfterInit() {
 		Orderer causal = new CausalOrderer();
@@ -109,7 +109,6 @@ public class CausalTest {
 		Assert.assertTrue(causal.getHoldbackQueue("id1").isEmpty());
 	}
 
-*/
 	@Test
 	public void shouldNotHoldWithHigherOtherSeqNr() {
 		Orderer causal = new CausalOrderer();
@@ -150,6 +149,70 @@ public class CausalTest {
 
 	}
 
+	@Test
+	public void shouldDeliverFirstEverMessage() {
+		CausalOrderer causal = new CausalOrderer();
+
+		DummyObserver dummy = new DummyObserver(causal);
+
+		causal.addObserver(dummy);
+
+		VectorClock c1 = new VectorClock();
+		c1.increment("id1");
+
+		Message m1 = new Message("id1", "m1", c1);
+
+		causal.addMessage(m1);
+
+		Assert.assertTrue(dummy.contains(m1));
+
+
+	}
+
+	@Test
+	public void shouldDeliverWithHigherOtherSeqNr() {
+		CausalOrderer causal = new CausalOrderer();
+		DummyObserver dummy = new DummyObserver(causal);
+		causal.addObserver(dummy);
+
+		VectorClock c0 = new VectorClock();
+		c0.increment("id2");
+
+		/* Setup scenario */
+		VectorClock c1 = new VectorClock();
+		c1.updateTime("id2", 2);
+
+		VectorClock c2 = new VectorClock();
+		c2.updateTime("id2", 3);
+
+		Message m0 = new Message("id2", "m0", c0);
+		Message m1 = new Message("id2", "m1", c1);
+		Message m2 = new Message("id2", "m2", c2);
+
+
+		VectorClock clock = new VectorClock();
+		clock.updateTime("id1", 2);
+		clock.updateTime("id2", 3);
+		Message msg = new Message("id1", "m4", clock);
+
+		VectorClock clock2 = new VectorClock();
+		clock2.updateTime("id1",1);
+		clock2.updateTime("id2", 3);
+
+		Message msg2 = new Message("id1", "m4", clock2);
+
+		causal.addMessage(m0);
+		causal.addMessage(m1);
+		causal.addMessage(m2);
+		causal.addMessage(msg);
+		causal.addMessage(msg2);
+
+		Assert.assertTrue(dummy.containsAt(m0, 0) &&
+				dummy.containsAt(m1, 1) &&
+				dummy.containsAt(m2, 2) &&
+				dummy.containsAt(msg, 3) &&
+				dummy.containsAt(msg2, 4));
+	}
 
 }
 
