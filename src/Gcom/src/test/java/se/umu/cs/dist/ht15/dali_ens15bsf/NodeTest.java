@@ -1,7 +1,8 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.Node;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.NodeAlreadyBoundException;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.NodeMaster;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.server.MasterNode;
 
 import java.rmi.RemoteException;
 
@@ -14,7 +15,8 @@ public class NodeTest
   {
     try
     {
-      NodeMaster master = new NodeMaster();
+      MasterNode master = new MasterNode();
+
     }
     catch ( Exception e )
     {

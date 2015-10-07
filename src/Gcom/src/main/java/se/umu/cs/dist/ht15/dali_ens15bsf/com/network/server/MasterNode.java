@@ -1,4 +1,4 @@
-package se.umu.cs.dist.ht15.dali_ens15bsf.com.network;
+package se.umu.cs.dist.ht15.dali_ens15bsf.com.network.server;
 
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
@@ -6,9 +6,14 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.HashMap;
+
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.NodeAlreadyBoundException;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.NodeRemote;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.UnkownNodeException;
+
 
 /**
  * Created by ens15bsf on 2015-10-06.
@@ -17,7 +22,7 @@ import java.util.Map;
  * within the network
  * @serial
  */
-public class NodeMaster implements Serializable, NodeMasterInterface
+public class MasterNode implements Serializable, MasterNodeRemote
 {
   private static final long serialVersionUID = -2088012373960946539L;
   //// Name of the GCOM Node server
@@ -25,7 +30,7 @@ public class NodeMaster implements Serializable, NodeMasterInterface
   /// port for the master node
   public static final int SERVER_PORT = 1200;
   /// List of the nodes
-  protected Map<String, AbstractNode> nodes;
+  protected Map<String, NodeRemote> nodes;
   /// Server to create
   protected UnicastRemoteObject server;
   /// Registry of remote objects
@@ -36,13 +41,13 @@ public class NodeMaster implements Serializable, NodeMasterInterface
    * @throws RemoteException
    * @throws NodeAlreadyBoundException
    */
-  public NodeMaster () throws NodeAlreadyBoundException, RemoteException
+  public MasterNode () throws NodeAlreadyBoundException
   {
-    nodes = new HashMap<String, AbstractNode>();
+    nodes = new HashMap<String, NodeRemote>();
     // make the server reachable
     try
     {
-      NodeMasterInterface mn = (NodeMasterInterface) UnicastRemoteObject.exportObject( this, 0 );
+      MasterNodeRemote mn = (MasterNodeRemote) UnicastRemoteObject.exportObject( this, 0 );
       //server.exportObject( this );
       directory = LocateRegistry.createRegistry( SERVER_PORT );
       directory.bind( SERVER_NAME, this );
@@ -65,7 +70,7 @@ public class NodeMaster implements Serializable, NodeMasterInterface
   }
 
   @Override
-  public void register( AbstractNode node ) throws NodeAlreadyBoundException, RemoteException
+  public void register( NodeRemote node ) throws NodeAlreadyBoundException, RemoteException
   {
     if( nodes.containsKey( node.getName() ) )
     {
@@ -80,7 +85,7 @@ public class NodeMaster implements Serializable, NodeMasterInterface
   @Override
   public void unregister( String nodeName ) throws RemoteException
   {
-    AbstractNode n = nodes.remove( nodeName );
+    NodeRemote n = nodes.remove( nodeName );
     if( null == n )
     {
       System.err.println( "No node registered for " + nodeName );
@@ -94,7 +99,7 @@ public class NodeMaster implements Serializable, NodeMasterInterface
   }
 
   @Override
-  public AbstractNode getRemoteNode( String name ) throws UnkownNodeException, RemoteException
+  public NodeRemote getRemoteNode( String name ) throws UnkownNodeException, RemoteException
   {
     if( nodes.containsKey( name ) )
     {

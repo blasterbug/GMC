@@ -1,8 +1,10 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.AbstractNode;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.Node;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.BasicNode;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.UnreachableNodesException;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,7 +16,7 @@ public class CommManager implements CommunicationService
 {
     /// Listeners to notify
     private Collection<CommListener> listeners;
-    private AbstractNode node;
+    private Node node;
 
     /**
      * Constructor
@@ -22,7 +24,15 @@ public class CommManager implements CommunicationService
     public CommManager()
     {
         listeners = new ArrayList<CommListener>( );
-        node = new BasicNode( this );
+        try
+        {
+            node = new BasicNode( this );
+        }
+        catch ( RemoteException e )
+        {
+            // TODO: fix this case
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -31,7 +41,14 @@ public class CommManager implements CommunicationService
      */
     public void send( CommMessage msg )
     {
-        node.post( msg );
+        try
+        {
+            node.post( msg );
+        }
+        catch ( UnreachableNodesException e )
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
