@@ -61,24 +61,27 @@ public class CausalOrderer extends Observable implements Orderer {
 			do{
 				didChange = false;
 				removed = 0;
-				for (int i = 0; i < q.size()-removed; i++) {
-					Message m = (Message) q.poll();
-					String id =  m.getId();
-					Integer sendSeq = m.getClock().get(id);
-					Integer orderSeq = orderClock.get(id);
-					if(sendSeq == (orderSeq+1)) {
-						m.getClock().updateTime(id, orderSeq);
-						if(VectorClock.compare(m.getClock(), orderClock) <= 0){
-							deliver(m, id);
-							didChange = true;
-							removed++;
-							orderClock.increment(id);
-						} else {
-							q.add(m);
-						}
+				for (Queue queue : holdbackQueues.values()) {
+					for (int i = 0; i < queue.size()-removed; i++) {
+						Message m = (Message) queue.poll();
+						String id =  m.getId();
+						
+						Integer sendSeq = m.getClock().get(id);
+						Integer orderSeq = orderClock.get(id);
+						if(sendSeq == (orderSeq+1)) {
+							m.getClock().updateTime(id, orderSeq);
+							if(VectorClock.compare(m.getClock(), orderClock) <= 0){
+								deliver(m, id);
+								didChange = true;
+								removed++;
+								orderClock.increment(id);
+							} else {
+								queue.add(m);
+							}
 
-					} else {
-						q.add(m);
+						} else {
+							queue.add(m);
+						}
 					}
 				}
 			}while(didChange);
@@ -89,6 +92,7 @@ public class CausalOrderer extends Observable implements Orderer {
 	}
 
 	private void deliver(Message m, String senderId) {
+//		System.out.println("DELIVERING");
 		setChanged();
 		notifyObservers(m);
 	}

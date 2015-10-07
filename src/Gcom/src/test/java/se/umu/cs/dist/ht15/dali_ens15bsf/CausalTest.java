@@ -15,11 +15,9 @@ import java.util.LinkedList;
 public class CausalTest {
 
 	private class DummyObserver implements Observer {
-		private Observable observable;
 		private LinkedList<Message> messages;
 
-		public DummyObserver(Observable o) {
-			observable = o;
+		public DummyObserver() {
 			messages = new LinkedList<Message>();
 		}
 
@@ -40,6 +38,7 @@ public class CausalTest {
 		}
 	}
 
+	
 	@Test
 	public void shouldReturnNullHoldbackAfterInit() {
 		Orderer causal = new CausalOrderer();
@@ -116,7 +115,7 @@ public class CausalTest {
 		VectorClock c0 = new VectorClock();
 		c0.increment("id2");
 
-		/* Setup scenario */
+		// Setup scenario
 		VectorClock c1 = new VectorClock();
 		c1.updateTime("id2", 2);
 
@@ -153,7 +152,7 @@ public class CausalTest {
 	public void shouldDeliverFirstEverMessage() {
 		CausalOrderer causal = new CausalOrderer();
 
-		DummyObserver dummy = new DummyObserver(causal);
+		DummyObserver dummy = new DummyObserver();
 
 		causal.addObserver(dummy);
 
@@ -172,13 +171,13 @@ public class CausalTest {
 	@Test
 	public void shouldDeliverWithHigherOtherSeqNr() {
 		CausalOrderer causal = new CausalOrderer();
-		DummyObserver dummy = new DummyObserver(causal);
+		DummyObserver dummy = new DummyObserver();
 		causal.addObserver(dummy);
 
 		VectorClock c0 = new VectorClock();
 		c0.increment("id2");
 
-		/* Setup scenario */
+		// Setup scenario
 		VectorClock c1 = new VectorClock();
 		c1.updateTime("id2", 2);
 
@@ -212,6 +211,41 @@ public class CausalTest {
 				dummy.containsAt(m2, 2) &&
 				dummy.containsAt(msg, 3) &&
 				dummy.containsAt(msg2, 4));
+	}
+
+	@Test
+	public void shouldDeliverInEitherOrder() {
+		CausalOrderer causal = new CausalOrderer();
+		DummyObserver dummy = new DummyObserver();
+		causal.addObserver(dummy);
+
+		VectorClock c1 = new VectorClock();
+		VectorClock c2 = new VectorClock();
+		VectorClock c3 = new VectorClock();
+
+		c1.increment("id1");
+
+		c2.increment("id1");
+		c2.increment("id2");
+
+		c3.increment("id1");
+		c3.increment("id3");
+
+		Message m1 = new Message("id1", "m1", c1);
+		Message m2 = new Message("id2", "m2", c2);
+		Message m3 = new Message("id3", "m3", c3);
+
+		causal.addMessage(m2);
+		causal.addMessage(m3);
+		causal.addMessage(m1);
+
+
+		Assert.assertTrue(dummy.containsAt(m1,0) &&
+				((dummy.containsAt(m2,1) && dummy.containsAt(m3, 2)) || 
+				 (dummy.containsAt(m3, 1) && dummy.containsAt(m2,2))));
+		
+		
+
 	}
 
 }
