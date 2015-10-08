@@ -2,9 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.server.MasterNode;
-
-import java.rmi.RemoteException;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServer;
 
 /**
  * Created by ens15bsf on 2015-10-07.
@@ -15,7 +13,7 @@ public class NodeMasterTest
   {
     try
     {
-      MasterNode nodeServer = new MasterNode();
+      NamingServer nodeServer = new NamingServer();
     }
     catch ( Exception e )
     {

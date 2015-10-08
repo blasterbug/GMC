@@ -1,8 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.Node;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.BasicNode;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.network.UnreachableNodesException;
+import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.observer.CommListener;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -14,70 +13,70 @@ import java.util.Collection;
  */
 public class CommManager implements CommunicationService
 {
-    /// Listeners to notify
-    private Collection<CommListener> listeners;
-    private Node node;
+  /// Listeners to notify
+  private Collection<CommListener> listeners;
+  private CommMember memberCom;
 
-    /**
-     * Constructor
-     */
-    public CommManager()
-    {
-        listeners = new ArrayList<CommListener>( );
-        try
-        {
-            node = new BasicNode( this );
-        }
-        catch ( RemoteException e )
-        {
-            // TODO: fix this case
-            e.printStackTrace();
-        }
-    }
+  /**
+   * Constructor
+   */
+  public CommManager ( String groupID )
+  {
+    listeners = new ArrayList<CommListener>();
+    //memberCom = new BasicReliableMember( , groupID );
+  }
 
-    /**
-     * Send a message
-     * @param msg Message to send
-     */
-    public void send( CommMessage msg )
+  /**
+   * Send a message
+   *
+   * @param msg Message to send
+   */
+  public void send ( Message msg )
+  {
+    try
     {
-        try
-        {
-            node.post( msg );
-        }
-        catch ( UnreachableNodesException e )
-        {
-            e.printStackTrace();
-        }
+      memberCom.post( new CommMessage( msg, memberCom ) );
     }
+    // TODO
+    catch ( RemoteException e )
+    {
+      e.printStackTrace();
+    } catch ( UnreachableMemberException e )
+    {
+      e.printStackTrace();
+    }
+  }
 
-    /**
-     * Queue messages to listeners
-     * @param msg Message to queue
-     */
-    public void receive( CommMessage msg )
+  /**
+   * Queue messages to listeners
+   *
+   * @param msg Message to queue
+   */
+  public void receive ( CommMessage msg )
+  {
+    for ( CommListener listener : listeners )
     {
-        for( CommListener listener : listeners )
-        {
-            listener.queueCommMessage( msg );
-        }
+      listener.queueCommMessage( msg );
     }
+  }
 
-    /**
-     * Register a new listener
-     * @param listener Listener to notify
-     */
-    public void register( CommListener listener )
-    {
-        listeners.add( listener );
-    }
+  /**
+   * Register a new listener
+   *
+   * @param listener Listener to notify
+   */
+  public void register ( CommListener listener )
+  {
+    listeners.add( listener );
+  }
 
-    /**
-     * Remove a listeners from the listeners list
-     * @param listener Listener to stop notifying
-     */
-    public void remove( CommListener listener )
-    {
-        listeners.remove( listener );
-    }
+  /**
+   * Remove a listeners from the listeners list
+   *
+   * @param listener Listener to stop notifying
+   */
+  public void remove ( CommListener listener )
+  {
+    listeners.remove( listener );
+  }
 }

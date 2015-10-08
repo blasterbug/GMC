@@ -12,7 +12,8 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NameServerImpl;
 
 
 
-public class NameserverTest {
+public class NamingServerTest
+{
 
 	@Test
 	public void shouldNotReturnNullOnNoGroups() {
