@@ -2,25 +2,42 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.MemberRemote;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
 import java.util.Map;
 import java.util.HashMap;
 
 public class MemberImpl implements Member {
-	private Map<String, Member> members;
+	private Map<String, MemberRemote> view;
+	private Orderer orderer;
+	private MemberRemote self;
 
-	public MemberImpl() {
-		members = new HashMap<String, Member>();
+	public MemberImpl(Orderer o) {
+		view = new HashMap<String, MemberRemote>();
+		orderer = o;
 	}
 
 	@Override
-	public void join(Member m, String id) {
-		members.put(id, m);
+	public void join(MemberRemote m, String id) {
+		view.put(id, m);
 
 	}
 
+	/**
+	  * @param Message A message to send to the group
+	  */
 	@Override
 	public void sendMessage(Message m) {
+		/* Prepare according to orderer */
+		Message preparedMessage = orderer.prepareMessage(m);
+		
+		/* Create communication message */
+		CommMessage<Message> msg = new CommMessage<Message>(m, self);
+
+		/* Send message to view */
+		self.post(msg, view);
 
 
 	}
