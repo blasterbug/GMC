@@ -22,9 +22,10 @@ public interface MemberRemote extends Remote, Serializable
    * Join a group
    *
    * @param newM Member to qdd in the group
+   * @param groupID Group name to join
    * @throws RemoteException
    */
-  public void join ( MemberRemote newM ) throws RemoteException;
+  public void join ( MemberRemote newM, String groupID ) throws RemoteException;
 
   /**
    * Get the member ID

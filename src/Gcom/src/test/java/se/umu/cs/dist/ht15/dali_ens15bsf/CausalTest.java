@@ -1,15 +1,14 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
-import org.junit.Test;
 import junit.framework.Assert;
-
-import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
+import org.junit.Test;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
 
-import java.util.Observer;
-import java.util.Observable;
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 
 
 public class CausalTest {

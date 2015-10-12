@@ -58,7 +58,7 @@ public class NamingServer implements Serializable, NamingServiceRemote
     MemberRemote leader = groups.get( groupName );
     if ( null != leader )
     {
-      leader.join( m );
+      leader.join( m, groupName );
       System.out.println( "Server : Member " + m.getMemberID() + " registered" );
     }
     return leader;

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 /**
  * Created by ens15bsf on 2015-10-06.
  */
-interface NamingServiceRemote extends Remote
+public interface NamingServiceRemote extends Remote
 {
   /**
    * Register a new member to a group

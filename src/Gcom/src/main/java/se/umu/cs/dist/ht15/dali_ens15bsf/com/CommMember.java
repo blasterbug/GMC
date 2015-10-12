@@ -15,7 +15,6 @@ public class CommMember implements MemberRemote, Serializable
   private static final long serialVersionUID = 4672654439762386594L;
   protected ArrayList<MemberRemote> group;
   protected Member owner;
-  protected String groupID;
   protected MulticastStrategy commStrategy;
 
   /**
@@ -26,7 +25,6 @@ public class CommMember implements MemberRemote, Serializable
   public CommMember ( Member owner, String groupID, MulticastStrategy multicastStrategy )
   {
     this.owner = owner;
-    this.groupID = groupID;
     group = new ArrayList<MemberRemote>();
     commStrategy = multicastStrategy;
     /*
@@ -66,9 +64,9 @@ public class CommMember implements MemberRemote, Serializable
   }
 
   @Override
-  public void join ( MemberRemote newM ) throws RemoteException
+  public void join( MemberRemote newM, String groupID ) throws RemoteException
   {
-    // TODO
+    //owner.join( newM, groupID );
   }
 
   @Override
