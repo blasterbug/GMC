@@ -4,6 +4,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MemberRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ public class MemberImpl implements Member {
 	public MemberImpl(Orderer o) {
 		view = new HashMap<String, MemberRemote>();
 		orderer = o;
+		self = new CommMember(this, ""/*TODO*/, null);
 	}
 
 	@Override
@@ -34,10 +36,11 @@ public class MemberImpl implements Member {
 		Message preparedMessage = orderer.prepareMessage(m);
 		
 		/* Create communication message */
-		CommMessage<Message> msg = new CommMessage<Message>(m, self);
+		CommMessage<Message> msg;
+		msg = new CommMessage(preparedMessage);
 
 		/* Send message to view */
-		self.post(msg, view);
+		//self.post(msg, view);
 
 
 	}
