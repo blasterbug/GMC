@@ -10,18 +10,16 @@ public class CommMessage<T> implements Serializable
 {
   private static final long serialVersionUID = 5554064569627466554L;
   protected final T content;
-  protected final MemberRemote source;
+  protected MemberRemote source;
 
   /**
    * Create a new CommMessage
    *
    * @param content Content of the message
-   * @param sender  who send the message
    */
-  public CommMessage ( T content, MemberRemote sender )
+  public CommMessage ( T content )
   {
     this.content = content;
-    source = sender;
   }
 
   /**
@@ -52,5 +50,15 @@ public class CommMessage<T> implements Serializable
   public MemberRemote getSource ()
   {
     return source;
+  }
+
+  /**
+   * Set the source of the message
+   *
+   * @param sender Remote member who sends the message
+   */
+  public void setSource ( MemberRemote sender )
+  {
+    source = sender;
   }
 }

@@ -58,7 +58,7 @@ public class NamingServer implements Serializable, NamingServiceRemote
     MemberRemote leader = groups.get( groupName );
     if ( null != leader )
     {
-      leader.join( m );
+      leader.join( m, groupName );
       System.out.println( "Server : Member " + m.getMemberID() + " registered" );
     }
     return leader;
@@ -75,7 +75,7 @@ public class NamingServer implements Serializable, NamingServiceRemote
    * Get the leader of a given group
    *
    * @param groupName Name of group
-   * @return leader for the given group
+   * @return leader for the given group, null if it doesn't exist
    */
   @Override
   public MemberRemote getLeader ( String groupName ) throws RemoteException
