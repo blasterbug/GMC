@@ -27,6 +27,7 @@ public class MemberImpl implements Member, Observer
 
 		self = new CommMember( strg );
 		self.addObserver( this );
+		orderer.addObserver( this );
 	}
 
 	@Override
@@ -65,6 +66,7 @@ public class MemberImpl implements Member, Observer
 	@Override
 	public void receiveMessage(Message m) {
 		System.out.println("MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");	
+		orderer.addMessage(m);
 	}
 
 	@Override
@@ -74,6 +76,12 @@ public class MemberImpl implements Member, Observer
 		{
 			// pretty awful
 			receiveMessage( ((CommMessage<Message>)o).getContent() );
+		}
+
+		if( (Orderer)observable == orderer) 
+		{
+			Message m = (Message)o;
+			System.out.println("MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");	
 		}
 	}
 
