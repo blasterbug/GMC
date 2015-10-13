@@ -21,7 +21,7 @@ public interface RemoteMember extends Remote, Serializable
   /**
    * Join a group
    *
-   * @param newM Member to qdd in the group
+   * @param newM Member to add in the group
    * @param groupID Group name to join
    * @throws RemoteException
    */

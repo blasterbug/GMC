@@ -66,14 +66,14 @@ public class CommMember implements RemoteMember, Serializable
   /**
    * Join a group
    *
-   * @param newM    Member to qdd in the group
+   * @param newM    Member to add in the group
    * @param groupID Group name to join
    * @throws java.rmi.RemoteException
    */
   @Override
   public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-
+    owner.join( newM, groupID );
   }
 
   @Override
