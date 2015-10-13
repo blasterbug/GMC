@@ -25,7 +25,7 @@ public class CommMemberDebug extends CommMember
    */
   public CommMemberDebug ( MulticastStrategy strategy )
   {
-    super( new StrategyDebug(strategy) );
+    super( new StrategyDebug( strategy ) );
     delayedMessages = new LinkedList<CommMessage>();
     messageDelay = 0;
   }
@@ -39,6 +39,10 @@ public class CommMemberDebug extends CommMember
     messageDelay = delay;
   }
 
+  public void setRandomDelivering( boolean active )
+  {
+    ((StrategyDebug)commStrategy).setChangeDeliveringOrder( active );
+  }
 
   /**
    * Send a message to the group

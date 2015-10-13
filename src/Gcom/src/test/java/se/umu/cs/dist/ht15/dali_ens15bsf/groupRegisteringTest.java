@@ -1,10 +1,11 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.TreeBaseMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingService;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
