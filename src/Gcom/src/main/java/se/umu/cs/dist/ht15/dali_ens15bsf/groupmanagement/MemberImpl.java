@@ -62,7 +62,7 @@ public class MemberImpl implements Member, Observer
 
 	@Override
 	public void receiveMessage(Message m) {
-		System.out.println(m);
+		// TODO
 	}
 
 	@Override
