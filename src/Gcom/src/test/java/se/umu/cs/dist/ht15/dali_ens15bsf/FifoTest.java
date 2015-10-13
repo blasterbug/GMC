@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
@@ -49,7 +50,7 @@ public class FifoTest {
 	@Test(expected=NullPointerException.class)
 	public void shouldThrowNullPtrExceptOnNullClock() {
 		Orderer fifo = new FifoOrderer();
-		Message msg = new Message("id1", null, null);
+		Message msg = new FifoMessage(new Message("id1", null), null);
 		fifo.addMessage(msg);
 		
 		Assert.assertTrue(fifo.getHoldbackQueue("id1") != null);
@@ -59,28 +60,18 @@ public class FifoTest {
 	public void shouldNotReturnNullHoldbackAfterMessage() {
 		Orderer fifo = new FifoOrderer();
 		VectorClock clock = new VectorClock();
-		Message msg = new Message("id1", null, clock);
+		Message msg = new FifoMessage(new Message("id1", null), clock);
 		fifo.addMessage(msg);
 		
 		Assert.assertTrue(fifo.getHoldbackQueue("id1") != null);
 	}
 
-
-//	@Test
-//	public void shouldReturnNonEmptyHoldbackAfterMessage() {
-//		Orderer fifo = new FifoOrderer();
-//		Message msg = new Message("id1", null, null);
-//		fifo.addMessage(msg);
-//		
-//		Assert.assertTrue(!fifo.getHoldbackQueue("id1").isEmpty());
-//	}
-
 	@Test
 	public void shouldNotHoldFirstMessage() {
 		Orderer fifo = new FifoOrderer();
 		VectorClock clock = new VectorClock();
-		//clock.increment("id1");
-		Message msg = new Message("id1", null, clock);
+
+		Message msg = new FifoMessage(new Message("id1", null), clock);
 		fifo.addMessage(msg);
 		
 		Assert.assertTrue(fifo.getHoldbackQueue("id1").isEmpty());
@@ -93,7 +84,7 @@ public class FifoTest {
 		VectorClock clock2 = new VectorClock();
 		clock.updateTime("id1", 1);
 
-		Message msg = new Message("id1", null, clock);
+		Message msg = new FifoMessage(new Message("id1", null), clock);
 		fifo.addMessage(msg);
 		
 		Assert.assertTrue(!fifo.getHoldbackQueue("id1").isEmpty());
@@ -105,11 +96,11 @@ public class FifoTest {
 		VectorClock clock = new VectorClock();
 		clock.updateTime("id1", 1);
 
-		Message msg = new Message("id1", null, clock);
+		Message msg = new FifoMessage(new Message("id1", null), clock);
 		fifo.addMessage(msg);
 
 		VectorClock clock2 = new VectorClock();
-		Message msg2 = new Message("id1", null, clock2);
+		Message msg2 = new FifoMessage(new Message("id1", null), clock2);
 		fifo.addMessage(msg2);
 		
 		Assert.assertTrue(fifo.getHoldbackQueue("id1").isEmpty());
@@ -121,17 +112,17 @@ public class FifoTest {
 		VectorClock leapClock = new VectorClock();
 		leapClock.updateTime("id1", 4);
 
-		Message leapMsg = new Message("id1", "content4", leapClock);
+		Message leapMsg = new FifoMessage(new Message("id1", "content4"), leapClock);
 		fifo.addMessage(leapMsg);
 
 		VectorClock clock2 = new VectorClock();
 		clock2.updateTime("id1", 1);
 
-		Message msg2 = new Message("id1", "content2", clock2);
+		Message msg2 = new FifoMessage(new Message("id1", "content2"), clock2);
 		fifo.addMessage(msg2);
 
 		VectorClock clock1 = new VectorClock();
-		Message msg1 = new Message("id1", "content1", clock1);
+		Message msg1 = new FifoMessage(new Message("id1", "content1"), clock1);
 		fifo.addMessage(msg1);
 
 
@@ -141,19 +132,19 @@ public class FifoTest {
 	public void shouldNotHoldConsecutiveMessages() {
 		Orderer fifo = new FifoOrderer();
 		VectorClock clock1 = new VectorClock();
-		Message msg1 = new Message("id1", null, clock1);
+		Message msg1 = new FifoMessage(new Message("id1", null), clock1);
 		fifo.addMessage(msg1);
 
 		VectorClock clock2 = new VectorClock();
 		clock2.updateTime("id1", 1);
 
-		Message msg2 = new Message("id1", null, clock2);
+		Message msg2 = new FifoMessage(new Message("id1", null), clock2);
 		fifo.addMessage(msg2);
 
 		VectorClock clock3 = new VectorClock();
 		clock3.updateTime("id1", 2);
 
-		Message msg3 = new Message("id1", null, clock3);
+		Message msg3 = new FifoMessage(new Message("id1", null), clock3);
 		fifo.addMessage(msg3);
 
 		Assert.assertTrue(fifo.getHoldbackQueue("id1").isEmpty());
@@ -163,7 +154,7 @@ public class FifoTest {
 	public void shouldDeliverFirstMessage() {
 		FifoOrderer fifo = new FifoOrderer();
 		VectorClock clock = new VectorClock();
-		Message msg = new Message("id1", "content", clock);
+		Message msg = new FifoMessage(new Message("id1", "content"), clock);
 		DummyObserver dummy = new DummyObserver(fifo);
 		fifo.addObserver(dummy);
 		fifo.addMessage(msg);
@@ -181,11 +172,11 @@ public class FifoTest {
 		VectorClock clock = new VectorClock();
 		clock.updateTime("id1", 1);
 
-		Message msg = new Message("id1", null, clock);
+		Message msg = new FifoMessage(new Message("id1", null), clock);
 		fifo.addMessage(msg);
 
 		VectorClock clock2 = new VectorClock();
-		Message msg2 = new Message("id1", null, clock2);
+		Message msg2 = new FifoMessage(new Message("id1", null), clock2);
 		fifo.addMessage(msg2);
 		
 		Assert.assertTrue(dummy.contains(msg) && dummy.contains(msg2));
@@ -209,10 +200,10 @@ public class FifoTest {
 		clock4.updateTime("id1", 3);
 
 
-		Message msg1 = new Message("id1", "content1", clock1);
-		Message msg2 = new Message("id1", "content2", clock2);
-		Message msg3 = new Message("id1", "content3", clock3);
-		Message msg4 = new Message("id1", "content4", clock4);
+		Message msg1 = new FifoMessage(new Message("id1", "content1"), clock1);
+		Message msg2 = new FifoMessage(new Message("id1", "content2"), clock2);
+		Message msg3 = new FifoMessage(new Message("id1", "content3"), clock3);
+		Message msg4 = new FifoMessage(new Message("id1", "content4"), clock4);
 
 		fifo.addMessage(msg3);
 		fifo.addMessage(msg4);
@@ -227,6 +218,7 @@ public class FifoTest {
 	}
 
 
+	@Ignore
 	@Test
 	public void shouldDeliverSequenceInFifoOrder() {
 		FifoOrderer fifo = new FifoOrderer();
@@ -245,10 +237,10 @@ public class FifoTest {
 		clock4.updateTime("id1", 3);
 
 
-		Message msg1 = new Message("id1", "content1", clock1);
-		Message msg2 = new Message("id1", "content2", clock2);
-		Message msg3 = new Message("id1", "content3", clock3);
-		Message msg4 = new Message("id1", "content4", clock4);
+		Message msg1 = new FifoMessage(new Message("id1", "content1"), clock1);
+		Message msg2 = new FifoMessage(new Message("id1", "content2"), clock2);
+		Message msg3 = new FifoMessage(new Message("id1", "content3"), clock3);
+		Message msg4 = new FifoMessage(new Message("id1", "content4"), clock4);
 
 		fifo.addMessage(msg3);
 		fifo.addMessage(msg4);
