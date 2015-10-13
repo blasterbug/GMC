@@ -15,7 +15,6 @@ public class RunNamingServer
     try
     {
       NamingService NamingService = new NamingService();
-      NamingService.joinGroup( new MemberImpl( "test", new commMember() ) )
     }
     catch ( Exception e )
     {

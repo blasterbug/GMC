@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
@@ -12,12 +13,13 @@ import java.util.HashMap;
 public class MemberImpl implements Member {
 	private Map<String, RemoteMember> view;
 	private Orderer orderer;
-	private RemoteMember self;
+	private CommMember self;
 
-	public MemberImpl(Orderer o) {
+	public MemberImpl(Orderer o, MulticastStrategy strg) {
 		view = new HashMap<String, RemoteMember>();
 		orderer = o;
-		self = new CommMember(this, ""/*TODO*/, null);
+		self = new CommMember( strg );
+		self.setOwner( this );
 	}
 
 	@Override
@@ -27,7 +29,7 @@ public class MemberImpl implements Member {
 	}
 
 	/**
-	  * @param Message A message to send to the group
+	  * @param m A message to send to the group
 	  */
 	@Override
 	public void sendMessage(Message m) {

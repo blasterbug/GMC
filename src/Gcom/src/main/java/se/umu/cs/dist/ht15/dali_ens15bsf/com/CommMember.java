@@ -19,25 +19,18 @@ public class CommMember implements RemoteMember, Serializable
 
   /**
    * Create a new node
-   *
-   * @param owner Communication manager owning the node
+   * TODO : doc
    */
-  public CommMember ( Member owner, String groupID, MulticastStrategy strategy )
+  public CommMember ( MulticastStrategy strategy )
   {
-    this.owner = owner;
     group = new ArrayList<RemoteMember>();
     commStrategy = strategy;
     commStrategy.setOwner( this );
-    /*
-    try
-    {
-      Registry rgt = LocateRegistry.getRegistry( LocateRegistry.g );
-      rgt.bind( );
-    } catch ( RemoteException e )
-    {
-      System.err.println( e.getCause() );
-    }
-    */
+  }
+
+  public void setOwner(  Member owner )
+  {
+    this.owner = owner;
   }
 
   /**
