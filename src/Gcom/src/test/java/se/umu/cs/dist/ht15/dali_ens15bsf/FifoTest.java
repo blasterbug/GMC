@@ -40,7 +40,6 @@ public class FifoTest {
 		}
 	}
 
-
 	@Test
 	public void shouldReturnNullHoldbackAfterInit() {
 		Orderer fifo = new FifoOrderer();
@@ -256,8 +255,14 @@ public class FifoTest {
 
 
 	@Test
-	public void should() {
+	public void shouldPrepareMessageWithClock() {
 		/* TODO What should happen if same time stamp on two messages? */
+		FifoOrderer fifo = new FifoOrderer();
+
+		Message m = fifo.prepareMessage(new Message("id1", "m1"));
+		fifo.addMessage(m);
+
+		Assert.assertTrue(fifo.getHoldbackQueue("id1").isEmpty());
 	}
 
 }

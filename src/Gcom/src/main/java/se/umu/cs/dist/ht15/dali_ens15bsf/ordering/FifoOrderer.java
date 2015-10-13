@@ -45,8 +45,10 @@ public class FifoOrderer extends Observable implements Orderer {
 	@Override
 	public Message prepareMessage ( Message msg )
 	{
-		// TODO
-		return null;
+		FifoMessage fifo = new FifoMessage(msg, orderClock);
+		orderClock.increment(msg.getId());
+		
+		return fifo;
 	}
 
 	private void deliverClearMessageSequence(Queue q, String senderId) {
