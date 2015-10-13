@@ -11,8 +11,11 @@ import java.rmi.RemoteException;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MemberImpl implements Member {
+public class MemberImpl implements Member, Observer
+{
 	private Map<String, RemoteMember> view;
 	private Orderer orderer;
 	private CommMember self;
@@ -22,9 +25,13 @@ public class MemberImpl implements Member {
 		orderer = o;
 
 		self = new CommMember( strg );
-		self.setOwner( this );
+		self.addObserver( this );
 	}
 
+	public RemoteMember getRemoteMember()
+	{
+		return self;
+	}
 
 
 	@Override
@@ -55,7 +62,16 @@ public class MemberImpl implements Member {
 
 	@Override
 	public void receiveMessage(Message m) {
-
+		System.out.println(m);
 	}
 
+	@Override
+	public void update ( Observable observable, Object o )
+	{
+		if( (CommMember)observable == self ) // useful ?
+		{
+			// pretty awful
+			receiveMessage( ((CommMessage<Message>)o).getContent() );
+		}
+	}
 }

@@ -68,4 +68,6 @@ public class CommMember extends Observable implements RemoteMember, Serializable
   {
     //owner.join( newM, groupID );
   }
+
+
 }
