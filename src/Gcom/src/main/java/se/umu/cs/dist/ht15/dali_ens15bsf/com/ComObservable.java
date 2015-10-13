@@ -23,7 +23,8 @@ public class ComObservable
 
   /**
    * Notify observer when a new member wants to joint a group
-   * @param newM joining member
+   *
+   * @param newM    joining member
    * @param groupID Group name to join
    */
   void notifyJoin ( RemoteMember newM, String groupID )

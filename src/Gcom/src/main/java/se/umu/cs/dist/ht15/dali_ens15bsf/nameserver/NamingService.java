@@ -11,6 +11,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -36,6 +37,9 @@ public class NamingService implements Serializable, NamingServiceRemote
   protected UnicastRemoteObject server;
   /// Registry of remote objects
   protected Registry directory;
+  protected Random dice;
+  //protected HashMap<String, RemoteMember> idMap;
+
   /**
    * Create a new master node
    *
@@ -43,7 +47,9 @@ public class NamingService implements Serializable, NamingServiceRemote
    */
   public NamingService () throws RemoteException, AlreadyBoundException
   {
+    dice = new Random();
     groups = new HashMap<String, RemoteMember>();
+    //idMap = new HashMap<String, RemoteMember>();
     // make the server reachable
     NamingServiceRemote mn = (NamingServiceRemote) UnicastRemoteObject.exportObject( this, 0 );
     //server.exportObject( this );
@@ -108,5 +114,21 @@ public class NamingService implements Serializable, NamingServiceRemote
   {
     groups.put( groupName, newLeader );
     System.out.println( "Server : Member " + newLeader.toString() + " is the new leader of the group " + groupName );
+  }
+
+  /**
+   * Ask the server for an ID, Should be done before Every other stuff
+   *
+   * @param member Member from that to generate the ID
+   * @return ID for the given Member in a String
+   * @throws java.rmi.RemoteException
+   */
+  @Override
+  public String getMyId ( RemoteMember member ) throws RemoteException
+  {
+    String id = member.toString();
+    id += Integer.toHexString( dice.nextInt() );
+    //idMap.add( id, member )
+    return id;
   }
 }

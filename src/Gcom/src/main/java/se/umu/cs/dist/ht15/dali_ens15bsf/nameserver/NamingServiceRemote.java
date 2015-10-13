@@ -37,9 +37,20 @@ public interface NamingServiceRemote extends Remote
 
   /**
    * Notify the naming service when a group elected a new leader
+   *
    * @param groupName Group name concerned by the changes
    * @param newLeader New leader of the group
    * @throws RemoteException
    */
-  public void updateLeader( String groupName, RemoteMember newLeader ) throws RemoteException;
+  public void updateLeader ( String groupName, RemoteMember newLeader ) throws RemoteException;
+
+  /**
+   * Ask the server for an ID, Should be done before Every other stuff
+   *
+   * @param member Member from that to generate the ID
+   * @return ID for the given Member in a String
+   * @throws RemoteException
+   */
+  public String getMyId ( RemoteMember member ) throws RemoteException;
+
 }

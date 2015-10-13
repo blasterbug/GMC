@@ -10,7 +10,7 @@ public class BasicReliableMulticast extends BasicUnreliableMulticast
 {
   private LinkedList<CommMessage> receivedBefore;
 
-  public BasicReliableMulticast()
+  public BasicReliableMulticast ()
   {
     super();
     receivedBefore = new LinkedList<CommMessage>();
@@ -27,10 +27,10 @@ public class BasicReliableMulticast extends BasicUnreliableMulticast
   public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
     // if the message was not previously received
-    if( !( receivedBefore.contains( msg ) ))
+    if ( !( receivedBefore.contains( msg ) ) )
     {
       // if the process is not the sender
-      if( this == msg.getSource() )
+      if ( this == msg.getSource() )
       {
         // multicast the message
         send( msg, view );

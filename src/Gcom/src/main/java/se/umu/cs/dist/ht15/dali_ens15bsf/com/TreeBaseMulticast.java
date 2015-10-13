@@ -54,9 +54,10 @@ public class TreeBaseMulticast extends MulticastStrategy
       child = ( (ArrayList<RemoteMember>) view ).get( idx - 1 );
       child.deliver( msg );
       lastSend.add( msg );
-    }
-    catch ( IndexOutOfBoundsException e ) {} // do nothing
-    catch ( RemoteException e  )
+    } catch ( IndexOutOfBoundsException e )
+    {
+    } // do nothing
+    catch ( RemoteException e )
     {
       unreachableMembers.add( ( (ArrayList<RemoteMember>) view ).get( idx - 1 ) );
       thrownExcept = true;
@@ -67,15 +68,16 @@ public class TreeBaseMulticast extends MulticastStrategy
       child = ( (ArrayList<RemoteMember>) view ).get( idx + 1 );
       child.deliver( msg );
       lastSend.add( msg );
-    }
-    catch ( IndexOutOfBoundsException e ) {} // do nothing
+    } catch ( IndexOutOfBoundsException e )
+    {
+    } // do nothing
     catch ( RemoteException e )
     {
       unreachableMembers.add( ( (ArrayList<RemoteMember>) view ).get( idx - 1 ) );
       thrownExcept = true;
     }
 
-    if( thrownExcept )
+    if ( thrownExcept )
       throw new UnreachableRemoteObjectException();
   }
 

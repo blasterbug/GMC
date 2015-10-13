@@ -2,7 +2,6 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.com.debug;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 
-import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -29,20 +28,22 @@ public class CommMemberDebug extends CommMember
 
   /**
    * Set the amont of time to wait before sending a message
+   *
    * @param delay delay to wait before sending message, in millis
    */
-  public void setMessageDelay( long delay )
+  public void setMessageDelay ( long delay )
   {
     messageDelay = delay;
   }
 
-  public void setRandomDelivering( boolean active )
+  public void setRandomDelivering ( boolean active )
   {
-    ((StrategyDebug)multicastStrategy).setChangeDeliveringOrder( active );
+    ( (StrategyDebug) multicastStrategy ).setChangeDeliveringOrder( active );
   }
 
   /**
    * Send a message to the group
+   *
    * @param msg   Message to multicast
    * @param group Group to send the message
    * @throws UnreachableRemoteObjectException
