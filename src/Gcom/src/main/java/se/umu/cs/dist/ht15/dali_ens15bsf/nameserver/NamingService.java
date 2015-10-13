@@ -1,5 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.nameserver;
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.io.Serializable;
@@ -37,7 +38,6 @@ public class NamingService implements Serializable, NamingServiceRemote
   protected UnicastRemoteObject server;
   /// Registry of remote objects
   protected Registry directory;
-  protected LinkedList<RemoteMember> sharedObject;
   /**
    * Create a new master node
    *
@@ -45,7 +45,6 @@ public class NamingService implements Serializable, NamingServiceRemote
    */
   public NamingService () throws RemoteException, AlreadyBoundException
   {
-    sharedObject = new LinkedList<RemoteMember>();
     groups = new HashMap<String, RemoteMember>();
     // make the server reachable
     NamingServiceRemote mn = (NamingServiceRemote) UnicastRemoteObject.exportObject( this, 0 );
@@ -65,7 +64,6 @@ public class NamingService implements Serializable, NamingServiceRemote
     {
       // just ask to the leader for joining the group
       leader.join( m, groupName );
-      return leader;
     }
     else
     {
@@ -77,7 +75,6 @@ public class NamingService implements Serializable, NamingServiceRemote
       leader = m;
     }
     directory.rebind( m.toString(), m );
-    sharedObject.add( m );
     System.out.println( "Server : Member " + m.toString() + " registered in group" + groupName );
     return leader;
   }
