@@ -16,6 +16,7 @@ import java.util.Observer;
 
 /**
  * Created by ens15bsf on 2015-10-12.
+ * class to test naming server
  */
 public class groupRegisteringTest implements Observer
 {
@@ -23,7 +24,7 @@ public class groupRegisteringTest implements Observer
 
   public static void main ( String[] args )
   {
-    String groupName = "TestGroup2";
+    String groupName = "TestGroup";
     CommMember mbr1 = new CommMember( new TreeBaseMulticast() );
     mbr1.addObserver( new groupRegisteringTest() );
     try
