@@ -92,7 +92,8 @@ public class CausalOrderer extends Observable implements Orderer {
 	@Override
 	public Message prepareMessage ( Message msg )
 	{
-		return new CausalMessage(msg, orderClock);
+		orderClock.increment(msg.getId());
+		return new CausalMessage(msg,orderClock);
 	}
 
 	private void deliver(Message m, String senderId) {
