@@ -41,6 +41,13 @@ public class FifoOrderer extends Observable implements Orderer {
 		}
 	}
 
+	@Override
+	public Message prepareMessage ( Message msg )
+	{
+		// TODO
+		return null;
+	}
+
 	private void deliverClearMessageSequence(Queue q, String senderId) {
 		boolean didChange;
 		int removed;

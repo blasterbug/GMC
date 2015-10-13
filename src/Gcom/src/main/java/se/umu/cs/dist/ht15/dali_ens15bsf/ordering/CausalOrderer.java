@@ -91,6 +91,13 @@ public class CausalOrderer extends Observable implements Orderer {
 
 	}
 
+	@Override
+	public Message prepareMessage ( Message msg )
+	{
+		// TODO
+		return null;
+	}
+
 	private void deliver(Message m, String senderId) {
 //		System.out.println("DELIVERING");
 		setChanged();
