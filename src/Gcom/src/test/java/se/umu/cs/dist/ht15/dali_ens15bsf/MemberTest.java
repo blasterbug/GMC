@@ -9,11 +9,13 @@ import java.rmi.RemoteException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
 
 public class MemberTest {
 
@@ -57,11 +59,11 @@ public class MemberTest {
 
 		Member m = new MemberImpl(causal, strg);
 
-		CommMessage<Message> msg = new CommMessage<Message>(new Message("id1", "m1"));
+		CommMessage<Message> msg = new CommMessage<Message>(causal.prepareMessage(new Message("id1", "m1")));
 
 		try{
 			strg.receive(msg);
-		}catch(RemoteException exp) {
+		}catch(RemoteException | UnreachableRemoteObjectException exp) {
 			Assert.fail();
 		}
 	}
@@ -82,6 +84,55 @@ public class MemberTest {
 		m1.join(m2.getRemoteMember(), "id1");
 
 		m1.sendMessage(msg1);
+		// TODO LISTENER
+	}
+
+	@Test
+	public void shouldDeliverMessagesInOrder() {
+		Orderer c1 = new CausalOrderer();
+		Orderer c2 = new CausalOrderer();
+		Orderer c3 = new CausalOrderer();
+		Orderer c4 = new CausalOrderer();
+
+		MulticastStrategy s1 = new BasicUnreliableMulticast();
+		MulticastStrategy s2 = new BasicUnreliableMulticast();
+		MulticastStrategy s3 = new BasicUnreliableMulticast();
+		MulticastStrategy s4 = new BasicUnreliableMulticast();
+
+		Member m1 = new MemberImpl(c1, s1);
+		Member m2 = new MemberImpl(c2, s2);
+		Member m3 = new MemberImpl(c3, s3);
+		Member m4 = new MemberImpl(c4, s4);
+
+		m1.setId("id1");
+		m2.setId("id2");
+		m3.setId("id3");
+		m4.setId("id4");
+
+		m1.join(m2.getRemoteMember(), "id2");
+		m1.join(m3.getRemoteMember(), "id3");
+		m1.join(m4.getRemoteMember(), "id4");
+
+		m2.join(m1.getRemoteMember(), "id1");
+		m2.join(m3.getRemoteMember(), "id3");
+		m2.join(m4.getRemoteMember(), "id4");
+
+		m3.join(m1.getRemoteMember(), "id1");
+		m3.join(m2.getRemoteMember(), "id2");
+		m3.join(m4.getRemoteMember(), "id4");
+
+		m4.join(m1.getRemoteMember(), "id1");
+		m4.join(m2.getRemoteMember(), "id2");
+		m4.join(m3.getRemoteMember(), "id3");
+
+		Message msg1 = new Message("id1", "test1");
+		Message msg2 = new Message("id2", "test2");
+		Message msg3 = new Message("id3", "test3");
+
+		m1.sendMessage(msg1);
+		m2.sendMessage(msg2);
+		m3.sendMessage(msg3);
+
 
 	}
 }
