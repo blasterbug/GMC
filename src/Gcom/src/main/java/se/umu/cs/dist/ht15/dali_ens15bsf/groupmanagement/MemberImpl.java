@@ -55,7 +55,7 @@ public class MemberImpl implements Member {
 
 	@Override
 	public void receiveMessage(Message m) {
-
+		System.out.println("MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");	
 	}
 
 }
