@@ -1,6 +1,5 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.nameserver;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.io.Serializable;
@@ -9,7 +8,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -51,7 +49,7 @@ public class NamingService implements Serializable, NamingServiceRemote
     //server.exportObject( this );
     directory = LocateRegistry.createRegistry( SERVER_PORT );
     directory.bind( SERVICE_NAME, this );
-    System.out.println( "Naming server is running..." );
+    System.out.println( "Naming service is running..." );
   }
 
   @Override
@@ -74,7 +72,7 @@ public class NamingService implements Serializable, NamingServiceRemote
       // m is the leader
       leader = m;
     }
-    directory.rebind( m.toString(), m );
+    //directory.rebind( m.toString(), m );
     System.out.println( "Server : Member " + m.toString() + " registered in group" + groupName );
     return leader;
   }

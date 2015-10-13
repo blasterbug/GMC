@@ -4,7 +4,6 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.Collection;
 import java.util.LinkedList;
 
 /**
