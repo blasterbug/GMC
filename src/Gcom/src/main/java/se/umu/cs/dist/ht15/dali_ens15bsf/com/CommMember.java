@@ -3,34 +3,32 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 
 import java.io.Serializable;
+import java.rmi.MarshalledObject;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Observable;
 
 /**
  * Created by ens15bsf on 2015-10-08.
  */
-public class CommMember implements RemoteMember, Serializable
+public class CommMember extends Observable implements RemoteMember, Serializable
 {
   private static final long serialVersionUID = 4672654439762386594L;
   protected ArrayList<RemoteMember> group;
-  protected Member owner;
+  //protected Member owner;
   protected MulticastStrategy commStrategy;
 
   /**
    * Create a new node
-   * TODO : doc
+   *
+   * @param strategy Strategy to use for multicasting messages
    */
   public CommMember ( MulticastStrategy strategy )
   {
     group = new ArrayList<RemoteMember>();
     commStrategy = strategy;
     commStrategy.setOwner( this );
-  }
-
-  public void setOwner(  Member owner )
-  {
-    this.owner = owner;
   }
 
   /**
@@ -54,7 +52,8 @@ public class CommMember implements RemoteMember, Serializable
   @Override
   public void deliver ( CommMessage msg ) throws RemoteException
   {
-    commStrategy.receive( msg );
+    //commStrategy.receive( msg );
+    notifyObservers( msg );
   }
 
   /**
@@ -67,12 +66,8 @@ public class CommMember implements RemoteMember, Serializable
   @Override
   public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-    owner.join( newM, groupID );
+    //owner.join( newM, groupID );
   }
 
-  @Override
-  public String getMemberID () throws RemoteException
-  {
-    return owner.toString();
-  }
+
 }

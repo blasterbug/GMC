@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 
 /**
  * Created by ens15bsf on 2015-10-08.
+ * Define an interface for the Member object which are shared throw Java RMI API
  */
 public interface RemoteMember extends Remote, Serializable
 {
@@ -21,18 +22,10 @@ public interface RemoteMember extends Remote, Serializable
   /**
    * Join a group
    *
-   * @param newM Member to add in the group
+   * @param newM    Member to add in the group
    * @param groupID Group name to join
    * @throws RemoteException
    */
   public void join ( RemoteMember newM, String groupID ) throws RemoteException;
-
-  /**
-   * Get the member ID
-   *
-   * @return ID of the member
-   * @throws RemoteException
-   */
-  public String getMemberID () throws RemoteException;
 
 }

@@ -34,4 +34,12 @@ public interface NamingServiceRemote extends Remote
    * @return leader for the given group
    */
   public RemoteMember getLeader ( String groupName ) throws RemoteException;
+
+  /**
+   * Notify the naming service when a group elected a new leader
+   * @param groupName Group name concerned by the changes
+   * @param newLeader New leader of the group
+   * @throws RemoteException
+   */
+  public void updateLeader( String groupName, RemoteMember newLeader ) throws RemoteException;
 }

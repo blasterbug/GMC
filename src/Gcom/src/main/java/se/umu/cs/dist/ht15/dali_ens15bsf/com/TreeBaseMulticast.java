@@ -11,18 +11,17 @@ import java.util.Collection;
  */
 public class TreeBaseMulticast extends MulticastStrategy
 {
+
   // remember the last send message which don't get back
-  private ArrayList<CommMessage> lastSend;
+  protected ArrayList<CommMessage> lastSend;
+
   /**
    * Create a new node
-   *
    */
   public TreeBaseMulticast ()
   {
-    //this.owner = owner;
-    view = new ArrayList<RemoteMember>();
+    super();
     lastSend = new ArrayList<CommMessage>();
-
   }
 
   /**
@@ -37,7 +36,7 @@ public class TreeBaseMulticast extends MulticastStrategy
   {
     // if the message has not a source,
     // i.e. This member is the source
-    if( null == msg.source )
+    if ( null == msg.source )
     {
       // add it to the message
       msg.source = owner;
@@ -45,7 +44,7 @@ public class TreeBaseMulticast extends MulticastStrategy
     // update the view
     view = new ArrayList<RemoteMember>( group );
     // get the place of the owner in the view
-    int idx = ( (ArrayList)view ).indexOf( owner );
+    int idx = ( (ArrayList) view ).indexOf( owner );
     // variable to store the child
     RemoteMember child;
     // send message to the "left child"

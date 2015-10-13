@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -9,16 +10,15 @@ import java.util.LinkedList;
  * Define the strategy to multicast message a message within a group,
  * the <i>source node</i> sends the message to every node in the view.
  */
-public class BasicReliableMulticast extends MulticastStrategy
+public class BasicUnreliableMulticast extends MulticastStrategy
 {
 
   /**
    * Create a new node
    */
-  public BasicReliableMulticast()
+  public BasicUnreliableMulticast ()
   {
-    this.owner = owner;
-    view = new LinkedList<RemoteMember>();
+    super();
   }
 
   /**
@@ -31,10 +31,14 @@ public class BasicReliableMulticast extends MulticastStrategy
   @Override
   public void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
   {
+    // update the view, i.e. the group
     view = group;
+    // the message is send from here
     msg.setSource( owner );
-    for( RemoteMember member : view )
+    // for each memeber of the group
+    for ( RemoteMember member : view )
     {
+      // send the message
       member.deliver( msg );
     }
   }
@@ -49,7 +53,7 @@ public class BasicReliableMulticast extends MulticastStrategy
   public void receive ( CommMessage msg ) throws RemoteException
   {
     // if I am not the sender
-    if( owner != msg.getSource() )
+    if ( owner != msg.getSource() )
     {
       // get the message
       owner.deliver( msg );
