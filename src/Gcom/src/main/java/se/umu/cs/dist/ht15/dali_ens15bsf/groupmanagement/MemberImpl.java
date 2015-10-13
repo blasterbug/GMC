@@ -12,11 +12,12 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Collection;
 
-public class MemberImpl implements Member, ComObserver
+public class MemberImpl implements Member, ComObserver, Observer
 {
 	private Map<String, RemoteMember> view;
 	private Orderer orderer;
 	private CommMember self;
+	private String id;
 
 	public MemberImpl(Orderer o, MulticastStrategy strg) {
 		view = new HashMap<String, RemoteMember>();
@@ -25,6 +26,11 @@ public class MemberImpl implements Member, ComObserver
 		self = new CommMember( strg );
 		self.addObserver( this );
 		orderer.addObserver( this );
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	@Override
@@ -55,20 +61,26 @@ public class MemberImpl implements Member, ComObserver
 		/* Send message to view */
 		try {
 			self.post(msg, view.values());
-		} catch(RemoteException exp) {
+		} catch(UnreachableRemoteObjectException exp) {
 			// TODO 
 		}
 	}
 
 	@Override
 	public void receiveMessage(Message m) {
-		System.out.println("MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");	
 		orderer.addMessage(m);
 	}
 
 	@Override
 	public Collection<RemoteMember> getView() {
 		return view.values();
+	}
+
+	@Override
+	public void update(Observable obs, Object o) {
+
+		Message m = (Message)o;
+		System.out.println("Member ["+this.id+"] recevied MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");	
 	}
 
 	/**
@@ -79,17 +91,8 @@ public class MemberImpl implements Member, ComObserver
 	@Override
 	public void notifyObservers ( CommMessage msg )
 	{
-		if( (CommMember)observable == self ) // useful ?
-		{
-			// pretty awful
-			receiveMessage( ((CommMessage<Message>)o).getContent() );
-		}
-
-		if( (Orderer)observable == orderer) 
-		{
-			Message m = (Message)o;
-			System.out.println("MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");	
-		}
+		// pretty awful
+		receiveMessage( ((CommMessage<Message>)msg).getContent() );
 	}
 
 	/**

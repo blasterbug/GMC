@@ -11,4 +11,5 @@ public interface Member {
 	public void receiveMessage(Message m);
 	public Collection<RemoteMember> getView();
 	public RemoteMember getRemoteMember();
+	public void setId(String id);
 }
