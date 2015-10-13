@@ -114,16 +114,20 @@ public class StrategyDebug extends MulticastStrategy
   @Override
   public void receive ( CommMessage msg ) throws RemoteException
   {
-    incomingQueue.add( msg );
-    // if random receiving is atived, then deliver messages if the dice want to
-    if( mixReceiving && dice.nextBoolean() )
-    {
-      core.receive( incomingQueue.pop() );
-    }
-    else
-    {
-      // else, just deliver the message
-      core.receive( incomingQueue.pop() );
+    try{
+	    incomingQueue.add( msg );
+	    // if random receiving is atived, then deliver messages if the dice want to
+	    if( mixReceiving && dice.nextBoolean() )
+	    {
+	      core.receive( incomingQueue.pop() );
+	    }
+	    else
+	    {
+	      // else, just deliver the message
+	      core.receive( incomingQueue.pop() );
+	    }
+    }catch(UnreachableRemoteObjectException exp) {
+
     }
   }
 
