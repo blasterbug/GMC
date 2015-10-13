@@ -7,6 +7,8 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
+import java.rmi.RemoteException;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -18,9 +20,12 @@ public class MemberImpl implements Member {
 	public MemberImpl(Orderer o, MulticastStrategy strg) {
 		view = new HashMap<String, RemoteMember>();
 		orderer = o;
+
 		self = new CommMember( strg );
 		self.setOwner( this );
 	}
+
+
 
 	@Override
 	public void join(RemoteMember m, String id) {
@@ -41,9 +46,11 @@ public class MemberImpl implements Member {
 		msg = new CommMessage(preparedMessage);
 
 		/* Send message to view */
-		//self.post(msg, view);
-
-
+		try {
+			self.post(msg, view.values());
+		} catch(RemoteException exp) {
+			// TODO 
+		}
 	}
 
 	@Override
