@@ -1,12 +1,9 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
-/*
 import junit.framework.Assert;
 import org.junit.Test;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
-import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NameServer;
-import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NameServerImpl;
 
 
 
@@ -14,6 +11,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NameServerImpl;
 public class NamingServerTest
 {
 
+/*
 	@Test
 	public void shouldNotReturnNullOnNoGroups() {
 		NameServer server = new NameServerImpl();
@@ -69,6 +67,6 @@ public class NamingServerTest
 		Assert.assertTrue(m3.equals(m1));
 	}
 
+*/
 }
 
-*/
