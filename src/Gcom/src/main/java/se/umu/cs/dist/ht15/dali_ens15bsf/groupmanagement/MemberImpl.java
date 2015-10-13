@@ -42,8 +42,12 @@ public class MemberImpl implements Member, ComObserver, Observer
 
 	@Override
 	public void join(RemoteMember m, String id) {
-		view.put(id, m);
-
+		if (!view.get(id).equals(m)) {
+			view.put(id, m);
+			for (RemoteMember rm : view.values()){
+				rm.join(m, id);
+			}
+		}
 	}
 
 	/**
@@ -62,7 +66,7 @@ public class MemberImpl implements Member, ComObserver, Observer
 		try {
 			self.post(msg, view.values());
 		} catch(UnreachableRemoteObjectException exp) {
-			// TODO 
+			
 		}
 	}
 
