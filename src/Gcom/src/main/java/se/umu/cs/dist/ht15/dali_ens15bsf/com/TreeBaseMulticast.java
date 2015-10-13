@@ -29,10 +29,10 @@ public class TreeBaseMulticast extends MulticastStrategy
    *
    * @param msg   Message to send
    * @param group Group to send the message
-   * @throws java.rmi.RemoteException
+   * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
+  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     // if the message has not a source,
     // i.e. This member is the source
@@ -41,6 +41,7 @@ public class TreeBaseMulticast extends MulticastStrategy
       // add it to the message
       msg.source = owner;
     }
+    boolean thrownExcept = false;
     // update the view
     view = new ArrayList<RemoteMember>( group );
     // get the place of the owner in the view
@@ -53,18 +54,29 @@ public class TreeBaseMulticast extends MulticastStrategy
       child = ( (ArrayList<RemoteMember>) view ).get( idx - 1 );
       child.deliver( msg );
       lastSend.add( msg );
-    } catch ( IndexOutOfBoundsException e )
+    }
+    catch ( IndexOutOfBoundsException e ) {} // do nothing
+    catch ( RemoteException e  )
     {
-    } // do nothing
+      unreachableMembers.add( ( (ArrayList<RemoteMember>) view ).get( idx - 1 ) );
+      thrownExcept = true;
+    }
     // send message to the left child
     try
     {
       child = ( (ArrayList<RemoteMember>) view ).get( idx + 1 );
       child.deliver( msg );
       lastSend.add( msg );
-    } catch ( IndexOutOfBoundsException e )
+    }
+    catch ( IndexOutOfBoundsException e ) {} // do nothing
+    catch ( RemoteException e )
     {
-    }  // do nothing
+      unreachableMembers.add( ( (ArrayList<RemoteMember>) view ).get( idx - 1 ) );
+      thrownExcept = true;
+    }
+
+    if( thrownExcept )
+      throw new UnreachableRemoteObjectException();
   }
 
   /**
@@ -72,9 +84,10 @@ public class TreeBaseMulticast extends MulticastStrategy
    *
    * @param msg Incoming message
    * @throws java.rmi.RemoteException
+   * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void receive ( CommMessage msg ) throws RemoteException
+  public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
     // if I am the sender
     if ( lastSend.contains( msg ) )

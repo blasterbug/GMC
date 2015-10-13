@@ -35,9 +35,8 @@ public class CommMember implements ComObservable, RemoteMember, Serializable
    *
    * @param msg   Message to multicast
    * @param group Group to send the message
-   * @throws java.rmi.RemoteException
    */
-  public void post ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
+  public void post ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     multicastStrategy.send( msg, group );
   }

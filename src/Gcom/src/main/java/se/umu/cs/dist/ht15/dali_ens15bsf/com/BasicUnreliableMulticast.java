@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -24,21 +25,32 @@ public class BasicUnreliableMulticast extends MulticastStrategy
    *
    * @param msg   Message to send
    * @param group Group to send the message
-   * @throws java.rmi.RemoteException
+   * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
+  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     // update the view, i.e. the group
-    view = group;
+    view = new ArrayList<RemoteMember>( group );
     // the message is send from here
     msg.setSource( owner );
-    // for each memeber of the group
+    boolean expt_activated = false;
+    // for each member of the group
     for ( RemoteMember member : view )
     {
-      // send the message
-      member.deliver( msg );
+      try
+      {
+        // send the message
+        member.deliver( msg );
+      }
+      catch ( RemoteException e )
+      {
+        unreachableMembers.add( member );
+        expt_activated = true;
+      }
     }
+    if( expt_activated)
+      throw new UnreachableRemoteObjectException();
   }
 
   /**
@@ -48,7 +60,7 @@ public class BasicUnreliableMulticast extends MulticastStrategy
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void receive ( CommMessage msg ) throws RemoteException
+  public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
     // if I am not the sender
     if ( owner != msg.getSource() )

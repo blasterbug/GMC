@@ -3,6 +3,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.com.debug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -86,10 +87,10 @@ public class StrategyDebug extends MulticastStrategy
    *
    * @param msg   Message to send
    * @param group Group to send the message
-   * @throws java.rmi.RemoteException
+   * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
+  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     if( mixDelivering )
     {

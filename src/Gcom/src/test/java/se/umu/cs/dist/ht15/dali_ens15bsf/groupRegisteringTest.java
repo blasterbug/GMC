@@ -1,9 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.TreeBaseMulticast;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingService;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 
@@ -19,7 +16,7 @@ import java.util.Observer;
  * Created by ens15bsf on 2015-10-12.
  * class to test naming server
  */
-public class groupRegisteringTest implements Observer
+public class groupRegisteringTest implements ComObserver
 {
 
 
@@ -52,9 +49,27 @@ public class groupRegisteringTest implements Observer
     }
   }
 
+
+  /**
+   * Notify Observers when a new incoming message arrive
+   *
+   * @param msg message to give to the Observer
+   */
   @Override
-  public void update ( Observable observable, Object o )
+  public void notifyObservers ( CommMessage msg )
   {
-    System.out.println( observable.toString() + " : " + o.toString() );
+    System.out.println( msg.getSource().toString() + " : " + msg.getContent().toString() );
+  }
+
+  /**
+   * Notify observer when new member want to join a group
+   *
+   * @param member  New member joining to the group
+   * @param groupID Group name to join
+   */
+  @Override
+  public void notifyNewMember ( RemoteMember member, String groupID )
+  {
+    System.out.println( member.toString() + " asked to join group " + groupID);
   }
 }
