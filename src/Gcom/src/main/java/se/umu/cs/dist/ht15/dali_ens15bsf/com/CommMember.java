@@ -53,6 +53,7 @@ public class CommMember extends Observable implements RemoteMember, Serializable
   public void deliver ( CommMessage msg ) throws RemoteException
   {
     //commStrategy.receive( msg );
+    setChanged();
     notifyObservers( msg );
   }
 
