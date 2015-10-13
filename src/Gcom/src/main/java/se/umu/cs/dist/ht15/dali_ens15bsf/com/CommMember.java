@@ -22,11 +22,12 @@ public class CommMember implements RemoteMember, Serializable
    *
    * @param owner Communication manager owning the node
    */
-  public CommMember ( Member owner, String groupID, MulticastStrategy multicastStrategy )
+  public CommMember ( Member owner, String groupID, MulticastStrategy strategy )
   {
     this.owner = owner;
     group = new ArrayList<RemoteMember>();
-    commStrategy = multicastStrategy;
+    commStrategy = strategy;
+    commStrategy.setOwner( this );
     /*
     try
     {

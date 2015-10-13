@@ -29,4 +29,13 @@ public abstract class MulticastStrategy
    * @throws RemoteException
    */
   public abstract void receive ( CommMessage msg ) throws RemoteException;
+
+  /**
+   * Choose a remote member for the strategy
+   * @param owner Remote member who uses the strategy
+   */
+  public void setOwner( RemoteMember owner )
+  {
+    this.owner = owner;
+  }
 }

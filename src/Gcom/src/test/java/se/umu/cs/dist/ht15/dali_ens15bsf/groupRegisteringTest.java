@@ -15,8 +15,8 @@ public class groupRegisteringTest
   {
     try
     {
-      Registry dictionary = LocateRegistry.getRegistry( NamingServer.SERVER_NAME, NamingServer.SERVER_PORT );
-      NamingServiceRemote server = (NamingServiceRemote) dictionary.lookup( NamingServer.SERVER_NAME );
+      Registry dictionary = LocateRegistry.getRegistry( NamingService.SERVER_NAME, NamingService.SERVER_PORT );
+      NamingServiceRemote server = (NamingServiceRemote) dictionary.lookup( NamingService.SERVER_NAME );
       System.out.println( server.getGroups() );
     }
     catch ( RemoteException e )

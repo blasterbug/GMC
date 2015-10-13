@@ -16,11 +16,10 @@ public class TreeBaseMulticast extends MulticastStrategy
   /**
    * Create a new node
    *
-   * @param owner Communication manager owning the node
    */
-  public TreeBaseMulticast ( RemoteMember owner )
+  public TreeBaseMulticast ()
   {
-    this.owner = owner;
+    //this.owner = owner;
     view = new ArrayList<RemoteMember>();
     lastSend = new ArrayList<CommMessage>();
 
@@ -36,6 +35,13 @@ public class TreeBaseMulticast extends MulticastStrategy
   @Override
   public void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
   {
+    // if the message has not a source,
+    // i.e. This member is the source
+    if( null == msg.source )
+    {
+      // add it to the message
+      msg.source = owner;
+    }
     // update the view
     view = new ArrayList<RemoteMember>( group );
     // get the place of the owner in the view

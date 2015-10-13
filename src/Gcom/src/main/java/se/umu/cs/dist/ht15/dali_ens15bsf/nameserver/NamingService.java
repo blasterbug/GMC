@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @serial
  */
-public class NamingServer implements Serializable, NamingServiceRemote
+public class NamingService implements Serializable, NamingServiceRemote
 {
   //// Name of the GCOM Node server
   public static final String SERVER_NAME = "GCOM_NAMING_SERVICE";
@@ -40,7 +40,7 @@ public class NamingServer implements Serializable, NamingServiceRemote
    *
    * @throws RemoteException
    */
-  public NamingServer () throws RemoteException, AlreadyBoundException
+  public NamingService () throws RemoteException, AlreadyBoundException
   {
     groups = new HashMap<String, RemoteMember>();
     // make the server reachable

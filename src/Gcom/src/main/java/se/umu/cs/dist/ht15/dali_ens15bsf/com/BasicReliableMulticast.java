@@ -6,16 +6,16 @@ import java.util.LinkedList;
 
 /**
  * Created by ens15bsf on 2015-10-08.
+ * Define the strategy to multicast message a message within a group,
+ * the <i>source node</i> sends the message to every node in the view.
  */
 public class BasicReliableMulticast extends MulticastStrategy
 {
 
   /**
    * Create a new node
-   *
-   * @param owner Communication manager owning the node
    */
-  public BasicReliableMulticast ( RemoteMember owner )
+  public BasicReliableMulticast()
   {
     this.owner = owner;
     view = new LinkedList<RemoteMember>();
