@@ -68,6 +68,7 @@ public class StrategyDebug extends MulticastStrategy
   private LinkedList<Pair<CommMessage, Collection>> sendQueue;
   private LinkedList<CommMessage> incomingQueue;
   private boolean mixDelivering;
+  private boolean mixReceiving;
   private Random dice;
 
   public StrategyDebug( MulticastStrategy strg )
@@ -77,7 +78,7 @@ public class StrategyDebug extends MulticastStrategy
     sendQueue = new LinkedList<Pair<CommMessage, Collection>>();
     incomingQueue = new LinkedList<CommMessage>();
     mixDelivering = false;
-
+    mixReceiving = false;
   }
 
   /**
@@ -95,7 +96,8 @@ public class StrategyDebug extends MulticastStrategy
       sendQueue.add( new Pair<CommMessage, Collection>( msg, group ) );
       Collections.shuffle( sendQueue );
     }
-    if( dice.nextBoolean() )
+    // randomly deliver message
+    if( mixDelivering && dice.nextBoolean() )
     {
       Pair<CommMessage, Collection> toSend = sendQueue.pop();
       core.send( toSend.getLeft(), toSend.getRight() );
@@ -112,7 +114,16 @@ public class StrategyDebug extends MulticastStrategy
   public void receive ( CommMessage msg ) throws RemoteException
   {
     incomingQueue.add( msg );
-    core.receive( incomingQueue.pop() );
+    // if random receiving is atived, then deliver messages if the dice want to
+    if( mixReceiving && dice.nextBoolean() )
+    {
+      core.receive( incomingQueue.pop() );
+    }
+    else
+    {
+      // else, just deliver the message
+      core.receive( incomingQueue.pop() );
+    }
   }
 
 
@@ -123,5 +134,14 @@ public class StrategyDebug extends MulticastStrategy
   public void setChangeDeliveringOrder( boolean active )
   {
     mixDelivering = active;
+  }
+
+  /**
+   * Set to randomize message receiving
+   * @param active If true, randomly mix incoming messages
+   */
+  public void setMixReceiving( boolean active )
+  {
+    mixReceiving = active;
   }
 }
