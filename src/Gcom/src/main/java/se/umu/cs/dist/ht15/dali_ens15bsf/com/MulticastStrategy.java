@@ -14,7 +14,8 @@ public abstract class MulticastStrategy implements Serializable
 
   private static final long serialVersionUID = 5225746892740659055L;
   protected RemoteMember owner;
-  protected Collection<RemoteMember> view;
+  protected ArrayList<RemoteMember> view;
+  protected ArrayList<RemoteMember> unreachableMembers;
 
   public MulticastStrategy()
   {
@@ -26,17 +27,18 @@ public abstract class MulticastStrategy implements Serializable
    *
    * @param msg   Message to send
    * @param group Group to send the message
-   * @throws RemoteException
+   * @throws UnreachableRemoteObjectException
    */
-  public abstract void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException;
+  public abstract void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException;
 
   /**
    * receive a message regarding the used strategy
    *
    * @param msg Incoming message
-   * @throws RemoteException
+   * @throws java.rmi.RemoteException
+   * @throws se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException
    */
-  public abstract void receive ( CommMessage msg ) throws RemoteException;
+  public abstract void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException;
 
   /**
    * Choose a remote member for the strategy
@@ -46,5 +48,17 @@ public abstract class MulticastStrategy implements Serializable
   public void setOwner ( RemoteMember owner )
   {
     this.owner = owner;
+  }
+
+  /**
+   * get the list of the unreachable remote members,
+   * the list is empty after each call
+   * @return list of all remote members which thrown an exception
+   */
+  public Collection<RemoteMember> getUnreachableMembers()
+  {
+    ArrayList<RemoteMember> tmp = new ArrayList<RemoteMember>( unreachableMembers );
+    unreachableMembers.clear();
+    return tmp;
   }
 }

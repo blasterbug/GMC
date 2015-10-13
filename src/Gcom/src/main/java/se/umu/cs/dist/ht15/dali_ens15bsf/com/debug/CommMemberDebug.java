@@ -1,9 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com.debug;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -41,17 +38,17 @@ public class CommMemberDebug extends CommMember
 
   public void setRandomDelivering( boolean active )
   {
-    ((StrategyDebug)commStrategy).setChangeDeliveringOrder( active );
+    ((StrategyDebug)multicastStrategy).setChangeDeliveringOrder( active );
   }
 
   /**
    * Send a message to the group
    * @param msg   Message to multicast
    * @param group Group to send the message
-   * @throws RemoteException
+   * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void post ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
+  public void post ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     try
     {
@@ -60,6 +57,6 @@ public class CommMemberDebug extends CommMember
     {
       e.printStackTrace();
     }
-    commStrategy.send( msg, group );
+    multicastStrategy.send( msg, group );
   }
 }

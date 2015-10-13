@@ -21,9 +21,10 @@ public class BasicReliableMulticast extends BasicUnreliableMulticast
    *
    * @param msg Incoming message
    * @throws java.rmi.RemoteException
+   * @throws se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException
    */
   @Override
-  public void receive ( CommMessage msg ) throws RemoteException
+  public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
     // if the message was not previously received
     if( !( receivedBefore.contains( msg ) ))
@@ -33,7 +34,7 @@ public class BasicReliableMulticast extends BasicUnreliableMulticast
       {
         // multicast the message
         send( msg, view );
-        // TODO : get amd use an updated view
+        // TODO : get and use an updated view
       }
 
     }
