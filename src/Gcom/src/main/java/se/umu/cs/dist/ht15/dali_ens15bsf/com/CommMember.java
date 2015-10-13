@@ -17,8 +17,6 @@ public class CommMember implements ComObservable, RemoteMember, Serializable
   //protected Member owner;
   protected MulticastStrategy multicastStrategy;
   private Vector<ComObserver> observers;
-
-
   /**
    * Create a new node
    *
@@ -66,8 +64,23 @@ public class CommMember implements ComObservable, RemoteMember, Serializable
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void join( RemoteMember newM, String groupID ) throws RemoteException
+  public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-    notifyJoin( newM, groupID );
+    //owner.join( newM, groupID );
+    for( ComObserver ob : observers )
+      ob.notifyNewMember( newM, groupID );
+
+  }
+
+
+  /**
+   * Register a new observer to the observable object
+   *
+   * @param ob observer to register
+   */
+  @Override
+  public void addObserver ( ComObserver ob )
+  {
+    observers.add( ob );
   }
 }
