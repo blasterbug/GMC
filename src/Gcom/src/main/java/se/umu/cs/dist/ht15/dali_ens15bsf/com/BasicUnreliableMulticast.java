@@ -1,9 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 
 /**
  * Created by ens15bsf on 2015-10-08.

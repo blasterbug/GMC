@@ -1,24 +1,22 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
-
 import java.io.Serializable;
-import java.rmi.MarshalledObject;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Observable;
+import java.util.Vector;
 
 /**
  * Created by ens15bsf on 2015-10-08.
+ * Define the remote object used to manipulate members in Gcom
  */
-public class CommMember extends Observable implements RemoteMember, Serializable
+public class CommMember implements ComObservable, RemoteMember, Serializable
 {
   private static final long serialVersionUID = 4672654439762386594L;
   protected ArrayList<RemoteMember> group;
   //protected Member owner;
-  protected MulticastStrategy commStrategy;
-
+  protected MulticastStrategy multicastStrategy;
+  private Vector<ComObserver> observers;
   /**
    * Create a new node
    *
@@ -27,8 +25,9 @@ public class CommMember extends Observable implements RemoteMember, Serializable
   public CommMember ( MulticastStrategy strategy )
   {
     group = new ArrayList<RemoteMember>();
-    commStrategy = strategy;
-    commStrategy.setOwner( this );
+    multicastStrategy = strategy;
+    multicastStrategy.setOwner( this );
+    observers = new Vector<ComObserver>();
   }
 
   /**
@@ -40,7 +39,7 @@ public class CommMember extends Observable implements RemoteMember, Serializable
    */
   public void post ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
   {
-    commStrategy.send( msg, group );
+    multicastStrategy.send( msg, group );
   }
 
   /**
@@ -52,9 +51,9 @@ public class CommMember extends Observable implements RemoteMember, Serializable
   @Override
   public void deliver ( CommMessage msg ) throws RemoteException
   {
-    //commStrategy.receive( msg );
-    setChanged();
-    notifyObservers( msg );
+    //multicastStrategy.receive( msg );
+    for( ComObserver ob : observers )
+      ob.notifyObservers( msg );
   }
 
   /**
@@ -68,8 +67,20 @@ public class CommMember extends Observable implements RemoteMember, Serializable
   public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
     //owner.join( newM, groupID );
+    for( ComObserver ob : observers )
+      ob.notifyNewMember( newM, groupID );
 
   }
 
 
+  /**
+   * Register a new observer to the observable object
+   *
+   * @param ob observer to register
+   */
+  @Override
+  public void addObserver ( ComObserver ob )
+  {
+    observers.add( ob );
+  }
 }

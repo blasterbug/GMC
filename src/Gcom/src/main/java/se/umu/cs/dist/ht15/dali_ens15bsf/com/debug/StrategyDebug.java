@@ -5,9 +5,9 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Collection;
 import java.util.Random;
 
 /**
