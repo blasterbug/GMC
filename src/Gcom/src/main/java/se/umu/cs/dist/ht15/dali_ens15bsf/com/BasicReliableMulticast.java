@@ -1,7 +1,5 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
-
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -17,10 +15,10 @@ public class BasicReliableMulticast extends MulticastStrategy
    *
    * @param owner Communication manager owning the node
    */
-  public BasicReliableMulticast ( MemberRemote owner )
+  public BasicReliableMulticast ( RemoteMember owner )
   {
     this.owner = owner;
-    view = new LinkedList<MemberRemote>();
+    view = new LinkedList<RemoteMember>();
   }
 
   /**
@@ -31,11 +29,11 @@ public class BasicReliableMulticast extends MulticastStrategy
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void send ( CommMessage msg, Collection<MemberRemote> group ) throws RemoteException
+  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
   {
     view = group;
     msg.setSource( owner );
-    for( MemberRemote member : view )
+    for( RemoteMember member : view )
     {
       member.deliver( msg );
     }

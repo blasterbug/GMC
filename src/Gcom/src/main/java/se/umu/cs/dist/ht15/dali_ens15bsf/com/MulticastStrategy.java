@@ -10,8 +10,8 @@ import java.util.Collection;
 public abstract class MulticastStrategy
 {
 
-  protected MemberRemote owner;
-  protected Collection<MemberRemote> view;
+  protected RemoteMember owner;
+  protected Collection<RemoteMember> view;
 
   /**
    * Strategy to multicast a message
@@ -20,7 +20,7 @@ public abstract class MulticastStrategy
    * @param group Group to send the message
    * @throws RemoteException
    */
-  public abstract void send ( CommMessage msg, Collection<MemberRemote> group ) throws RemoteException;
+  public abstract void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException;
 
   /**
    * receive a message regarding the used strategy

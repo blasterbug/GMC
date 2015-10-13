@@ -1,8 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.MemberRemote;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
@@ -11,18 +10,18 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class MemberImpl implements Member {
-	private Map<String, MemberRemote> view;
+	private Map<String, RemoteMember> view;
 	private Orderer orderer;
-	private MemberRemote self;
+	private RemoteMember self;
 
 	public MemberImpl(Orderer o) {
-		view = new HashMap<String, MemberRemote>();
+		view = new HashMap<String, RemoteMember>();
 		orderer = o;
 		self = new CommMember(this, ""/*TODO*/, null);
 	}
 
 	@Override
-	public void join(MemberRemote m, String id) {
+	public void join(RemoteMember m, String id) {
 		view.put(id, m);
 
 	}

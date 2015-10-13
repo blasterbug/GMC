@@ -10,10 +10,10 @@ import java.util.Collection;
 /**
  * Created by ens15bsf on 2015-10-08.
  */
-public class CommMember implements MemberRemote, Serializable
+public class CommMember implements RemoteMember, Serializable
 {
   private static final long serialVersionUID = 4672654439762386594L;
-  protected ArrayList<MemberRemote> group;
+  protected ArrayList<RemoteMember> group;
   protected Member owner;
   protected MulticastStrategy commStrategy;
 
@@ -25,7 +25,7 @@ public class CommMember implements MemberRemote, Serializable
   public CommMember ( Member owner, String groupID, MulticastStrategy multicastStrategy )
   {
     this.owner = owner;
-    group = new ArrayList<MemberRemote>();
+    group = new ArrayList<RemoteMember>();
     commStrategy = multicastStrategy;
     /*
     try
@@ -46,7 +46,7 @@ public class CommMember implements MemberRemote, Serializable
    * @param group Group to send the message
    * @throws java.rmi.RemoteException
    */
-  public void post ( CommMessage msg, Collection<MemberRemote> group ) throws RemoteException
+  public void post ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
   {
     commStrategy.send( msg, group );
   }
@@ -63,10 +63,17 @@ public class CommMember implements MemberRemote, Serializable
     commStrategy.receive( msg );
   }
 
+  /**
+   * Join a group
+   *
+   * @param newM    Member to qdd in the group
+   * @param groupID Group name to join
+   * @throws java.rmi.RemoteException
+   */
   @Override
-  public void join( MemberRemote newM, String groupID ) throws RemoteException
+  public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-    //owner.join( newM, groupID );
+
   }
 
   @Override

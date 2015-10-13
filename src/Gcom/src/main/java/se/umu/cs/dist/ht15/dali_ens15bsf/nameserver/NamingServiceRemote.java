@@ -1,6 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.nameserver;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.MemberRemote;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -18,7 +18,7 @@ public interface NamingServiceRemote extends Remote
    * @param m         Member which wishes to join the group
    * @return Leader of the group
    */
-  public MemberRemote joinGroup ( String groupName, MemberRemote m ) throws RemoteException;
+  public RemoteMember joinGroup ( String groupName, RemoteMember m ) throws RemoteException;
 
   /**
    * Get a names list of the registered groups
@@ -33,5 +33,5 @@ public interface NamingServiceRemote extends Remote
    * @param groupName Name of group
    * @return leader for the given group
    */
-  public MemberRemote getLeader ( String groupName ) throws RemoteException;
+  public RemoteMember getLeader ( String groupName ) throws RemoteException;
 }

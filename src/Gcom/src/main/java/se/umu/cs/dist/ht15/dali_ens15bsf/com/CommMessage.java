@@ -10,7 +10,7 @@ public class CommMessage<T> implements Serializable
 {
   private static final long serialVersionUID = 5554064569627466554L;
   protected final T content;
-  protected MemberRemote source;
+  protected RemoteMember source;
 
   /**
    * Create a new CommMessage
@@ -47,7 +47,7 @@ public class CommMessage<T> implements Serializable
    *
    * @return Remote object of the sender
    */
-  public MemberRemote getSource ()
+  public RemoteMember getSource ()
   {
     return source;
   }
@@ -57,7 +57,7 @@ public class CommMessage<T> implements Serializable
    *
    * @param sender Remote member who sends the message
    */
-  public void setSource ( MemberRemote sender )
+  public void setSource ( RemoteMember sender )
   {
     source = sender;
   }

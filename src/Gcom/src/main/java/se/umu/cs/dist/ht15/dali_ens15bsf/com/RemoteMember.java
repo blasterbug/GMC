@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 /**
  * Created by ens15bsf on 2015-10-08.
  */
-public interface MemberRemote extends Remote, Serializable
+public interface RemoteMember extends Remote, Serializable
 {
 
   /**
@@ -25,7 +25,7 @@ public interface MemberRemote extends Remote, Serializable
    * @param groupID Group name to join
    * @throws RemoteException
    */
-  public void join ( MemberRemote newM, String groupID ) throws RemoteException;
+  public void join ( RemoteMember newM, String groupID ) throws RemoteException;
 
   /**
    * Get the member ID

@@ -18,10 +18,10 @@ public class TreeBaseMulticast extends MulticastStrategy
    *
    * @param owner Communication manager owning the node
    */
-  public TreeBaseMulticast ( MemberRemote owner )
+  public TreeBaseMulticast ( RemoteMember owner )
   {
     this.owner = owner;
-    view = new ArrayList<MemberRemote>();
+    view = new ArrayList<RemoteMember>();
     lastSend = new ArrayList<CommMessage>();
 
   }
@@ -34,18 +34,18 @@ public class TreeBaseMulticast extends MulticastStrategy
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void send ( CommMessage msg, Collection<MemberRemote> group ) throws RemoteException
+  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws RemoteException
   {
     // update the view
-    view = new ArrayList<MemberRemote>( group );
+    view = new ArrayList<RemoteMember>( group );
     // get the place of the owner in the view
     int idx = ( (ArrayList)view ).indexOf( owner );
     // variable to store the child
-    MemberRemote child;
+    RemoteMember child;
     // send message to the "left child"
     try
     {
-      child = ( (ArrayList<MemberRemote>) view ).get( idx - 1 );
+      child = ( (ArrayList<RemoteMember>) view ).get( idx - 1 );
       child.deliver( msg );
       lastSend.add( msg );
     } catch ( IndexOutOfBoundsException e )
@@ -54,7 +54,7 @@ public class TreeBaseMulticast extends MulticastStrategy
     // send message to the left child
     try
     {
-      child = ( (ArrayList<MemberRemote>) view ).get( idx + 1 );
+      child = ( (ArrayList<RemoteMember>) view ).get( idx + 1 );
       child.deliver( msg );
       lastSend.add( msg );
     } catch ( IndexOutOfBoundsException e )

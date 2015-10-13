@@ -1,6 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.nameserver;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.MemberRemote;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
@@ -29,7 +29,7 @@ public class NamingServer implements Serializable, NamingServiceRemote
   public static final int SERVER_PORT = 1200;
   private static final long serialVersionUID = -2088012373960946539L;
   /// List of the nodes
-  protected Map<String, MemberRemote> groups;
+  protected Map<String, RemoteMember> groups;
   /// Server to create
   protected UnicastRemoteObject server;
   /// Registry of remote objects
@@ -42,7 +42,7 @@ public class NamingServer implements Serializable, NamingServiceRemote
    */
   public NamingServer () throws RemoteException, AlreadyBoundException
   {
-    groups = new HashMap<String, MemberRemote>();
+    groups = new HashMap<String, RemoteMember>();
     // make the server reachable
     NamingServiceRemote mn = (NamingServiceRemote) UnicastRemoteObject.exportObject( this, 0 );
     //server.exportObject( this );
@@ -52,10 +52,10 @@ public class NamingServer implements Serializable, NamingServiceRemote
   }
 
   @Override
-  public MemberRemote joinGroup ( String groupName, MemberRemote m ) throws RemoteException
+  public RemoteMember joinGroup ( String groupName, RemoteMember m ) throws RemoteException
   {
 
-    MemberRemote leader = groups.get( groupName );
+    RemoteMember leader = groups.get( groupName );
     if ( null != leader )
     {
       leader.join( m, groupName );
@@ -78,7 +78,7 @@ public class NamingServer implements Serializable, NamingServiceRemote
    * @return leader for the given group, null if it doesn't exist
    */
   @Override
-  public MemberRemote getLeader ( String groupName ) throws RemoteException
+  public RemoteMember getLeader ( String groupName ) throws RemoteException
   {
     return groups.get( groupName );
   }
