@@ -97,7 +97,6 @@ public class CausalOrderer extends Orderer {
 	}
 
 	private void deliver(Message m, String senderId) {
-//		System.out.println("DELIVERING");
 		setChanged();
 		notifyObservers(m);
 	}
