@@ -8,6 +8,8 @@ import java.util.Collection;
 /**
  * Created by ens15bsf on 2015-10-12.
  * Define a strategy for several type of multicast process
+ *
+ * @serial
  */
 public abstract class MulticastStrategy implements Serializable
 {
@@ -17,7 +19,7 @@ public abstract class MulticastStrategy implements Serializable
   protected ArrayList<RemoteMember> view;
   protected ArrayList<RemoteMember> unreachableMembers;
 
-  public MulticastStrategy()
+  public MulticastStrategy ()
   {
     view = new ArrayList<RemoteMember>();
   }
@@ -53,9 +55,10 @@ public abstract class MulticastStrategy implements Serializable
   /**
    * get the list of the unreachable remote members,
    * the list is empty after each call
+   *
    * @return list of all remote members which thrown an exception
    */
-  public Collection<RemoteMember> getUnreachableMembers()
+  public Collection<RemoteMember> getUnreachableMembers ()
   {
     ArrayList<RemoteMember> tmp = new ArrayList<RemoteMember>( unreachableMembers );
     unreachableMembers.clear();

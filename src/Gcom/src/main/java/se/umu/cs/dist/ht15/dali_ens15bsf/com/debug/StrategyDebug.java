@@ -72,7 +72,7 @@ public class StrategyDebug extends MulticastStrategy
   private boolean mixReceiving;
   private Random dice;
 
-  public StrategyDebug( MulticastStrategy strg )
+  public StrategyDebug ( MulticastStrategy strg )
   {
     core = strg;
     dice = new Random();
@@ -92,13 +92,13 @@ public class StrategyDebug extends MulticastStrategy
   @Override
   public void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
-    if( mixDelivering )
+    if ( mixDelivering )
     {
       sendQueue.add( new Pair<CommMessage, Collection>( msg, group ) );
       Collections.shuffle( sendQueue );
     }
     // randomly deliver message
-    if( mixDelivering && dice.nextBoolean() )
+    if ( mixDelivering && dice.nextBoolean() )
     {
       Pair<CommMessage, Collection> toSend = sendQueue.pop();
       core.send( toSend.getLeft(), toSend.getRight() );
@@ -112,11 +112,11 @@ public class StrategyDebug extends MulticastStrategy
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void receive ( CommMessage msg ) throws RemoteException
+  public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
     incomingQueue.add( msg );
     // if random receiving is atived, then deliver messages if the dice want to
-    if( mixReceiving && dice.nextBoolean() )
+    if ( mixReceiving && dice.nextBoolean() )
     {
       core.receive( incomingQueue.pop() );
     }
@@ -130,18 +130,20 @@ public class StrategyDebug extends MulticastStrategy
 
   /**
    * Set the message delivering order
+   *
    * @param active If true, randomly mix incoming messages
    */
-  public void setChangeDeliveringOrder( boolean active )
+  public void setChangeDeliveringOrder ( boolean active )
   {
     mixDelivering = active;
   }
 
   /**
    * Set to randomize message receiving
+   *
    * @param active If true, randomly mix incoming messages
    */
-  public void setMixReceiving( boolean active )
+  public void setMixReceiving ( boolean active )
   {
     mixReceiving = active;
   }

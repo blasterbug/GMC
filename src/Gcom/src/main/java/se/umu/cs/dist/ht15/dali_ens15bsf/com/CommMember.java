@@ -53,7 +53,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public void deliver ( CommMessage msg ) throws RemoteException
   {
     //multicastStrategy.receive( msg );
-    for( ComObserver ob : observers )
+    for ( ComObserver ob : observers )
       ob.notifyObservers( msg );
   }
 
@@ -65,7 +65,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void join( RemoteMember newM, String groupID ) throws RemoteException
+  public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
     notifyJoin( newM, groupID );
   }
