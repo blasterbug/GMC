@@ -11,19 +11,21 @@ import java.util.LinkedList;
 
 /**
  * Created by ens15bsf on 2015-10-13.
+ * Define a way to debug and simulate network failure
  */
-public class CommDebug extends CommMember
+public class CommMemberDebug extends CommMember
 {
   private LinkedList<CommMessage> delayedMessages;
   private long messageDelay;
+
   /**
    * Create a new node
    *
    * @param strategy Strategy to use for multicasting messages
    */
-  public CommDebug ( MulticastStrategy strategy )
+  public CommMemberDebug ( MulticastStrategy strategy )
   {
-    super( strategy );
+    super( new StrategyDebug( strategy ) );
     delayedMessages = new LinkedList<CommMessage>();
     messageDelay = 0;
   }
@@ -37,6 +39,10 @@ public class CommDebug extends CommMember
     messageDelay = delay;
   }
 
+  public void setRandomDelivering( boolean active )
+  {
+    ((StrategyDebug)commStrategy).setChangeDeliveringOrder( active );
+  }
 
   /**
    * Send a message to the group

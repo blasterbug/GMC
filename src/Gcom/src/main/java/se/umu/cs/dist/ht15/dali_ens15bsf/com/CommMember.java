@@ -68,6 +68,7 @@ public class CommMember extends Observable implements RemoteMember, Serializable
   public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
     //owner.join( newM, groupID );
+
   }
 
 
