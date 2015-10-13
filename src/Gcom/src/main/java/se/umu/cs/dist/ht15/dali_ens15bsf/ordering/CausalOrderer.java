@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.ordering;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
+import se.umu.cs.dist.ht15.dali_ens15bsf.CausalMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
 
 import java.util.Observable;
@@ -20,7 +21,7 @@ public class CausalOrderer extends Observable implements Orderer {
 
 	@Override
 	public void addMessage(Message msg) {
-		VectorClock senderClock = msg.getClock();
+		VectorClock senderClock = ((CausalMessage)msg).getClock();
 		String senderId = msg.getId();
 
 		Integer senderSeqNr = senderClock.get(senderId);
@@ -63,7 +64,7 @@ public class CausalOrderer extends Observable implements Orderer {
 				removed = 0;
 				for (Queue queue : holdbackQueues.values()) {
 					for (int i = 0; i < queue.size()-removed; i++) {
-						Message m = (Message) queue.poll();
+						CausalMessage m = (CausalMessage) queue.poll();
 						String id =  m.getId();
 						
 						Integer sendSeq = m.getClock().get(id);
@@ -85,17 +86,13 @@ public class CausalOrderer extends Observable implements Orderer {
 					}
 				}
 			}while(didChange);
-
-
 		}
-
 	}
 
 	@Override
 	public Message prepareMessage ( Message msg )
 	{
-		// TODO
-		return null;
+		return new CausalMessage(msg, orderClock);
 	}
 
 	private void deliver(Message m, String senderId) {

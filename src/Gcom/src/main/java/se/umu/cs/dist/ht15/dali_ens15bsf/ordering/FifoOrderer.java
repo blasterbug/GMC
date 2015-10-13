@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.ordering;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
+import se.umu.cs.dist.ht15.dali_ens15bsf.FifoMessage;
 import java.util.Queue;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class FifoOrderer extends Observable implements Orderer {
 	@Override
 	public void addMessage(Message msg) {
 		String senderId = msg.getId();
-		VectorClock senderClock = msg.getClock();
+		VectorClock senderClock = ((FifoMessage)msg).getClock();
 
 		if(!holdbackQueues.containsKey(senderId)) 
 			holdbackQueues.put(senderId, new LinkedList<Message>());
@@ -55,7 +56,7 @@ public class FifoOrderer extends Observable implements Orderer {
 			didChange = false;
 			removed = 0;
 			for (int i = 0; i < q.size()-removed; i++) {
-				Message m = (Message) q.poll();
+				FifoMessage m = (FifoMessage) q.poll();
 				if(m.getClock().get(senderId)
 						<= orderClock.get(senderId)) {
 					deliver(m, senderId);
