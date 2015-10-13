@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
 import java.util.Observable;
 
-public class FifoOrderer extends Observable implements Orderer {
+public class FifoOrderer extends Orderer {
 	private Map<String, Queue> holdbackQueues; 
 	private VectorClock orderClock;
 

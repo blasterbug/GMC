@@ -1,8 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.Collection;
 import java.util.LinkedList;
 
 /**

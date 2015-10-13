@@ -1,10 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
 import java.rmi.RemoteException;
@@ -15,7 +12,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Collection;
 
-public class MemberImpl implements Member, Observer
+public class MemberImpl implements Member, ComObserver
 {
 	private Map<String, RemoteMember> view;
 	private Orderer orderer;
@@ -70,7 +67,17 @@ public class MemberImpl implements Member, Observer
 	}
 
 	@Override
-	public void update ( Observable observable, Object o )
+	public Collection<RemoteMember> getView() {
+		return view.values();
+	}
+
+	/**
+	 * Notify Observers when a new incoming message arrive
+	 *
+	 * @param msg message to give to the Observer
+	 */
+	@Override
+	public void notifyObservers ( CommMessage msg )
 	{
 		if( (CommMember)observable == self ) // useful ?
 		{
@@ -85,8 +92,15 @@ public class MemberImpl implements Member, Observer
 		}
 	}
 
+	/**
+	 * Notify observer when new member want to join a group
+	 *
+	 * @param member  New member joining to the group
+	 * @param groupID Group name to join
+	 */
 	@Override
-	public Collection<RemoteMember> getView() {
-		return view.values();
+	public void notifyNewMember ( RemoteMember member, String groupID )
+	{
+		join( member, groupID );
 	}
 }

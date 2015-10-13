@@ -35,8 +35,6 @@ public class MemberTest {
 		MulticastStrategy strg2 = new BasicUnreliableMulticast();
 
 		Member m2 = new MemberImpl(causal2, strg2);
-
-
 		m.join(m2.getRemoteMember(), "id1");
 
 		Assert.assertTrue(m.getView().contains(m2.getRemoteMember()));
@@ -66,5 +64,24 @@ public class MemberTest {
 		}catch(RemoteException exp) {
 			Assert.fail();
 		}
+	}
+
+	@Test
+	public void shouldSendToRemoteMember() {
+		Orderer causal = new CausalOrderer();
+		MulticastStrategy strg = new BasicUnreliableMulticast();
+
+		Member m1 = new MemberImpl(causal, strg);
+
+		Orderer causal2 = new CausalOrderer();
+		MulticastStrategy strg2 = new BasicUnreliableMulticast();
+
+		Member m2 = new MemberImpl(causal2, strg2);
+
+		Message msg1 = new Message("id1", "test message");
+		m1.join(m2.getRemoteMember(), "id1");
+
+		m1.sendMessage(msg1);
+
 	}
 }

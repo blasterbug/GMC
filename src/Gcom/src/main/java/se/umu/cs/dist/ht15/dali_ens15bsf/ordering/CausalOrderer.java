@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class CausalOrderer extends Observable implements Orderer {
+public class CausalOrderer extends Orderer {
 	private Map<String, Queue> holdbackQueues;
 	private VectorClock orderClock;
 
