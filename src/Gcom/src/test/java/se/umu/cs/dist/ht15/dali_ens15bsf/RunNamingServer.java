@@ -1,8 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 
-
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingService;
 
 /**
@@ -14,7 +12,7 @@ public class RunNamingServer
   {
     try
     {
-      NamingService NamingService = new NamingService();
+      NamingService namingService = new NamingService();
     }
     catch ( Exception e )
     {
