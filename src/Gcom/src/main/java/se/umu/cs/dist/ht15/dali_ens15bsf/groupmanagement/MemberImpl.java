@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Collection;
 
 public class MemberImpl implements Member, Observer
 {
@@ -28,6 +29,7 @@ public class MemberImpl implements Member, Observer
 		self.addObserver( this );
 	}
 
+	@Override
 	public RemoteMember getRemoteMember()
 	{
 		return self;
@@ -73,5 +75,10 @@ public class MemberImpl implements Member, Observer
 			// pretty awful
 			receiveMessage( ((CommMessage<Message>)o).getContent() );
 		}
+	}
+
+	@Override
+	public Collection<RemoteMember> getView() {
+		return view.values();
 	}
 }
