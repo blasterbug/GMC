@@ -55,12 +55,21 @@ public class NamingService implements Serializable, NamingServiceRemote
   public RemoteMember joinGroup ( String groupName, RemoteMember m ) throws RemoteException
   {
 
+    // if the group is already registered
     RemoteMember leader = groups.get( groupName );
     if ( null != leader )
     {
+      // just ask to the leader for joining the group
       leader.join( m, groupName );
-      System.out.println( "Server : Member " + m.getMemberID() + " registered in group" + groupName );
     }
+    else
+    {
+      // register the group
+      groups.put( groupName, m );
+      // and ask to the leader to join
+      m.join( m, groupName );
+    }
+    System.out.println( "Server : Member " + m.getMemberID() + " registered in group" + groupName );
     return leader;
   }
 
