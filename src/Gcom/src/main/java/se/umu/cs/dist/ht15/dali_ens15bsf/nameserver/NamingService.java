@@ -73,7 +73,7 @@ public class NamingService implements Serializable, NamingServiceRemote
       leader = m;
     }
     //directory.rebind( m.toString(), m );
-    System.out.println( "Server : Member " + m.toString() + " registered in group" + groupName );
+    System.out.println( "Server : Member " + m.toString() + " registered in group " + groupName );
     return leader;
   }
 
