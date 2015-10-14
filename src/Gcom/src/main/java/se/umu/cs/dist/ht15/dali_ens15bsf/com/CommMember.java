@@ -83,7 +83,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    * The list is clean after each call
    * @return Collection containing unreachable RemoteMembers
    */
-  public Collection<RemoteMember> getUnreachable()
+  public Collection<RemoteMember> getUnreachableRemoteObjects()
   {
     return multicastStrategy.getUnreachableMembers();
   }
