@@ -11,6 +11,7 @@ public class AppChat
     // create connection object
     // get a list of the existing groups
     // offer to the user to join a group or to create a new one
+    new ConnectionWindow();
     // connect to the group
     // open the chat window
   }

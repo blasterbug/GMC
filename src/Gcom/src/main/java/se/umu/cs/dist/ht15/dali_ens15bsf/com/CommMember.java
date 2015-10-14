@@ -67,10 +67,11 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
     notifyJoin( newM, groupID );
+
   }
 
   /**
-   * Register an new observer to be notify Zhen CommMember get stuffs from
+   * Register an new observer to be notify when CommMember get stuffs from
    * others
    * @param ob observer to register
    */
