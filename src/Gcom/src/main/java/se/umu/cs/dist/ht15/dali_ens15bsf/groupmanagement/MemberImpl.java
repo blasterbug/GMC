@@ -45,7 +45,11 @@ public class MemberImpl implements Member, ComObserver, Observer
 		if (!view.get(id).equals(m)) {
 			view.put(id, m);
 			for (RemoteMember rm : view.values()){
-				rm.join(m, id);
+				try {
+					rm.join(m, id);
+				}catch(RemoteException e) {
+
+				}
 			}
 		}
 	}
