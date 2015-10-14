@@ -26,6 +26,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    */
   public CommMember ( MulticastStrategy strategy )
   {
+	  super();
     group = new ArrayList<RemoteMember>();
     multicastStrategy = strategy;
     multicastStrategy.setOwner( this );
@@ -64,9 +65,10 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void join ( RemoteMember newM, String groupID ) throws RemoteException
+  public synchronized void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-    notifyJoin( newM, groupID );
+    System.out.println("HEY");	
+    super.notifyJoin( newM, groupID );
   }
 
   /**
@@ -75,6 +77,8 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    * @param ob observer to register
    */
   public void addObserver(ComObserver ob) {
+    System.out.println("OB");
+    System.out.println(this);	
     super.addObserver( ob );
   }
 

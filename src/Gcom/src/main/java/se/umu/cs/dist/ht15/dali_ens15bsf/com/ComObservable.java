@@ -8,7 +8,11 @@ import java.util.Vector;
  */
 public class ComObservable
 {
-  private Vector<ComObserver> observers = new Vector<ComObserver>();
+  private Vector<ComObserver> observers;
+
+  public ComObservable() {
+	  observers = new Vector<ComObserver>();
+  }
 
 
   /**
@@ -18,6 +22,7 @@ public class ComObservable
    */
   public void addObserver ( ComObserver ob )
   {
+System.out.println("OB2");
     observers.add( ob );
   }
 
@@ -30,8 +35,13 @@ public class ComObservable
   void notifyJoin ( RemoteMember newM, String groupID )
   {
     //owner.join( newM, groupID );
-    for ( ComObserver ob : observers )
-      ob.notifyNewMember( newM, groupID );
+    System.out.println("Just do it!");
+    System.out.println("THIS: " + this);	
+    System.out.println("Nr of OBS: "+observers.size());	
+    for ( ComObserver ob : observers ) {
+	System.out.println(ob);	
+      	ob.notifyNewMember( newM, groupID );
+    }
   }
 
   /**
@@ -43,5 +53,6 @@ public class ComObservable
     for ( ComObserver ob : observers )
       ob.notifyObservers( msg );
   }
+
 
 }
