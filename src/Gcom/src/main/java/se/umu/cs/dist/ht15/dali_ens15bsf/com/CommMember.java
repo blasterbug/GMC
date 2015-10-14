@@ -16,7 +16,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   protected ArrayList<RemoteMember> group;
   //protected Member owner;
   protected MulticastStrategy multicastStrategy;
-  private Vector<ComObserver> observers;
+  //private Vector<ComObserver> observers;
 
 
   /**
@@ -29,7 +29,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
     group = new ArrayList<RemoteMember>();
     multicastStrategy = strategy;
     multicastStrategy.setOwner( this );
-    observers = new Vector<ComObserver>();
+    //observers = new Vector<ComObserver>();
   }
 
   /**
@@ -53,8 +53,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public void deliver ( CommMessage msg ) throws RemoteException
   {
     //multicastStrategy.receive( msg );
-    for ( ComObserver ob : observers )
-      ob.notifyObservers( msg );
+    notify( msg );
   }
 
   /**
@@ -70,7 +69,22 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
     notifyJoin( newM, groupID );
   }
 
+  /**
+   * Register an new observer to be notify Zhen CommMember get stuffs from
+   * others
+   * @param ob observer to register
+   */
   public void addObserver(ComObserver ob) {
-	  observers.add(ob);
+    addObserver( ob );
+  }
+
+  /**
+   * Which RemoteObjects are unreachable ?
+   * The list is clean after each call
+   * @return Collection containing unreachable RemoteMembers
+   */
+  public Collection<RemoteMember> getUnreachable()
+  {
+    return multicastStrategy.getUnreachableMembers();
   }
 }

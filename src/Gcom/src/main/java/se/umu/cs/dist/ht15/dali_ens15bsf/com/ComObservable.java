@@ -34,4 +34,14 @@ public class ComObservable
       ob.notifyNewMember( newM, groupID );
   }
 
+  /**
+   * Notify observers on incoming messages
+   * @param msg New incoming message
+   */
+  void notify ( CommMessage msg )
+  {
+    for ( ComObserver ob : observers )
+      ob.notifyObservers( msg );
+  }
+
 }
