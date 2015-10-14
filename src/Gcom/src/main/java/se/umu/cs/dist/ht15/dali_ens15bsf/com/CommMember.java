@@ -75,7 +75,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    * @param ob observer to register
    */
   public void addObserver(ComObserver ob) {
-    addObserver( ob );
+    super.addObserver( ob );
   }
 
   /**
