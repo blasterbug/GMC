@@ -23,8 +23,8 @@ public class MemberImpl implements Member, ComObserver, Observer
 //	private Map<String, RemoteMember> view;
 	private Collection<RemoteMember> view;
 	private Orderer orderer;
-	private CommMember self;
-	private CommMember leader;
+	private RemoteMember self;
+	private RemoteMember leader;
 	private String id;
 	private NamingServiceRemote nameserver;
 
@@ -33,10 +33,11 @@ public class MemberImpl implements Member, ComObserver, Observer
 		view = new ArrayList<RemoteMember>();
 		orderer = o;
 
-		//self = (RemoteMember)UnicastRemoteObject.exportObject(new CommMember( strg ),0);
+		self = (RemoteMember)UnicastRemoteObject.exportObject(new CommMember( strg ),0);
 		System.out.println("HERE'S JOHNNY");
 		System.out.println(self);	
-		self.addObserver( this );
+		//self.addObserver( this );
+		self.setOwner(this);
 		orderer.addObserver( this );
 	}
 
@@ -53,7 +54,7 @@ public class MemberImpl implements Member, ComObserver, Observer
 
 	@Override
 	public void joinGroup(String gid) throws RemoteException{
-		leader = (CommMember)nameserver.joinGroup(gid, self);
+		leader = nameserver.joinGroup(gid, self);
 	}
 
 	@Override
@@ -104,11 +105,14 @@ public class MemberImpl implements Member, ComObserver, Observer
 		msg = new CommMessage(preparedMessage);
 
 		/* Send message to view */
+		/*
 		try {
-			self.post(msg, view);
+			//self.post(msg, view);
 		} catch(UnreachableRemoteObjectException exp) {
 			System.out.println("BINOG");	
 		}
+		*/
+		System.out.println("BINOG");	
 	}
 
 	@Override

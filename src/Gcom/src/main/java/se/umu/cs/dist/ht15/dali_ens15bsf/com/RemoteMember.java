@@ -3,6 +3,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 
 /**
  * Created by ens15bsf on 2015-10-08.
@@ -28,4 +29,5 @@ public interface RemoteMember extends Remote, Serializable
    */
   public void join ( RemoteMember newM, String groupID ) throws RemoteException;
 
+  public void setOwner(Member m);
 }

@@ -5,6 +5,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Vector;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
+import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 
 /**
  * Created by ens15bsf on 2015-10-08.
@@ -14,7 +17,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
 {
   private static final long serialVersionUID = 4672654439762386594L;
   protected ArrayList<RemoteMember> group;
-  //protected Member owner;
+  protected Member owner;
   protected MulticastStrategy multicastStrategy;
   //private Vector<ComObserver> observers;
 
@@ -31,6 +34,11 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
     multicastStrategy = strategy;
     multicastStrategy.setOwner( this );
     //observers = new Vector<ComObserver>();
+  }
+
+  @Override
+  public void setOwner(Member m) {
+	  this.owner = m;
   }
 
   /**
@@ -54,7 +62,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public void deliver ( CommMessage msg ) throws RemoteException
   {
     //multicastStrategy.receive( msg );
-    notify( msg );
+    owner.receiveMessage( (Message)msg.getContent() );
   }
 
   /**
@@ -67,7 +75,8 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   @Override
   public synchronized void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-    System.out.println("HEY");	
+    System.out.println("HEY");
+    owner.join(newM, groupID);
     super.notifyJoin( newM, groupID );
   }
 

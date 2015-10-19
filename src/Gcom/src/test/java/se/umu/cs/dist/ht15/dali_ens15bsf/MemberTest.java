@@ -22,117 +22,139 @@ public class MemberTest {
 
 	@Test
 	public void shouldCreateMemberWithOrdererAndMulticast() {
-		Orderer causal = new CausalOrderer();
-		MulticastStrategy strg = new BasicUnreliableMulticast();
-		Member m = new MemberImpl(causal, strg);
+		try{	
+			Orderer causal = new CausalOrderer();
+			MulticastStrategy strg = new BasicUnreliableMulticast();
+			Member m = new MemberImpl(causal, strg);
+		}catch(RemoteException e) {
+			Assert.fail(e.getMessage());
+		}
 	}
 
 	@Test
 	public void shouldAddNewMemberToView() {
-		Orderer causal = new CausalOrderer();
-		MulticastStrategy strg = new BasicUnreliableMulticast();
-		Member m = new MemberImpl(causal, strg);
-
-		Orderer causal2 = new CausalOrderer();
-		MulticastStrategy strg2 = new BasicUnreliableMulticast();
-
-		Member m2 = new MemberImpl(causal2, strg2);
-		m.join(m2.getRemoteMember(), "id1");
-
-		Assert.assertTrue(m.getView().contains(m2.getRemoteMember()));
+		try{
+			Orderer causal = new CausalOrderer();
+			MulticastStrategy strg = new BasicUnreliableMulticast();
+			Member m = new MemberImpl(causal, strg);
+	
+			Orderer causal2 = new CausalOrderer();
+			MulticastStrategy strg2 = new BasicUnreliableMulticast();
+	
+			Member m2 = new MemberImpl(causal2, strg2);
+			m.join(m2.getRemoteMember(), "id1");
+	
+			Assert.assertTrue(m.getView().contains(m2.getRemoteMember()));
+		}catch(RemoteException e) {
+			Assert.fail(e.getMessage());
+		}
 
 	}
 
 	@Test
 	public void shouldCreateRemoteMember() {
-		Orderer causal = new CausalOrderer();
-		MulticastStrategy strg = new BasicUnreliableMulticast();
-		Member m = new MemberImpl(causal, strg);
+		try{
+			Orderer causal = new CausalOrderer();
+			MulticastStrategy strg = new BasicUnreliableMulticast();
+			Member m = new MemberImpl(causal, strg);
 
-		Assert.assertTrue(m.getRemoteMember() !=null);
+			Assert.assertTrue(m.getRemoteMember() !=null);
+		}catch(RemoteException e) {
+			Assert.fail(e.getMessage());
+		}
+
 	}
 
 	@Test
 	public void shouldReceiveMessage() {
-		Orderer causal = new CausalOrderer();
-		MulticastStrategy strg = new BasicUnreliableMulticast();
-
-		Member m = new MemberImpl(causal, strg);
-
-		CommMessage<Message> msg = new CommMessage<Message>(causal.prepareMessage(new Message("id1", "m1")));
-
 		try{
+			Orderer causal = new CausalOrderer();
+			MulticastStrategy strg = new BasicUnreliableMulticast();
+	
+			Member m = new MemberImpl(causal, strg);
+
+			CommMessage<Message> msg = new CommMessage<Message>(causal.prepareMessage(new Message("id1", "m1")));
 			strg.receive(msg);
 		}catch(RemoteException | UnreachableRemoteObjectException exp) {
-			Assert.fail();
+			exp.printStackTrace();
+			Assert.fail(exp.getMessage());
 		}
 	}
 
 	@Test
 	public void shouldSendToRemoteMember() {
-		Orderer causal = new CausalOrderer();
-		MulticastStrategy strg = new BasicUnreliableMulticast();
+		try {
+			Orderer causal = new CausalOrderer();
+			MulticastStrategy strg = new BasicUnreliableMulticast();
 
-		Member m1 = new MemberImpl(causal, strg);
+			Member m1 = new MemberImpl(causal, strg);
 
-		Orderer causal2 = new CausalOrderer();
-		MulticastStrategy strg2 = new BasicUnreliableMulticast();
+			Orderer causal2 = new CausalOrderer();
+			MulticastStrategy strg2 = new BasicUnreliableMulticast();
+	
+			Member m2 = new MemberImpl(causal2, strg2);
+	
+			Message msg1 = new Message("id1", "test message");
+			m1.join(m2.getRemoteMember(), "id1");
 
-		Member m2 = new MemberImpl(causal2, strg2);
+			m1.sendMessage(msg1);
+			// TODO LISTENER
+		}catch(RemoteException e) {
+			Assert.fail(e.getMessage());
+		}
 
-		Message msg1 = new Message("id1", "test message");
-		m1.join(m2.getRemoteMember(), "id1");
-
-		m1.sendMessage(msg1);
-		// TODO LISTENER
 	}
 
 	@Test
 	public void shouldDeliverMessagesInOrder() {
-		Orderer c1 = new CausalOrderer();
-		Orderer c2 = new CausalOrderer();
-		Orderer c3 = new CausalOrderer();
-		Orderer c4 = new CausalOrderer();
+		try{
+			Orderer c1 = new CausalOrderer();
+			Orderer c2 = new CausalOrderer();
+			Orderer c3 = new CausalOrderer();
+			Orderer c4 = new CausalOrderer();
 
-		MulticastStrategy s1 = new BasicUnreliableMulticast();
-		MulticastStrategy s2 = new BasicUnreliableMulticast();
-		MulticastStrategy s3 = new BasicUnreliableMulticast();
-		MulticastStrategy s4 = new BasicUnreliableMulticast();
+			MulticastStrategy s1 = new BasicUnreliableMulticast();
+			MulticastStrategy s2 = new BasicUnreliableMulticast();
+			MulticastStrategy s3 = new BasicUnreliableMulticast();
+			MulticastStrategy s4 = new BasicUnreliableMulticast();
 
-		Member m1 = new MemberImpl(c1, s1);
-		Member m2 = new MemberImpl(c2, s2);
-		Member m3 = new MemberImpl(c3, s3);
-		Member m4 = new MemberImpl(c4, s4);
+			Member m1 = new MemberImpl(c1, s1);
+			Member m2 = new MemberImpl(c2, s2);
+			Member m3 = new MemberImpl(c3, s3);
+			Member m4 = new MemberImpl(c4, s4);
 
-		m1.setId("id1");
-		m2.setId("id2");
-		m3.setId("id3");
-		m4.setId("id4");
+			m1.setId("id1");
+			m2.setId("id2");
+			m3.setId("id3");
+			m4.setId("id4");
 
-		m1.join(m2.getRemoteMember(), "id2");
-		m1.join(m3.getRemoteMember(), "id3");
-		m1.join(m4.getRemoteMember(), "id4");
+			m1.join(m2.getRemoteMember(), "id2");
+			m1.join(m3.getRemoteMember(), "id3");
+			m1.join(m4.getRemoteMember(), "id4");
 
-		m2.join(m1.getRemoteMember(), "id1");
-		m2.join(m3.getRemoteMember(), "id3");
-		m2.join(m4.getRemoteMember(), "id4");
+			m2.join(m1.getRemoteMember(), "id1");
+			m2.join(m3.getRemoteMember(), "id3");
+			m2.join(m4.getRemoteMember(), "id4");
 
-		m3.join(m1.getRemoteMember(), "id1");
-		m3.join(m2.getRemoteMember(), "id2");
-		m3.join(m4.getRemoteMember(), "id4");
+			m3.join(m1.getRemoteMember(), "id1");
+			m3.join(m2.getRemoteMember(), "id2");
+			m3.join(m4.getRemoteMember(), "id4");
 
-		m4.join(m1.getRemoteMember(), "id1");
-		m4.join(m2.getRemoteMember(), "id2");
-		m4.join(m3.getRemoteMember(), "id3");
+			m4.join(m1.getRemoteMember(), "id1");
+			m4.join(m2.getRemoteMember(), "id2");
+			m4.join(m3.getRemoteMember(), "id3");
 
-		Message msg1 = new Message("id1", "test1");
-		Message msg2 = new Message("id2", "test2");
-		Message msg3 = new Message("id3", "test3");
+			Message msg1 = new Message("id1", "test1");
+			Message msg2 = new Message("id2", "test2");
+			Message msg3 = new Message("id3", "test3");
 
-		m1.sendMessage(msg1);
-		m2.sendMessage(msg2);
-		m3.sendMessage(msg3);
+			m1.sendMessage(msg1);
+			m2.sendMessage(msg2);
+			m3.sendMessage(msg3);
 
+		}catch(RemoteException e) {
+			Assert.fail(e.getMessage());
+		}
 
 	}
 }
