@@ -19,9 +19,9 @@ public class CommMemberDebug extends CommMember
    *
    * @param strategy Strategy to use for multicasting messages
    */
-  public CommMemberDebug ( MulticastStrategy strategy )
+  public CommMemberDebug ( MulticastStrategy strategy, ComObserver mbr )
   {
-    super( new StrategyDebug( strategy ) );
+    super( new StrategyDebug( strategy ), mbr );
     delayedMessages = new LinkedList<CommMessage>();
     messageDelay = 0;
   }

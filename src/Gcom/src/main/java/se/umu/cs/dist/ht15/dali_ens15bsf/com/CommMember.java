@@ -17,9 +17,8 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
 {
   private static final long serialVersionUID = 4672654439762386594L;
   protected ArrayList<RemoteMember> group;
-  protected Member owner;
+  //protected Member owner;
   protected MulticastStrategy multicastStrategy;
-  //private Vector<ComObserver> observers;
 
 
   /**
@@ -27,19 +26,18 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    *
    * @param strategy Strategy to use for multicasting messages
    */
-  public CommMember ( MulticastStrategy strategy )
+  public CommMember ( MulticastStrategy strategy, ComObserver mbr )
   {
 	  super();
     group = new ArrayList<RemoteMember>();
     multicastStrategy = strategy;
     multicastStrategy.setOwner( this );
-    //observers = new Vector<ComObserver>();
+    super.addObserver( mbr );
   }
 
-  @Override
-  public void setOwner(Member m) {
+  /*public void setOwner(Member m) {
 	  this.owner = m;
-  }
+  }*/
 
   /**
    * Send a message by multicast to the other nodes
@@ -62,7 +60,8 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public void deliver ( CommMessage msg ) throws RemoteException
   {
     //multicastStrategy.receive( msg );
-    owner.receiveMessage( (Message)msg.getContent() );
+    //owner.receiveMessage( (Message)msg.getContent() );
+    super.notify( msg );
   }
 
   /**
@@ -76,7 +75,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public synchronized void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
     System.out.println("HEY");
-    owner.join(newM, groupID);
+    //owner.join(newM, groupID);
     super.notifyJoin( newM, groupID );
   }
 

@@ -100,6 +100,7 @@ public class MemberTest {
 			m1.sendMessage(msg1);
 			// TODO LISTENER
 		}catch(RemoteException e) {
+			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
 

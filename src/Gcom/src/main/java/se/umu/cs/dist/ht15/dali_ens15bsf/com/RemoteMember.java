@@ -29,5 +29,4 @@ public interface RemoteMember extends Remote, Serializable
    */
   public void join ( RemoteMember newM, String groupID ) throws RemoteException;
 
-  public void setOwner(Member m);
 }

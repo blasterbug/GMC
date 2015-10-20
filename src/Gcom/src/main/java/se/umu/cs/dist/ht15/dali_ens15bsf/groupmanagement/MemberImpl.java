@@ -33,11 +33,11 @@ public class MemberImpl implements Member, ComObserver, Observer
 		view = new ArrayList<RemoteMember>();
 		orderer = o;
 
-		self = (RemoteMember)UnicastRemoteObject.exportObject(new CommMember( strg ),0);
+		self = (RemoteMember)UnicastRemoteObject.exportObject(new CommMember( strg, this ),0);
 		System.out.println("HERE'S JOHNNY");
-		System.out.println(self);	
-		//self.addObserver( this );
-		self.setOwner(this);
+		System.out.println(self);
+		//((CommMember) self ).addObserver( this );
+		//((CommMember)self).setOwner(this);
 		orderer.addObserver( this );
 	}
 
