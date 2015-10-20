@@ -20,24 +20,22 @@ import java.util.ArrayList;
 
 public class MemberImpl implements Member, ComObserver, Observer
 {
-//	private Map<String, RemoteMember> view;
-	private Collection<RemoteMember> view;
+	private Map<String, RemoteMember> view;
+//	private Collection<RemoteMember> view;
 	private Orderer orderer;
-	private RemoteMember self;
+	private CommMember self;
 	private RemoteMember leader;
 	private String id;
 	private NamingServiceRemote nameserver;
 
 	public MemberImpl(Orderer o, MulticastStrategy strg) throws RemoteException{
-//		view = new HashMap<String, RemoteMember>();
-		view = new ArrayList<RemoteMember>();
+		view = new HashMap<String, RemoteMember>();
+//		view = new ArrayList<RemoteMember>();
 		orderer = o;
 
-		self = (RemoteMember)UnicastRemoteObject.exportObject(new CommMember( strg, this ),0);
-		System.out.println("HERE'S JOHNNY");
-		System.out.println(self);
-		//((CommMember) self ).addObserver( this );
-		//((CommMember)self).setOwner(this);
+		self = new CommMember(strg, this);
+		UnicastRemoteObject.exportObject(self, 0);
+		//System.out.println(self);
 		orderer.addObserver( this );
 	}
 
@@ -81,15 +79,19 @@ public class MemberImpl implements Member, ComObserver, Observer
 
 	@Override
 	public void join(RemoteMember m, String id) {
-		System.out.println("Remote member ["+id+"] is joining");	
-		view.add(m);
-		for (RemoteMember rm : view){
+		//System.out.println("Remote member ["+id+"] is joining");	
+		if (view.values().contains(m))
+			return;
+		for (String key : view.keySet()){
 			try {
+				//System.out.println("Joining "+rm.toString());	
+				RemoteMember rm = view.get(key);
 				rm.join(m, id);
 			}catch(RemoteException e) {
-
+				System.out.println("Failed to join: " + e.getMessage());
 			}
 		}
+		view.put(id,m);
 	}
 
 	/**
@@ -105,32 +107,32 @@ public class MemberImpl implements Member, ComObserver, Observer
 		msg = new CommMessage(preparedMessage);
 
 		/* Send message to view */
-		/*
 		try {
-			//self.post(msg, view);
+			self.post(msg, view.values());
 		} catch(UnreachableRemoteObjectException exp) {
 			System.out.println("BINOG");	
 		}
-		*/
-		System.out.println("BINOG");	
+		
+//		System.out.println("BINOG");	
 	}
 
 	@Override
 	public void receiveMessage(Message m) {
-		System.out.println("Bngko");	
+//		System.out.println("Bngko");	
 		orderer.addMessage(m);
 	}
 
 	@Override
 	public Collection<RemoteMember> getView() {
-		return view;
+		return view.values();
 	}
 
 	@Override
 	public void update(Observable obs, Object o) {
 
 		Message m = (Message)o;
-		System.out.println("Member ["+this.id+"] recevied MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");	
+		System.out.println("Member ["+this.id+"] received MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");
+
 	}
 
 	/**
@@ -154,7 +156,7 @@ public class MemberImpl implements Member, ComObserver, Observer
 	@Override
 	public void notifyNewMember ( RemoteMember member, String groupID )
 	{
-		System.out.println("Here we go");	
+//		System.out.println("Here we go");	
 		join( member, groupID );
 	}
 }

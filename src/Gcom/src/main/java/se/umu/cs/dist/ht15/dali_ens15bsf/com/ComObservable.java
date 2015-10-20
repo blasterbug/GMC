@@ -22,7 +22,7 @@ public class ComObservable
    */
   public void addObserver ( ComObserver ob )
   {
-System.out.println("OB2");
+//System.out.println("OB2");
     observers.add( ob );
   }
 
@@ -35,11 +35,11 @@ System.out.println("OB2");
   void notifyJoin ( RemoteMember newM, String groupID )
   {
     //owner.join( newM, groupID );
-    System.out.println("Just do it!");
-    System.out.println("THIS: " + this);	
-    System.out.println("Nr of OBS: "+observers.size());	
+    //System.out.println("Just do it!");
+    //System.out.println("THIS: " + this);	
+    //System.out.println("Nr of OBS: "+observers.size());	
     for ( ComObserver ob : observers ) {
-	System.out.println(ob);	
+	//System.out.println("OBs "+ob);	
       	ob.notifyNewMember( newM, groupID );
     }
   }

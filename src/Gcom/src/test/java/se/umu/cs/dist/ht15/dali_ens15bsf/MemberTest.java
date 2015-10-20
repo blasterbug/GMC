@@ -95,7 +95,10 @@ public class MemberTest {
 			Member m2 = new MemberImpl(causal2, strg2);
 	
 			Message msg1 = new Message("id1", "test message");
-			m1.join(m2.getRemoteMember(), "id1");
+			System.out.println("JOINING");	
+			m1.join(m2.getRemoteMember(), "id2");
+
+			System.out.println("SENDING MESSAGE");	
 
 			m1.sendMessage(msg1);
 			// TODO LISTENER

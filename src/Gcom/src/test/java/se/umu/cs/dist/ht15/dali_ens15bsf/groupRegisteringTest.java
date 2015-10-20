@@ -3,6 +3,8 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingService;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.*;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,10 +25,14 @@ public class groupRegisteringTest implements ComObserver
   public static void main ( String[] args )
   {
     String groupName = "TestGroup";
-    CommMember mbr1 = new CommMember( new TreeBaseMulticast() );
-    mbr1.addObserver( new groupRegisteringTest() );
+    MulticastStrategy tree = new TreeBaseMulticast();
+    Orderer causal = new CausalOrderer();
+    
     try
     {
+      ComObserver m = new MemberImpl(causal, tree);
+      CommMember mbr1 = new CommMember( tree, m );
+      mbr1.addObserver( new groupRegisteringTest() );
       Registry dictionary = LocateRegistry.getRegistry( NamingService.SERVER_PORT );
       NamingServiceRemote server = (NamingServiceRemote) dictionary.lookup( NamingService.SERVICE_NAME );
       LinkedList<String> groups = server.getGroups();

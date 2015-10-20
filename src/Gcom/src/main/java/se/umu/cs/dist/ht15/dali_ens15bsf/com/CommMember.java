@@ -74,7 +74,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   @Override
   public synchronized void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-    System.out.println("HEY");
+//    System.out.println("HEY");
     //owner.join(newM, groupID);
     super.notifyJoin( newM, groupID );
   }
