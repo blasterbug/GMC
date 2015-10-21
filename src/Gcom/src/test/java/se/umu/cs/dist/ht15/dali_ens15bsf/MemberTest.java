@@ -4,6 +4,9 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Observer;
+import java.util.Observable;
 import java.rmi.RemoteException;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
@@ -19,6 +22,38 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
 
 public class MemberTest {
 
+
+	private class DummyObserver implements Observer {
+		private LinkedList<Message> messages;
+
+		public DummyObserver() {
+			messages = new LinkedList<Message>();
+		}
+
+		@Override
+		public void update(Observable obs, Object o) {
+			Message msg = (Message)o;
+			messages.add((Message)o);
+			System.out.println("BINGO");	
+		}
+
+		public boolean contains(Message m) {
+			return messages.contains(m);
+		}
+
+		public boolean containsAt(Message m, int i) {
+			if(contains(m))
+				return messages.get(i).equals(m);
+			return false;
+		}
+
+		public void printMessages() {
+			int i = 0;
+			for ( Message m : messages) {
+				System.out.println("Message ["+i++ +"]: "+m.getContent());
+			}
+		}
+	}
 
 	@Test
 	public void shouldCreateMemberWithOrdererAndMulticast() {
@@ -122,7 +157,7 @@ public class MemberTest {
 			MulticastStrategy s3 = new BasicUnreliableMulticast();
 			MulticastStrategy s4 = new BasicUnreliableMulticast();
 
-			Member m1 = new MemberImpl(c1, s1);
+			MemberImpl m1 = new MemberImpl(c1, s1);
 			Member m2 = new MemberImpl(c2, s2);
 			Member m3 = new MemberImpl(c3, s3);
 			Member m4 = new MemberImpl(c4, s4);
@@ -136,7 +171,7 @@ public class MemberTest {
 			m1.join(m3.getRemoteMember(), "id3");
 			m1.join(m4.getRemoteMember(), "id4");
 
-			m2.join(m1.getRemoteMember(), "id1");
+			/*m2.join(m1.getRemoteMember(), "id1");
 			m2.join(m3.getRemoteMember(), "id3");
 			m2.join(m4.getRemoteMember(), "id4");
 
@@ -147,18 +182,27 @@ public class MemberTest {
 			m4.join(m1.getRemoteMember(), "id1");
 			m4.join(m2.getRemoteMember(), "id2");
 			m4.join(m3.getRemoteMember(), "id3");
+			*/
 
 			Message msg1 = new Message("id1", "test1");
 			Message msg2 = new Message("id2", "test2");
 			Message msg3 = new Message("id3", "test3");
 
+			DummyObserver dummy = new DummyObserver();
+			m1.addObserver(dummy);
+
 			m1.sendMessage(msg1);
 			m2.sendMessage(msg2);
 			m3.sendMessage(msg3);
+
+			dummy.printMessages();
+
+			Assert.assertTrue(dummy.containsAt(msg2, 2));
 
 		}catch(RemoteException e) {
 			Assert.fail(e.getMessage());
 		}
 
 	}
+
 }
