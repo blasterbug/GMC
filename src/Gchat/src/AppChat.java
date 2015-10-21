@@ -1,4 +1,7 @@
-package Gchat;
+package Gchat.src;
+
+import Gchat.src.frames.ChatWindow;
+import Gchat.src.frames.ConnectionWindow;
 
 /**
  * Created by ens15bsf on 2015-10-13.
@@ -6,7 +9,7 @@ package Gchat;
 public class AppChat
 {
 
-  public static void main( String[] args )
+  public static void main ( String[] args )
   {
     // create connection object
     // get a list of the existing groups
@@ -14,5 +17,6 @@ public class AppChat
     new ConnectionWindow();
     // connect to the group
     // open the chat window
+    new ChatWindow();
   }
 }

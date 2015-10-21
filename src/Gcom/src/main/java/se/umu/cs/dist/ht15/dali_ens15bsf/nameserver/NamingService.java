@@ -71,8 +71,9 @@ public class NamingService implements Serializable, NamingServiceRemote
     }
     else
     {
-      // register the group
+      // register the group, with the leader
       groups.put( groupName, m );
+      System.out.println( "Server : new leader " + m.toString() + "for group " + groupName );
       // and ask to the leader to join
       m.join( m, groupName );
       // m is the leader
