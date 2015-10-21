@@ -1,12 +1,17 @@
 package Gchat;
 
+import Gchat.frames.ChatWindow;
+import Gchat.frames.ConnectionWindow;
+import frames.ChatWindow;
+import frames.ConnectionWindow;
+
 /**
  * Created by ens15bsf on 2015-10-13.
  */
-public class AppChat
+public class Gchat
 {
 
-  public static void main( String[] args )
+  public static void main ( String[] args )
   {
     // create connection object
     // get a list of the existing groups
@@ -14,5 +19,6 @@ public class AppChat
     new ConnectionWindow();
     // connect to the group
     // open the chat window
+    new ChatWindow();
   }
 }

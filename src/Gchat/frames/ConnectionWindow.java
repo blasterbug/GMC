@@ -1,4 +1,6 @@
-package Gchat;
+package Gchat.frames;
+
+import Listeners.ConnectAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,15 +11,19 @@ import java.awt.*;
  */
 public class ConnectionWindow
 {
+  private final static String NEW_GROUP = "Create a new group?";
   private JFrame window;
+  private JTextField groupInput;
+  private JList<String> groups;
 
   public ConnectionWindow ()
   {
 
+
     // Create a panel for the list of available groups
     JScrollPane list = new JScrollPane();
-    JList<String> groups = new JList<String>( new String[] { "group1", "group2", "group3", "group#" } );
-    list.getViewport().setView(groups);
+    groups = new JList<String>( new String[] { "group1", "group2", "group3", "group#" } );
+    list.getViewport().setView( groups );
     list.setPreferredSize( new Dimension( 220, 100 ) );
 
     // create the panel with the text input and the join button
@@ -30,9 +36,11 @@ public class ConnectionWindow
 
     // define the components of the panel
     // a text area
-    JTextField groupInput = new JTextField( "Create a new group?", 30 );
+    groupInput = new JTextField( NEW_GROUP , 30 );
+    groupInput.addActionListener( new ConnectAction( this ) );
     // and a button
     JButton joinBT = new JButton( "join" );
+    joinBT.addActionListener( new ConnectAction( this ) );
     // add the components to the bottom panel
     bottomPLayout.setHorizontalGroup(
             bottomPLayout.createSequentialGroup()
@@ -72,8 +80,19 @@ public class ConnectionWindow
     );
 
 
-    window.setSize( new Dimension( 220, 200 ) );
+    window.setSize( new Dimension( 230, 200 ) );
+    window.setResizable( false );
     window.setVisible( true );
+  }
+
+  public String getGroupConnection ()
+  {
+    if(groups.isSelectionEmpty())
+    {
+      if( !(groupInput.equals( NEW_GROUP ) || groupInput.equals( "" )) )
+      return groupInput.getText();
+    }
+    return groups.getSelectedValue();
   }
 
 }
