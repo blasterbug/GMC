@@ -19,6 +19,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   protected ArrayList<RemoteMember> group;
   //protected Member owner;
   protected MulticastStrategy multicastStrategy;
+  private String id;
 
 
   /**
@@ -33,6 +34,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
     multicastStrategy = strategy;
     multicastStrategy.setOwner( this );
     super.addObserver( mbr );
+    this.id = null;
   }
 
   /*public void setOwner(Member m) {
@@ -98,5 +100,14 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public Collection<RemoteMember> getUnreachableRemoteObjects()
   {
     return multicastStrategy.getUnreachableMembers();
+  }
+
+  @Override
+  public String getId() {
+	  return this.id;
+  }
+
+  public void setId(String id) {
+	  this.id = id;
   }
 }

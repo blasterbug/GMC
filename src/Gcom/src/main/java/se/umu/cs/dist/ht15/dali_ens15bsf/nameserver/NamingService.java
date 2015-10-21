@@ -61,13 +61,15 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public RemoteMember joinGroup ( String groupName, RemoteMember m ) throws RemoteException
   {
+	  System.out.println("BINOG");	
 
     // if the group is already registered
     RemoteMember leader = groups.get( groupName );
     if ( null != leader )
     {
       // just ask to the leader for joining the group
-      leader.join( m, groupName);
+      leader.join( m, m.getId());
+      System.out.println("Member ["+m+"] joining leader ["+leader+"] of group ["+groupName+"]");
     }
     else
     {
@@ -75,7 +77,7 @@ public class NamingService implements Serializable, NamingServiceRemote
       groups.put( groupName, m );
       System.out.println( "Server : new leader " + m.toString() + "for group " + groupName );
       // and ask to the leader to join
-      m.join( m, groupName );
+      m.join( m, m.getId() );
       // m is the leader
       leader = m;
     }

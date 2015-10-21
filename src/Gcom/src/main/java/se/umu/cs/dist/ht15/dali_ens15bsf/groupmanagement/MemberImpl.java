@@ -79,12 +79,12 @@ public class MemberImpl implements Member, ComObserver, Observer
 
 	@Override
 	public void join(RemoteMember m, String id) {
-		//System.out.println("Remote member ["+id+"] is joining");	
+		System.out.println("Remote member ["+id+"] is joining");	
 		if (view.values().contains(m))
 			return;
 		for (String key : view.keySet()){
 			try {
-				//System.out.println("Joining "+rm.toString());	
+				System.out.println("Joining "+m.toString());	
 				RemoteMember rm = view.get(key);
 				rm.join(m, id);
 			}catch(RemoteException e) {
