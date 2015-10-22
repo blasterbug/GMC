@@ -48,6 +48,7 @@ public class MemberImpl implements Member, ComObserver, Observer
 	@Override
 	public void updateIdFromNameServer() throws RemoteException {
 		this.id = nameserver.getMyId(self);
+		this.self.setId(this.id);
 	}
 
 	@Override
@@ -83,14 +84,17 @@ public class MemberImpl implements Member, ComObserver, Observer
 		if (view.values().contains(m))
 			return;
 		for (String key : view.keySet()){
-			try {
-				System.out.println("Joining "+m.toString());	
-				RemoteMember rm = view.get(key);
-				rm.join(m, id);
-			}catch(RemoteException e) {
-				System.out.println("Failed to join: " + e.getMessage());
+			if(!key.equals(this.id)) {
+				try {
+					RemoteMember rm = view.get(key);
+					System.out.println("Joining "+rm.toString());	
+					rm.join(m, id);
+				}catch(RemoteException e) {
+					System.out.println("Failed to join: " + e.getMessage());
+				}
 			}
 		}
+		System.out.println("Putting ["+id+"]");	
 		view.put(id,m);
 	}
 
@@ -111,6 +115,7 @@ public class MemberImpl implements Member, ComObserver, Observer
 			self.post(msg, view.values());
 		} catch(UnreachableRemoteObjectException exp) {
 			System.out.println("BINOG");	
+			exp.printStackTrace();
 		}
 		
 //		System.out.println("BINOG");	
