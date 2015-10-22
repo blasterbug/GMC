@@ -1,8 +1,12 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.time;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class VectorClock extends HashMap<String, Integer>  {
+public class VectorClock extends HashMap<String, Integer> implements Serializable
+{
+
+	private static final long serialVersionUID = -1976421449766444371L;
 
 	public VectorClock() {
 		super();

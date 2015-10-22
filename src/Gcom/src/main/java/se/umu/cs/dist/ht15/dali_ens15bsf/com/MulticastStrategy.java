@@ -22,6 +22,7 @@ public abstract class MulticastStrategy implements Serializable
   public MulticastStrategy ()
   {
     view = new ArrayList<RemoteMember>();
+    unreachableMembers = new ArrayList<>();
   }
 
   /**
