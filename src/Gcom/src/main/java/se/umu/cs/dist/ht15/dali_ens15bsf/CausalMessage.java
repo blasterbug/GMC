@@ -15,6 +15,9 @@ public class CausalMessage extends MessageDecorator {
 	}
 
 	public boolean equals(Message m) {
+		if (!m.getClass().isInstance(CausalMessage.class)) {
+			return super.equals(m);
+		}
 		VectorClock c = ((CausalMessage)m).getClock();
 		return super.equals(m) && 
 			c.equals(this.clock);

@@ -18,7 +18,7 @@ import java.util.Observer;
 import java.util.Collection;
 import java.util.ArrayList;
 
-public class MemberImpl implements Member, ComObserver, Observer
+public class MemberImpl extends Observable implements Member, ComObserver, Observer
 {
 	private Map<String, RemoteMember> view;
 //	private Collection<RemoteMember> view;
@@ -49,7 +49,9 @@ public class MemberImpl implements Member, ComObserver, Observer
 	public void updateIdFromNameServer() throws RemoteException {
 		this.id = nameserver.getMyId(self);
 		this.self.setId(this.id);
+		this.view.put(id,self);
 	}
+
 
 	@Override
 	public void joinGroup(String gid) throws RemoteException{
@@ -64,6 +66,8 @@ public class MemberImpl implements Member, ComObserver, Observer
 	@Override
 	public void setId(String id) {
 		this.id = id;
+		this.self.setId(id);
+		this.view.put(id,self);
 	}
 
 	@Override
@@ -79,23 +83,23 @@ public class MemberImpl implements Member, ComObserver, Observer
 
 
 	@Override
-	public void join(RemoteMember m, String id) {
-		System.out.println("Remote member ["+id+"] is joining");	
-		if (view.values().contains(m))
+	public synchronized void join(RemoteMember m, String id) {
+		System.out.println("Remote member ["+id+"] is joining");
+		if(view.keySet().contains(id) && view.get(id).equals(m))
 			return;
+		view.put(id,m);
 		for (String key : view.keySet()){
-			if(!key.equals(this.id)) {
-				try {
+			try {
+				if(!(key.equals(id))) {
 					RemoteMember rm = view.get(key);
 					System.out.println("Joining "+rm.toString());	
-					rm.join(m, id);
-				}catch(RemoteException e) {
-					System.out.println("Failed to join: " + e.getMessage());
+					m.join(rm, id);
 				}
+			} catch (RemoteException e) {
+				System.out.println("Failed to join: " + e.getMessage());
 			}
 		}
 		System.out.println("Putting ["+id+"]");	
-		view.put(id,m);
 	}
 
 	/**
@@ -136,7 +140,9 @@ public class MemberImpl implements Member, ComObserver, Observer
 	public void update(Observable obs, Object o) {
 
 		Message m = (Message)o;
-		System.out.println("Member ["+this.id+"] received MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");
+		super.setChanged();
+		super.notifyObservers(m);
+		//super.notifyObservers("Member ["+this.id+"] received MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");
 
 	}
 

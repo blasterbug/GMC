@@ -34,7 +34,6 @@ public class MemberTest {
 		public void update(Observable obs, Object o) {
 			Message msg = (Message)o;
 			messages.add((Message)o);
-			System.out.println("BINGO");	
 		}
 
 		public boolean contains(Message m) {
@@ -42,13 +41,15 @@ public class MemberTest {
 		}
 
 		public boolean containsAt(Message m, int i) {
-			if(contains(m))
-				return messages.get(i).equals(m);
+			if(messages.size() > i) 
+				return messages.get(i).getId().equals(m.getId()) && 
+					messages.get(i).getContent().equals(m.getContent());
 			return false;
 		}
 
 		public void printMessages() {
 			int i = 0;
+			System.out.println("PRINTING DUMMY MESSAGES");
 			for ( Message m : messages) {
 				System.out.println("Message ["+i++ +"]: "+m.getContent());
 			}
@@ -123,17 +124,17 @@ public class MemberTest {
 			MulticastStrategy strg = new BasicUnreliableMulticast();
 
 			Member m1 = new MemberImpl(causal, strg);
+			m1.setId("id1");
 
 			Orderer causal2 = new CausalOrderer();
 			MulticastStrategy strg2 = new BasicUnreliableMulticast();
 	
 			Member m2 = new MemberImpl(causal2, strg2);
+			m2.setId("id2");
 	
 			Message msg1 = new Message("id1", "test message");
-			System.out.println("JOINING");	
 			m1.join(m2.getRemoteMember(), "id2");
 
-			System.out.println("SENDING MESSAGE");	
 
 			m1.sendMessage(msg1);
 			// TODO LISTENER
@@ -167,6 +168,7 @@ public class MemberTest {
 			m3.setId("id3");
 			m4.setId("id4");
 
+			m1.join(m1.getRemoteMember(), "id1");
 			m1.join(m2.getRemoteMember(), "id2");
 			m1.join(m3.getRemoteMember(), "id3");
 			m1.join(m4.getRemoteMember(), "id4");
@@ -195,9 +197,9 @@ public class MemberTest {
 			m2.sendMessage(msg2);
 			m3.sendMessage(msg3);
 
-			dummy.printMessages();
+//			dummy.printMessages();
 
-			Assert.assertTrue(dummy.containsAt(msg2, 2));
+			Assert.assertTrue(dummy.containsAt(msg2, 0));
 
 		}catch(RemoteException e) {
 			Assert.fail(e.getMessage());

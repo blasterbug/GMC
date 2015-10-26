@@ -68,6 +68,7 @@ public class NamingService implements Serializable, NamingServiceRemote
     if ( null != leader )
     {
       // just ask to the leader for joining the group
+      //m.join(leader, leader.getId());
       leader.join( m, m.getId());
       System.out.println("Member ["+m+"] joining leader ["+leader+"] of group ["+groupName+"]");
     }

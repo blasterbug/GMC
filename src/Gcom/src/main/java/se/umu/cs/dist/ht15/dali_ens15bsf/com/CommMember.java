@@ -49,7 +49,15 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    */
   public void post ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
-    multicastStrategy.send( msg, group );
+    Collection<RemoteMember> temp = new ArrayList<RemoteMember>();
+    try {
+    for (RemoteMember m : group)
+	    if (!m.getId().equals(this.id))
+		    temp.add(m);
+    } catch (RemoteException e) {
+	    System.out.println(e.getMessage()); 	
+    }
+    multicastStrategy.send( msg, group); //group );
   }
 
   /**

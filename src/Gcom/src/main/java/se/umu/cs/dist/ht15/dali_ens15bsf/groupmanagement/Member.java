@@ -4,6 +4,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.util.Collection;
+import java.util.Observable;
 
 import java.rmi.RemoteException;
 import java.rmi.NotBoundException;
