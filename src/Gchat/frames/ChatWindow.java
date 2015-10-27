@@ -1,28 +1,32 @@
-package Gchat.src.frames;
+package Gchat.frames;
 
-import Gchat.src.Listeners.SendAction;
+import Gchat.Listeners.SendAction;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by ens15bsf on 2015-10-21.
  */
-public class ChatWindow
+public class ChatWindow extends JFrame implements Observer
 {
-  private JFrame window;
 
   private String[] messages;
   private String[] users;
+  private String userName;
 
 
-  public ChatWindow ()
+  public ChatWindow ( String userName )
   {
-
+    // create the windows
+    super( "Gchat - " + userName );
+    this.userName = userName;
     this.users = new String[] { "user1", "user2", "user3", "user4" };
     this.messages = new String[] {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.",
+            "Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue\n ligula ac quam viverra nec consectetur ante hendrerit.",
             "Donec et mollis dolor.",
             "Praesent et diam eget libero egestas mattis sit amet vitae augue.",
             "Nam tincidunt congue enim, ut porta lorem lacinia consectetur.",
@@ -74,16 +78,14 @@ public class ChatWindow
     bottomLayout.setVerticalGroup(
             bottomLayout.createSequentialGroup()
                     .addGroup( bottomLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
-                            .addComponent( chatInputWrapper, 50, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE )
-                            .addComponent( sendBT )
-                            .addGap( 5 )
+                                    .addComponent( chatInputWrapper, 50, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE )
+                                    .addComponent( sendBT )
+                                    .addGap( 5 )
                     )
     );
 
-    // create the windows
-    window = new JFrame( "Gchat - Join a group" );
     JPanel mainPane = new JPanel();
-    window.setContentPane( mainPane );
+    super.setContentPane( mainPane );
 
     GroupLayout mainLayout = new GroupLayout( mainPane );
 
@@ -98,15 +100,21 @@ public class ChatWindow
     mainLayout.setHorizontalGroup(
             mainLayout.createSequentialGroup()
                     .addGroup( mainLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
-                            .addComponent( topPanel )
-                            .addComponent( bottomPanel )
+                                    .addComponent( topPanel )
+                                    .addComponent( bottomPanel )
                     )
     );
     // define the behavior when clicking on the close button
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    window.setSize( new Dimension( 800, 500 ) );
-    window.setVisible( true );
+    super.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+    super.setSize( new Dimension( 800, 500 ) );
+    super.setLocationRelativeTo( null );
   }
 
 
+  @Override
+  public void update( Observable observable, Object o )
+  {
+    //TODO
+    super.setName( "Gchat - " + userName + " (TODO)" );
+  }
 }

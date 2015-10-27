@@ -1,6 +1,6 @@
-package Gchat.src.Listeners;
+package Gchat.Listeners;
 
-import Gchat.src.frames.ConnectionWindow;
+import Gchat.frames.ConnectionWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +19,8 @@ public class ConnectAction implements ActionListener
   @Override
   public void actionPerformed ( ActionEvent actionEvent )
   {
-    System.out.println(window.getGroupConnection());
+    // TODO
+    System.out.println( window.getGroupConnection() );
+    System.out.println( window.getUserName() );
   }
 }
