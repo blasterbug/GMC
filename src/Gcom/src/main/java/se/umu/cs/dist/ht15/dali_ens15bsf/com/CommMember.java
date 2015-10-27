@@ -52,12 +52,13 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
     Collection<RemoteMember> temp = new ArrayList<RemoteMember>();
     try {
     for (RemoteMember m : group)
-	    if (!m.getId().equals(this.id))
+	    if (!m.getId().equals(this.id)) {
 		    temp.add(m);
+	    }
     } catch (RemoteException e) {
 	    System.out.println(e.getMessage()); 	
     }
-    multicastStrategy.send( msg, group); //group );
+    multicastStrategy.send( msg, group );
   }
 
   /**
@@ -117,5 +118,10 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
 
   public void setId(String id) {
 	  this.id = id;
+  }
+
+  @Override
+  public void addToView(RemoteMember m, String id) {
+	  super.notifyAddToView(m, id);
   }
 }

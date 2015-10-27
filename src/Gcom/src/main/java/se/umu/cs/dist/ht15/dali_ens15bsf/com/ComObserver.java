@@ -19,4 +19,6 @@ public interface ComObserver
    * @param groupID Group name to join
    */
   public void notifyNewMember ( RemoteMember member, String groupID );
+
+  public void notifyAddToView ( RemoteMember m, String id);
 }

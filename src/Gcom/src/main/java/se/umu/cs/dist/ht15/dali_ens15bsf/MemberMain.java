@@ -3,6 +3,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.UnorderedStrategy;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 
 import java.rmi.RemoteException;
 import java.rmi.NotBoundException;
@@ -19,6 +20,7 @@ public class MemberMain {
 				System.out.println("Joining group Bingo");
 				m.updateIdFromNameServer();
 				m.joinGroup("Bingo");
+				System.out.println("Joined group");	
 
 				int inChar = 'a';
 				while(inChar != 'q') {

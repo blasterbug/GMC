@@ -44,6 +44,12 @@ public class ComObservable
     }
   }
 
+  public void notifyAddToView(RemoteMember m, String id) {
+	  for ( ComObserver ob : observers ) {
+		  ob.notifyAddToView(m, id);
+	  }
+  }
+
   /**
    * Notify observers on incoming messages
    * @param msg New incoming message

@@ -31,4 +31,6 @@ public interface RemoteMember extends Remote, Serializable
 
 
   public String getId() throws RemoteException;
+
+  public void addToView(RemoteMember m, String id) throws RemoteException;
 }

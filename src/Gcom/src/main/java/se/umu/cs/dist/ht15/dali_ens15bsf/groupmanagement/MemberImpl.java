@@ -84,22 +84,30 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 
 	@Override
 	public synchronized void join(RemoteMember m, String id) {
-		System.out.println("Remote member ["+id+"] is joining");
+		System.out.println("Remote member ["+id+"] is joining "+this.id);
 		if(view.keySet().contains(id) && view.get(id).equals(m))
 			return;
-		view.put(id,m);
+		addToView(m,id);
 		for (String key : view.keySet()){
 			try {
-				if(!(key.equals(id))) {
-					RemoteMember rm = view.get(key);
-					System.out.println("Joining "+rm.toString());	
-					m.join(rm, id);
+				RemoteMember rm = view.get(key);
+				if(!(key.equals(this.id))) {
+					System.out.println("Joining "+rm.getId() + " in "+this.id);
+					rm.addToView(m,id);
 				}
+				if (!key.equals(id))
+					m.addToView(rm,key);
 			} catch (RemoteException e) {
 				System.out.println("Failed to join: " + e.getMessage());
 			}
 		}
-		System.out.println("Putting ["+id+"]");	
+		System.out.println("Putting ["+id+"] to "+this.id);	
+	}
+
+	@Override
+	public synchronized void addToView(RemoteMember m, String id) {
+		System.out.println("Adding ["+id+"] to view in "+this.id);	
+		view.put(id, m);
 	}
 
 	/**
@@ -114,6 +122,14 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		CommMessage<Message> msg;
 		msg = new CommMessage(preparedMessage);
 
+		/*
+		System.out.println("Current view");	
+		for ( String rm : view.keySet()) {
+			System.out.print(rm+" ");
+		}
+		System.out.println();	
+		*/
+			 
 		/* Send message to view */
 		try {
 			self.post(msg, view.values());
@@ -142,7 +158,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		Message m = (Message)o;
 		super.setChanged();
 		super.notifyObservers(m);
-		//super.notifyObservers("Member ["+this.id+"] received MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");
+		System.out.println("Member ["+this.id+"] received MESSAGE with content ["+m.getContent()+"] received from ["+m.getId()+"]");
 
 	}
 
@@ -169,5 +185,10 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	{
 //		System.out.println("Here we go");	
 		join( member, groupID );
+	}
+
+	@Override
+	public void notifyAddToView(RemoteMember m, String id) {
+		this.addToView(m,id);
 	}
 }

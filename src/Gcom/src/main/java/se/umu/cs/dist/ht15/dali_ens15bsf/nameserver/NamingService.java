@@ -39,6 +39,7 @@ public class NamingService implements Serializable, NamingServiceRemote
   protected Registry directory;
   protected Random dice;
   //protected HashMap<String, RemoteMember> idMap;
+  private int memberCounter = 0;
 
   /**
    * Create a new master node
@@ -130,9 +131,12 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public String getMyId ( RemoteMember member ) throws RemoteException
   {
-    String id = member.toString();
-    id += Integer.toHexString( dice.nextInt() );
-    //idMap.add( id, member )
+    String id = Integer.toString(memberCounter);
+    memberCounter++;
     return id;
+    //String id = member.toString();
+    //id += Integer.toHexString( dice.nextInt() );
+    //idMap.add( id, member )
+    //return id;
   }
 }

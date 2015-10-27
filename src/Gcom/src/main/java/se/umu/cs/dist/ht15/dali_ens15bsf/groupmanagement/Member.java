@@ -21,4 +21,5 @@ public interface Member {
 	public void updateIdFromNameServer() throws RemoteException;
 	public String getId();
 	public RemoteMember getLeader();
+	public void addToView(RemoteMember m, String id);
 }
