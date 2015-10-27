@@ -1,7 +1,7 @@
-package Gchat.src;
+package Gchat;
 
-import Gchat.src.frames.ChatWindow;
-import Gchat.src.frames.ConnectionWindow;
+import Gchat.frames.ChatWindow;
+import Gchat.frames.ConnectionWindow;
 
 /**
  * Created by ens15bsf on 2015-10-13.
@@ -17,6 +17,6 @@ public class AppChat
     new ConnectionWindow();
     // connect to the group
     // open the chat window
-    new ChatWindow();
+    new ChatWindow( "Yoda" );
   }
 }

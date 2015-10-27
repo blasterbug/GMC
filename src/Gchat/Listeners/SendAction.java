@@ -1,4 +1,4 @@
-package Gchat.src.Listeners;
+package Gchat.Listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
