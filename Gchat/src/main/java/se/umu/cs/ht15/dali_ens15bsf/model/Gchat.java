@@ -1,14 +1,14 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
+
+import java.util.*;
 
 /**
  * Created by ens15bsf on 2015-10-28.
  * model class for the Gchat
  */
-public class Gchat
+public class Gchat implements Observer
 {
   private HashMap<String, GUser> users;
   private LinkedList<GMessage> messages;
@@ -65,5 +65,11 @@ public class Gchat
   public void addObserver ( GModelObserver obs )
   {
     observers.add( obs );
+  }
+
+  @Override
+  public void update ( Observable observable, Object o )
+  {
+
   }
 }

@@ -1,9 +1,15 @@
 package se.umu.cs.ht15.dali_ens15bsf;
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicReliableMulticast;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.TreeBaseMulticast;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
 import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 
 /**
@@ -14,6 +20,15 @@ public class AppChat
 
   public static void main ( String[] args )
   {
+    try
+    {
+      Member mb = new MemberImpl( new CausalOrderer(), new BasicReliableMulticast() );
+    } catch ( RemoteException e )
+    {
+      e.printStackTrace();
+    }
+
+
     // create connection object
     // get a list of the existing groups
     // offer to the user to join a group or to create a new one
@@ -40,6 +55,7 @@ public class AppChat
     chatModel.sendMessage( "Lorem ipsum dolor sit amet, consectetur adipiscing elit." );
     chatModel.sendMessage( "Lorem ipsum dolor sit amet, consectetur adipiscing elit." );
     chatModel.sendMessage( "Lorem ipsum dolor sit amet, consectetur adipiscing elit." );
+
 
   }
 }

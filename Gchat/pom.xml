@@ -15,7 +15,7 @@
                 <updatePolicy>always</updatePolicy>
                 <checksumPolicy>fail</checksumPolicy>
             </releases>
-            <id>gcom</id>
+            <id>Gcom</id>
             <url>http://www8.cs.umu.se/~dali/repository</url>
             <layout>default</layout>
         </repository>
@@ -39,6 +39,11 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>se.umu.cs.dist.ht15.dali_ens15bsf</groupId>
+            <artifactId>Gcom</artifactId>
+            <version>4.0.0</version>
         </dependency>
     </dependencies>
 </project>
