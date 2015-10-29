@@ -6,4 +6,4 @@ notifications:
 language: java
 compiler: javac
 before_script:  cd src/Gcom
-script: mvn test
+script: mvn package
