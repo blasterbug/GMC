@@ -84,15 +84,16 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 
 	@Override
 	public synchronized void join(RemoteMember m, String id) {
-		System.out.println("Remote member ["+id+"] is joining "+this.id);
+//		System.out.println("Remote member ["+id+"] is joining "+this.id);
 		if(view.keySet().contains(id) && view.get(id).equals(m))
 			return;
+
 		addToView(m,id);
 		for (String key : view.keySet()){
 			try {
 				RemoteMember rm = view.get(key);
 				if(!(key.equals(this.id))) {
-					System.out.println("Joining "+rm.getId() + " in "+this.id);
+//					System.out.println("Joining "+rm.getId() + " in "+this.id);
 					rm.addToView(m,id);
 				}
 				if (!key.equals(id))
@@ -101,12 +102,12 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 				System.out.println("Failed to join: " + e.getMessage());
 			}
 		}
-		System.out.println("Putting ["+id+"] to "+this.id);	
+//		System.out.println("Putting ["+id+"] to "+this.id);	
 	}
 
 	@Override
 	public synchronized void addToView(RemoteMember m, String id) {
-		System.out.println("Adding ["+id+"] to view in "+this.id);	
+//		System.out.println("Adding ["+id+"] to view in "+this.id);	
 		view.put(id, m);
 	}
 

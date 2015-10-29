@@ -88,5 +88,12 @@ public class VectorClock extends HashMap<String, Integer> implements Serializabl
 	}
 
 
+	public void updateClock(VectorClock clock) {
+		for (String key : clock.keySet() ) 
+			if ( !super.containsKey(key) || super.get(key) < clock.get(key))
+				this.updateTime(key, clock.get(key));
+	}
+
+
 
 }

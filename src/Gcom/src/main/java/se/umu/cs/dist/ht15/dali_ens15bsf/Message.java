@@ -8,7 +8,11 @@ public class Message implements Serializable
 	private String id;
 	private String content;
 
-	public Message()  {
+	public Message() {}
+
+	public Message(Message m)  {
+		this.id = m.getId();
+		this.content = m.getContent();
 
 	}
 
