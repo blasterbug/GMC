@@ -1,7 +1,11 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -15,8 +19,10 @@ public class Gchat implements Observer
   private GUser user;
   private LinkedList<GModelObserver> observers;
 
+  private Member gcomMb;
 
-  public Gchat ( String userName )
+
+  public Gchat ( String userName ) throws UnableToJoinException
   {
     users = new HashMap<String, GUser>();
     messages = new LinkedList<GMessage>();
@@ -24,6 +30,15 @@ public class Gchat implements Observer
     users.put( userName, user );
 
     observers = new LinkedList<GModelObserver>();
+
+    try
+    {
+      gcomMb = new MemberImpl( new CausalOrderer(), new BasicUnreliableMulticast() );
+    } catch ( RemoteException e )
+    {
+      throw new UnableToJoinException( e );
+    }
+
 
   }
 
@@ -70,6 +85,6 @@ public class Gchat implements Observer
   @Override
   public void update ( Observable observable, Object o )
   {
-
+    System.out.println(o.toString());
   }
 }
