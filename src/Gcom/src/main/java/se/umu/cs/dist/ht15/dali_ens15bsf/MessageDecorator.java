@@ -1,7 +1,9 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
-public abstract class MessageDecorator extends Message {
-	protected Message decoratedMessage;
+import java.io.Serializable;
+
+public abstract class MessageDecorator<T extends Serializable> extends Message<T> {
+	protected Message<T > decoratedMessage;
 
 	public MessageDecorator(Message msg) {
 		decoratedMessage = msg;
@@ -13,7 +15,7 @@ public abstract class MessageDecorator extends Message {
 	}
 
 	@Override
-	public String getContent() {
+	public T getContent() {
 		return decoratedMessage.getContent();
 	}
 
