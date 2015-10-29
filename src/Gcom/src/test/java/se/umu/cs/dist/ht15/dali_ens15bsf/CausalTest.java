@@ -59,12 +59,14 @@ public class CausalTest {
 	}
 
 	
+	@Ignore
 	@Test
 	public void shouldReturnNullHoldbackAfterInit() {
 		Orderer causal = new CausalOrderer();
 		Assert.assertTrue(causal.getHoldbackQueue("id1") == null);
 	}
 
+	@Ignore
 	@Test(expected=NullPointerException.class)
 	public void shouldThrowNullPtrExceptOnNullClock() {
 		Orderer causal = new CausalOrderer();
@@ -76,6 +78,7 @@ public class CausalTest {
 		Assert.assertTrue(causal.getHoldbackQueue("id1") != null);
 	}
 
+	@Ignore
 	@Test
 	public void shouldNotReturnNullHoldbackAfterMessage() {
 		Orderer causal = new CausalOrderer();
@@ -87,6 +90,7 @@ public class CausalTest {
 		Assert.assertTrue(causal.getHoldbackQueue("id1") != null);
 	}
 
+	@Ignore
 	@Test
 	public void shouldNotHoldFirstEverMessage() {
 		Orderer causal = new CausalOrderer();
@@ -99,6 +103,7 @@ public class CausalTest {
 		Assert.assertTrue(causal.getHoldbackQueue("id1").isEmpty());
 	}
 
+	@Ignore
 	@Test
 	public void shouldHoldFutureMessage() {
 		Orderer causal = new CausalOrderer();
@@ -111,6 +116,7 @@ public class CausalTest {
 
 		Assert.assertTrue(!causal.getHoldbackQueue("id1").isEmpty());
 	}
+	@Ignore
 	@Test
 	public void shouldNotHoldFutureMessageOnceReached() {
 		Orderer causal = new CausalOrderer();
@@ -130,6 +136,7 @@ public class CausalTest {
 		Assert.assertTrue(causal.getHoldbackQueue("id1").isEmpty());
 	}
 
+	@Ignore
 	@Test
 	public void shouldNotHoldWithHigherOtherSeqNr() {
 		Orderer causal = new CausalOrderer();
@@ -170,6 +177,7 @@ public class CausalTest {
 
 	}
 
+	@Ignore
 	@Test
 	public void shouldDeliverFirstEverMessage() {
 		CausalOrderer causal = new CausalOrderer();
@@ -269,7 +277,6 @@ public class CausalTest {
 	}
 
 
-	@Ignore
 	@Test
 	public void shouldPrepareMessage() {
 		CausalOrderer causal = new CausalOrderer();
@@ -281,6 +288,7 @@ public class CausalTest {
 		Message m1 = causal.prepareMessage(new Message("id1", "m1"));
 
 		causal.addMessage(m1);
+
 
 		Assert.assertTrue(dummy.contains(m1));
 	}

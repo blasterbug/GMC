@@ -15,13 +15,13 @@ public class MemberMain {
 		public static void main(String [] args) {
 			System.out.println("Initiating member");	
 			try {
-				Member m = new MemberImpl(new FifoOrderer(), new BasicReliableMulticast());
+				Member m = new MemberImpl(new CausalOrderer(), new TreeBaseMulticast());
 				System.out.println("Connecting to server");	
 				m.connectToNameserver();
 				System.out.println("Joining group Bingo");
 				m.updateIdFromNameServer();
 				m.joinGroup("Bingo");
-				System.out.println("Joined group");	
+				System.out.println("Joined group");
 
 				int inChar = 'a';
 				while(inChar != 'q') {

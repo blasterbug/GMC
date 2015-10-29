@@ -147,7 +147,6 @@ public class MemberTest {
 
 	}
 
-	@Ignore
 	@Test
 	public void shouldDeliverMessagesInOrder() {
 		try{
@@ -184,12 +183,12 @@ public class MemberTest {
 			m1.addObserver(dummy);
 
 			m1.sendMessage(msg1);
-//			m2.sendMessage(msg2);
-//			m3.sendMessage(msg3);
+			m2.sendMessage(msg2);
+			m3.sendMessage(msg3);
 
-			dummy.printMessages();
-
-			Assert.assertTrue(dummy.containsAt(msg1, 0));
+			Assert.assertTrue(dummy.containsAt(msg1, 0) 
+					&& dummy.containsAt(msg2, 1) 
+					&& dummy.containsAt(msg3, 2));
 
 		}catch(RemoteException e) {
 			Assert.fail(e.getMessage());

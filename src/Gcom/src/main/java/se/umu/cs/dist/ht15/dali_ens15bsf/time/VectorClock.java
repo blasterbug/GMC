@@ -12,6 +12,12 @@ public class VectorClock extends HashMap<String, Integer> implements Serializabl
 		super();
 	}
 
+	public VectorClock(VectorClock c) {
+		for (String key : c.keySet() ) {
+			super.put(key, c.get(key));
+		}
+	}
+
 	public void updateTime(String id, Integer time) {
 		super.put(id, time);
 	}
