@@ -1,6 +1,6 @@
-package Gchat.Listeners;
+package se.umu.cs.ht15.dali_ens15bsf.view.listeners;
 
-import Gchat.frames.ConnectionWindow;
+import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,13 +12,15 @@ public class AddGroupAction implements ActionListener
 {
   private ConnectionWindow window;
 
-  public AddGroupAction( ConnectionWindow wdw )
+  public AddGroupAction ( ConnectionWindow wdw )
   {
     window = wdw;
   }
+
   @Override
   public void actionPerformed ( ActionEvent actionEvent )
   {
-    window.addGroup( window.newGroupName() );
+    if ( !( window.newGroupName().equals( ConnectionWindow.CREATE_GROUP ) ) )
+      window.addGroup( window.newGroupName() );
   }
 }
