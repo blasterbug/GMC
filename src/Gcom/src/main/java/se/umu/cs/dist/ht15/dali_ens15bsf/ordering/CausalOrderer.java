@@ -27,6 +27,10 @@ public class CausalOrderer extends Orderer {
 		Integer senderSeqNr = senderClock.get(senderId);
 		Integer orderSeqNr = orderClock.get(senderId);
 
+		System.out.println("SENDER ["+senderId+"SEQ: "+senderSeqNr);	
+		System.out.println("RECV SEQ: "+orderSeqNr);	
+
+
 
 		if(senderClock == null) {
 			throw new NullPointerException("Message clock was null");
@@ -85,7 +89,7 @@ public class CausalOrderer extends Orderer {
 						}
 					}
 				}
-			}while(didChange);
+			} while(didChange);
 		}
 	}
 
@@ -93,7 +97,8 @@ public class CausalOrderer extends Orderer {
 	public Message prepareMessage ( Message msg )
 	{
 		orderClock.increment(msg.getId());
-		return new CausalMessage(msg,orderClock);
+		CausalMessage c = new CausalMessage(msg, orderClock);
+		return c;
 	}
 
 	private void deliver(Message m, String senderId) {

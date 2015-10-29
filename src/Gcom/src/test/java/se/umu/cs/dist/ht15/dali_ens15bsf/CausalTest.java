@@ -43,7 +43,18 @@ public class CausalTest {
 			System.out.println(m.equals(messages.get(i)));	
 			System.out.println(messages.get(i).equals(m));	
 			*/
-			return messages.get(i).equals(m);
+			if(messages.size() > i) 
+				return messages.get(i).getId().equals(m.getId()) && 
+					messages.get(i).getContent().equals(m.getContent());
+			return false;
+		}
+
+		public void printMessages() {
+			int i = 0;
+			System.out.println("PRINTING DUMMY MESSAGES");
+			for ( Message m : messages) {
+				System.out.println("Message ["+i++ +"]: "+m.getContent());
+			}
 		}
 	}
 
@@ -202,25 +213,27 @@ public class CausalTest {
 		VectorClock clock = new VectorClock();
 		clock.updateTime("id1", 2);
 		clock.updateTime("id2", 3);
-		Message msg = new CausalMessage(new Message("id1", "m4"), clock);
+		Message m3 = new CausalMessage(new Message("id1", "m4"), clock);
 
 		VectorClock clock2 = new VectorClock();
 		clock2.updateTime("id1",1);
 		clock2.updateTime("id2", 3);
 
-		Message msg2 = new CausalMessage(new Message("id1", "m3"), clock2);
+		Message m4 = new CausalMessage(new Message("id1", "m3"), clock2);
 
 		causal.addMessage(m0);
 		causal.addMessage(m1);
 		causal.addMessage(m2);
-		causal.addMessage(msg);
-		causal.addMessage(msg2);
+		causal.addMessage(m3);
+		causal.addMessage(m4);
+
+		dummy.printMessages();
 
 		Assert.assertTrue(dummy.containsAt(m0, 0) &&
 				dummy.containsAt(m1, 1) &&
 				dummy.containsAt(m2, 2) &&
-				dummy.containsAt(msg, 3) &&
-				dummy.containsAt(msg2, 4));
+				dummy.containsAt(m3, 3) &&
+				dummy.containsAt(m4, 4));
 	}
 
 	@Ignore
@@ -253,5 +266,22 @@ public class CausalTest {
 		Assert.assertTrue(dummy.containsAt(m1,0) &&
 				((dummy.containsAt(m2,1) && dummy.containsAt(m3, 2)) || 
 				 (dummy.containsAt(m3, 1) && dummy.containsAt(m2,2))));
+	}
+
+
+	@Ignore
+	@Test
+	public void shouldPrepareMessage() {
+		CausalOrderer causal = new CausalOrderer();
+
+		DummyObserver dummy = new DummyObserver();
+
+		causal.addObserver(dummy);
+
+		Message m1 = causal.prepareMessage(new Message("id1", "m1"));
+
+		causal.addMessage(m1);
+
+		Assert.assertTrue(dummy.contains(m1));
 	}
 }

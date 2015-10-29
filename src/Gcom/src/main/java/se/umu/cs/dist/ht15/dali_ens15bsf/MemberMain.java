@@ -4,6 +4,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.UnorderedStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 
 import java.rmi.RemoteException;
 import java.rmi.NotBoundException;
@@ -14,7 +15,7 @@ public class MemberMain {
 		public static void main(String [] args) {
 			System.out.println("Initiating member");	
 			try {
-				Member m = new MemberImpl(new UnorderedStrategy(), new BasicReliableMulticast());
+				Member m = new MemberImpl(new FifoOrderer(), new BasicReliableMulticast());
 				System.out.println("Connecting to server");	
 				m.connectToNameserver();
 				System.out.println("Joining group Bingo");

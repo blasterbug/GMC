@@ -78,4 +78,9 @@ public class groupRegisteringTest implements ComObserver
   {
     System.out.println( member.toString() + " asked to join group " + groupID);
   }
+
+  @Override
+  public void notifyAddToView(RemoteMember m, String id) {
+
+  }
 }
