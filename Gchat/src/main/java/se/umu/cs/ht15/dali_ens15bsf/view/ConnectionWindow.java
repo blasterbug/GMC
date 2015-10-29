@@ -1,7 +1,8 @@
-package Gchat.frames;
+package se.umu.cs.ht15.dali_ens15bsf.view;
 
-import Gchat.Listeners.AddGroupAction;
-import Gchat.Listeners.ConnectAction;
+
+import se.umu.cs.ht15.dali_ens15bsf.view.listeners.AddGroupAction;
+import se.umu.cs.ht15.dali_ens15bsf.view.listeners.ConnectAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.util.Random;
 public class ConnectionWindow extends JFrame
 {
   public final static String CREATE_GROUP = "Create a new group?";
-  private final String[] NAMES = {
+  private static final String[] NAMES = {
           "King AdasKing Adas",
           "Padmé Amidala",
           "Darth Andeddu",
@@ -45,7 +46,9 @@ public class ConnectionWindow extends JFrame
           "Watto",
           "Mace Windu",
           "Yoda"
-    };
+  };
+  private static final Random dice = new Random();
+
   private JTextField userName;
   private JTextField newGroupName;
   private String[] listGroups;
@@ -56,7 +59,7 @@ public class ConnectionWindow extends JFrame
 
     // create the windows
     super( "Gchat - Join a group" );
-    listGroups = new String[] { "group1",  "group2", "group3" };
+    listGroups = new String[] { "group1", "group2", "group3" };
 
     // Create a panel for the list of available groups
     JScrollPane list = new JScrollPane();
@@ -74,7 +77,7 @@ public class ConnectionWindow extends JFrame
     newGroupLayout.setAutoCreateContainerGaps( false );
     // define the components of the panel to create a group
     // a text area
-    newGroupName = new JTextField( CREATE_GROUP , 30 );
+    newGroupName = new JTextField( CREATE_GROUP, 30 );
     // and a button
     JButton addBT = new JButton( "add" );
     addBT.addActionListener( new AddGroupAction( this ) );
@@ -100,7 +103,7 @@ public class ConnectionWindow extends JFrame
     JoinPanelLayout.setAutoCreateContainerGaps( false );
     // define the components of the panel for join a group
     // a text area
-    userName = new JTextField( getRandomUserName() , 30 );
+    userName = new JTextField( getRandomUserName(), 30 );
     userName.addActionListener( new ConnectAction( this ) );
     // and a button
     JButton joinBT = new JButton( "join" );
@@ -170,29 +173,29 @@ public class ConnectionWindow extends JFrame
 
   public String getGroupConnection ()
   {
-      return groups.getSelectedValue();
+    return groups.getSelectedValue();
   }
 
-  public String getUserName()
+  public String getUserName ()
   {
     return userName.getText();
   }
 
-  public String newGroupName()
+  public String newGroupName ()
   {
     return newGroupName.getText();
   }
 
-  String getRandomUserName()
+  public static String getRandomUserName ()
   {
-    return NAMES[new Random().nextInt( NAMES.length )];
+    return NAMES[dice.nextInt( NAMES.length )];
   }
 
-  public void addGroup( String newGroup )
+  public void addGroup ( String newGroup )
   {
     String[] newListGroups = new String[listGroups.length + 1];
     int i = 0;
-    while(i < listGroups.length)
+    while ( i < listGroups.length )
     {
       newListGroups[i] = listGroups[i];
       i++;
