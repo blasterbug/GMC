@@ -5,6 +5,7 @@ import se.umu.cs.ht15.dali_ens15bsf.model.GMessage;
 import se.umu.cs.ht15.dali_ens15bsf.model.GModelObserver;
 import se.umu.cs.ht15.dali_ens15bsf.model.GUser;
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
+import se.umu.cs.ht15.dali_ens15bsf.view.listeners.EnterToSend;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.SendAction;
 
 import javax.swing.*;
@@ -31,8 +32,8 @@ public class ChatWindow extends JFrame implements GModelObserver
 
     // Create a spilt panel for the list of users
     listUsers = new JList<GUser>();
-    listUsers.setSize( new Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
     listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
+    //listUsers.setSize( new Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
     JScrollPane scrollUSR = new JScrollPane( listUsers );
 
     for ( GUser usr : model.getUsers() )
@@ -40,15 +41,20 @@ public class ChatWindow extends JFrame implements GModelObserver
 
     // panel for messages
     messageList = new JPanel();
-    messageList.setAutoscrolls( true );
-    messageList.setLayout( new BoxLayout( messageList, BoxLayout.PAGE_AXIS ) );
-    JScrollPane scrollMSG = new JScrollPane( messageList );
+    messageList.setAutoscrolls( false );
+    messageList.setLayout( new FlowLayout() );
+    JViewport viewport = new JViewport();
+    viewport.setLayout( new BoxLayout( viewport, BoxLayout.PAGE_AXIS) );
+    viewport.setView( messageList );
+    JScrollPane scrollMSG = new JScrollPane( viewport );
 
     //Create a split pane with the two scroll panes in it.
     JSplitPane topPanel = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT, scrollMSG, scrollUSR );
     topPanel.setAutoscrolls( true );
     topPanel.setOneTouchExpandable( true );
     topPanel.setDividerLocation( 600 );
+
+    messageList.setAutoscrolls( true );
 
     for ( GMessage gmsg : model.getMessages() )
       messageList.add( gmsg );
@@ -64,6 +70,7 @@ public class ChatWindow extends JFrame implements GModelObserver
     // define the components of the panel
     // a text area
     chatInput = new JTextArea( "Chat here" );
+    chatInput.addKeyListener( new EnterToSend( chat, chatInput ) );
     JScrollPane chatInputWrapper = new JScrollPane( chatInput );
     chatInput.setRows( 2 );
     // and a button
@@ -120,6 +127,7 @@ public class ChatWindow extends JFrame implements GModelObserver
     messageList.removeAll();
     for ( GMessage msg : model.getMessages() )
       messageList.add( msg );
+
 
   }
 

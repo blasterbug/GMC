@@ -22,25 +22,25 @@ public class GMessage extends JPanel
     setLayout( layout );
     JTextArea username = new JTextArea( from.toString() );
     username.setEditable( false );
-    username.setLayout( new BorderLayout() );
+    username.setLayout( new BoxLayout( username, BoxLayout.PAGE_AXIS ) );
     JTextArea message = new JTextArea( msg );
     message.setEditable( false );
     message.setLineWrap( true );
-    message.setLayout( new BorderLayout() );
+    message.setLayout(  new BoxLayout( message, BoxLayout.PAGE_AXIS ) );
     layout.setAutoCreateGaps( true );
     layout.setAutoCreateContainerGaps( true );
     layout.setHorizontalGroup(
             layout.createSequentialGroup()
-                    .addComponent( username )
+                    .addComponent( username, 100, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE )
                     .addGap( 5 )
-                    .addComponent( message )
+                    .addComponent( message, 450, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE )
     );
     layout.setVerticalGroup(
             layout.createSequentialGroup()
                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
-                            .addComponent( username )
+                            .addComponent( username, 50, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE )
                             .addGap( 5 )
-                            .addComponent( message ) )
+                            .addComponent( message, 50, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE ) )
     );
 
 
@@ -53,8 +53,7 @@ public class GMessage extends JPanel
     username.setForeground( user.getColor() );
     message.setForeground( foregroundColor );
     setBackground( username.getBackground() );
-    setSize( new Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
-
+    //setSize( new Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
   }
 
   public String toString ()
