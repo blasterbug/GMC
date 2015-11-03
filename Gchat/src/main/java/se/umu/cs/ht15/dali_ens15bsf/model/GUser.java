@@ -25,10 +25,12 @@ public class GUser extends JLabel
   {
     super( name );
     this.name = name;
-    setLayout( new BorderLayout() );
+    setLayout( new BoxLayout(this, BoxLayout.PAGE_AXIS) );
     color = chooseColor();
     setBackground( color.brighter() );
     setForeground( color.darker() );
+    //setBorder( BorderFactory.createLineBorder( color ) );
+    //setSize( 20, 300 );
   }
 
   public Color getColor ()

@@ -67,6 +67,7 @@ public class ConnectionWindow extends JFrame
     groups.setSelectedIndex( 0 );
     list.getViewport().setView( groups );
     list.setPreferredSize( new Dimension( 220, 100 ) );
+    groups.setAutoscrolls( true );
 
     // create the panel with the text input and the join button
     JPanel newGroupPanel = new JPanel();
@@ -204,5 +205,6 @@ public class ConnectionWindow extends JFrame
     listGroups = newListGroups;
     groups.setListData( listGroups );
     groups.setSelectedIndex( i );
+    groups.updateUI();
   }
 }

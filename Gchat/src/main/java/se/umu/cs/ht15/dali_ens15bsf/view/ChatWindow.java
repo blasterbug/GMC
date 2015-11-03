@@ -21,6 +21,8 @@ public class ChatWindow extends JFrame implements GModelObserver
   private JList<GUser> listUsers;
   private JPanel messageList;
   private JTextArea chatInput;
+  private JScrollPane scrollMSG;
+  private BoxLayout listLayout;
 
 
   public ChatWindow ( Gchat chat )
@@ -33,8 +35,13 @@ public class ChatWindow extends JFrame implements GModelObserver
     // Create a spilt panel for the list of users
     listUsers = new JList<GUser>();
     listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
-    //listUsers.setSize( new Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
-    JScrollPane scrollUSR = new JScrollPane( listUsers );
+    listUsers.setFixedCellHeight( 60 );
+    listUsers.setLayoutOrientation( JList.HORIZONTAL_WRAP );
+    listUsers.setModel( new DefaultComboBoxModel<GUser>(  ) );
+    JViewport userlistVP = new JViewport();
+    userlistVP.setView( listUsers );
+    JScrollPane scrollUSR = new JScrollPane( userlistVP );
+    scrollUSR.setAutoscrolls( true );
 
     for ( GUser usr : model.getUsers() )
       listUsers.add( usr );
@@ -42,14 +49,16 @@ public class ChatWindow extends JFrame implements GModelObserver
     // panel for messages
     messageList = new JPanel();
     messageList.setAutoscrolls( false );
-    messageList.setLayout( new FlowLayout() );
-    JViewport viewport = new JViewport();
-    viewport.setLayout( new BoxLayout( viewport, BoxLayout.PAGE_AXIS) );
-    viewport.setView( messageList );
-    JScrollPane scrollMSG = new JScrollPane( viewport );
+    listLayout =  new BoxLayout( messageList, BoxLayout.PAGE_AXIS);
+    messageList.setLayout( listLayout );
+    JViewport viewportMessages = new JViewport();
+    viewportMessages.setLayout( new BoxLayout( viewportMessages, BoxLayout.PAGE_AXIS ) );
+    viewportMessages.setView( messageList );
+    scrollMSG = new JScrollPane( viewportMessages );
 
     //Create a split pane with the two scroll panes in it.
     JSplitPane topPanel = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT, scrollMSG, scrollUSR );
+    topPanel.updateUI();
     topPanel.setAutoscrolls( true );
     topPanel.setOneTouchExpandable( true );
     topPanel.setDividerLocation( 600 );
@@ -70,6 +79,9 @@ public class ChatWindow extends JFrame implements GModelObserver
     // define the components of the panel
     // a text area
     chatInput = new JTextArea( "Chat here" );
+    chatInput.setLineWrap( true );
+    chatInput.setWrapStyleWord( true );
+    chatInput.setLayout( new BorderLayout() );
     chatInput.addKeyListener( new EnterToSend( chat, chatInput ) );
     JScrollPane chatInputWrapper = new JScrollPane( chatInput );
     chatInput.setRows( 2 );
@@ -113,11 +125,11 @@ public class ChatWindow extends JFrame implements GModelObserver
                                     .addComponent( bottomPanel )
                     )
     );
+   // super.pack();
     // define the behavior when clicking on the close button
     super.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     super.setSize( new Dimension( 800, 500 ) );
     super.setLocationRelativeTo( null );
-    //super.pack();
   }
 
 
@@ -126,9 +138,14 @@ public class ChatWindow extends JFrame implements GModelObserver
   {
     messageList.removeAll();
     for ( GMessage msg : model.getMessages() )
+    {
       messageList.add( msg );
+    }
 
-
+    messageList.add( Box.createVerticalGlue() );
+    messageList.updateUI();
+    chatInput.requestFocus();
+    scrollMSG.getVerticalScrollBar().setValue( scrollMSG.getVerticalScrollBar().getMaximum() );
   }
 
   public void newUser ()
@@ -136,5 +153,7 @@ public class ChatWindow extends JFrame implements GModelObserver
     listUsers.removeAll();
     for ( GUser usr : model.getUsers() )
       listUsers.add( usr );
+    listUsers.add( Box.createVerticalGlue() );
+    listUsers.updateUI();
   }
 }

@@ -25,22 +25,23 @@ public class GMessage extends JPanel
     username.setLayout( new BoxLayout( username, BoxLayout.PAGE_AXIS ) );
     JTextArea message = new JTextArea( msg );
     message.setEditable( false );
+    message.setWrapStyleWord( true );
     message.setLineWrap( true );
-    message.setLayout(  new BoxLayout( message, BoxLayout.PAGE_AXIS ) );
+    message.setLayout( new BoxLayout( message, BoxLayout.PAGE_AXIS ) );
     layout.setAutoCreateGaps( true );
     layout.setAutoCreateContainerGaps( true );
     layout.setHorizontalGroup(
             layout.createSequentialGroup()
-                    .addComponent( username, 100, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE )
+                    .addComponent( username, 100, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE )
                     .addGap( 5 )
-                    .addComponent( message, 450, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE )
+                    .addComponent( message )
     );
     layout.setVerticalGroup(
             layout.createSequentialGroup()
                     .addGroup( layout.createParallelGroup( GroupLayout.Alignment.BASELINE )
-                            .addComponent( username, 50, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE )
+                            .addComponent( username )
                             .addGap( 5 )
-                            .addComponent( message, 50, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE ) )
+                            .addComponent( message ) )
     );
 
 
@@ -49,10 +50,11 @@ public class GMessage extends JPanel
 //    username.setBackground( backgroundColor );
 //    message.setBackground( backgroundColor );
     Color foregroundColor = user.getColor().darker();
-    this.setForeground( foregroundColor );
+    setForeground( foregroundColor );
     username.setForeground( user.getColor() );
     message.setForeground( foregroundColor );
     setBackground( username.getBackground() );
+    setBorder( BorderFactory.createLineBorder( foregroundColor ) );
     //setSize( new Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
   }
 
