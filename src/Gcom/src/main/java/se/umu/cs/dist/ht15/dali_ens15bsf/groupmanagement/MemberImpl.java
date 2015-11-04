@@ -142,8 +142,10 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		} catch(UnreachableRemoteObjectException exp) {
 	//		exp.printStackTrace();
 			try {
-				for ( RemoteMember rm : self.getUnreachableRemoteObjects() ) 
+				for ( RemoteMember rm : self.getUnreachableRemoteObjects() ) {
+					System.out.println("Handling " +rm.getId());	
 					handleUnavailableMember(rm);
+				}
 			} catch (RemoteException ex) {
 				System.out.println(ex.getMessage());	
 			}
@@ -214,12 +216,12 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		System.out.println("Trying to update leader");	
 		RemoteMember lead = groups.get(this.groupId);
 
+		view.remove(member.getId());
 		if ( lead != null && member.equals(lead)) {
 			nameserver.updateLeader(this.groupId,this.getRemoteMember());
 			for ( RemoteMember rm : view.values()) {
 				rm.updateLeader(lead, this.groupId);
 			}
 		}
-		view.remove(member.getId());
 	}
 }
