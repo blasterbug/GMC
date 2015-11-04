@@ -2,6 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.com.debug;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 
+import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Vector;
@@ -39,6 +40,20 @@ public class ComMemberDebug extends ComMember
   }
 
   /**
+   * Receive a Communication message from another node
+   *
+   * @param msg Message to receive
+   * @throws java.rmi.RemoteException
+   */
+  @Override
+  public void deliver ( ComMessage msg ) throws RemoteException
+  {
+    super.deliver( msg );
+    for ( ComDebugObserver obs : observers )
+      obs.notifyIncomingMessage( msg );
+  }
+
+  /**
    * Set if all the messages should be delivered or maybe not
    * @param active True to activated the random delivery
    */
@@ -64,7 +79,8 @@ public class ComMemberDebug extends ComMember
     {
       e.printStackTrace();
     }
-    multicastStrategy.send( msg, group );
-    //for ( ComDebugObserver obs  )
+    super.post( msg, group );
+    for ( ComDebugObserver obs : observers )
+      obs.notifyOutgoingMessage( msg );
   }
 }
