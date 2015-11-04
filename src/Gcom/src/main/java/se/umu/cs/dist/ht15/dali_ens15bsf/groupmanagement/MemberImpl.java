@@ -16,14 +16,13 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Collection;
-import java.util.ArrayList;
 
 public class MemberImpl extends Observable implements Member, ComObserver, Observer
 {
 	private Map<String, RemoteMember> view;
 //	private Collection<RemoteMember> view;
 	private Orderer orderer;
-	private CommMember self;
+	private ComMember self;
 	private RemoteMember leader;
 	private String id;
 	private NamingServiceRemote nameserver;
@@ -36,7 +35,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		groups = new HashMap<String, RemoteMember>();
 		orderer = o;
 
-		self = new CommMember(strg, this);
+		self = new ComMember(strg, this);
 		UnicastRemoteObject.exportObject(self, 0);
 		//System.out.println(self);
 		orderer.addObserver( this );
@@ -59,7 +58,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	@Override
 	public void joinGroup(String gid) throws RemoteException{
 		leader = nameserver.joinGroup(gid, self);
-		this.groups.put(gid, leader);
+		this.groups.put( gid, leader );
 		this.groupId = gid;
 	}
 
@@ -125,8 +124,8 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		Message preparedMessage = orderer.prepareMessage(m);
 		
 		/* Create communication message */
-		CommMessage<Message> msg;
-		msg = new CommMessage(preparedMessage);
+		ComMessage<Message> msg;
+		msg = new ComMessage(preparedMessage);
 
 		/*
 		System.out.println("Current view");	
@@ -142,12 +141,14 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		} catch(UnreachableRemoteObjectException exp) {
 	//		exp.printStackTrace();
 			try {
-				for ( RemoteMember rm : self.getUnreachableRemoteObjects() ) {
+				Collection<RemoteMember> tmp = self.getUnreachableRemoteObjects();
+				System.out.println("Handling unreachables " + tmp.size());	
+				for ( RemoteMember rm : tmp ) {
 					System.out.println("Handling " +rm.getId());	
 					handleUnavailableMember(rm);
 				}
 			} catch (RemoteException ex) {
-				System.out.println(ex.getMessage());	
+				System.out.println("ERROR " + ex.getMessage());	
 			}
 
 		}
@@ -158,7 +159,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	@Override
 	public void receiveMessage(Message m) {
 //		System.out.println("Bngko");	
-		orderer.addMessage(m);
+		orderer.addMessage( m );
 	}
 
 	@Override
@@ -182,10 +183,10 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	 * @param msg message to give to the Observer
 	 */
 	@Override
-	public void notifyObservers ( CommMessage msg )
+	public void notifyObservers ( ComMessage msg )
 	{
 		// pretty awful
-		receiveMessage( ((CommMessage<Message>)msg).getContent() );
+		receiveMessage( ((ComMessage<Message>)msg).getContent() );
 	}
 
 	/**
@@ -204,12 +205,12 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	@Override
 	public void notifyNewLeader ( RemoteMember newLeader, String groupId) {
 		System.out.println("Setting new leader");	
-		this.groups.put(groupId, newLeader);
+		this.groups.put( groupId, newLeader );
 	}
 
 	@Override
 	public void notifyAddToView(RemoteMember m, String id) {
-		this.addToView(m,id);
+		this.addToView( m, id );
 	}
 
 	private void handleUnavailableMember(RemoteMember member) throws RemoteException {

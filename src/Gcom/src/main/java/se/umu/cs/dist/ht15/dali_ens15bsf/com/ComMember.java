@@ -4,16 +4,12 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
-import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 
 /**
  * Created by ens15bsf on 2015-10-08.
  * Define the remote object used to manipulate members in Gcom
  */
-public class CommMember extends ComObservable implements RemoteMember, Serializable
+public class ComMember extends ComObservable implements RemoteMember, Serializable
 {
   private static final long serialVersionUID = 4672654439762386594L;
   protected ArrayList<RemoteMember> group;
@@ -27,7 +23,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    *
    * @param strategy Strategy to use for multicasting messages
    */
-  public CommMember ( MulticastStrategy strategy, ComObserver mbr )
+  public ComMember ( MulticastStrategy strategy, ComObserver mbr )
   {
 	  super();
     group = new ArrayList<RemoteMember>();
@@ -47,7 +43,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    * @param msg   Message to multicast
    * @param group Group to send the message
    */
-  public void post ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
+  public void post ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     Collection<RemoteMember> temp = new ArrayList<RemoteMember>();
     try {
@@ -68,7 +64,7 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void deliver ( CommMessage msg ) throws RemoteException
+  public void deliver ( ComMessage msg ) throws RemoteException
   {
     //multicastStrategy.receive( msg );
     //owner.receiveMessage( (Message)msg.getContent() );
@@ -127,6 +123,6 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
 
   @Override
   public void updateLeader(RemoteMember newLead, String groupId) {
-	  super.notifyNewLeader(newLead, groupId);
+	  super.notifyNewLeader( newLead, groupId );
   }
 }

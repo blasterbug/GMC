@@ -10,7 +10,7 @@ public interface ComObserver
    *
    * @param msg message to give to the Observer
    */
-  public void notifyObservers ( CommMessage msg );
+  public void notifyObservers ( ComMessage msg );
 
   /**
    * Notify observer when new member want to join a group

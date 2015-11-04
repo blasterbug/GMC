@@ -8,12 +8,12 @@ import java.util.LinkedList;
  */
 public class BasicReliableMulticast extends BasicUnreliableMulticast
 {
-  private LinkedList<CommMessage> receivedBefore;
+  private LinkedList<ComMessage> receivedBefore;
 
   public BasicReliableMulticast ()
   {
     super();
-    receivedBefore = new LinkedList<CommMessage>();
+    receivedBefore = new LinkedList<ComMessage>();
   }
 
   /**
@@ -24,7 +24,7 @@ public class BasicReliableMulticast extends BasicUnreliableMulticast
    * @throws se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException
    */
   @Override
-  public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
+  public void receive ( ComMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
     // if the message was not previously received
     if ( !( receivedBefore.contains( msg ) ) )

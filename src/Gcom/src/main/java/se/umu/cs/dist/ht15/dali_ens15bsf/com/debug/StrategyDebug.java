@@ -1,6 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com.debug;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
@@ -66,8 +66,8 @@ class Pair<L, R>
 public class StrategyDebug extends MulticastStrategy
 {
   private MulticastStrategy core;
-  private LinkedList<Pair<CommMessage, Collection>> sendQueue;
-  private LinkedList<CommMessage> incomingQueue;
+  private LinkedList<Pair<ComMessage, Collection>> sendQueue;
+  private LinkedList<ComMessage> incomingQueue;
   private boolean mixDelivering;
   private boolean mixReceiving;
   private Random dice;
@@ -76,8 +76,8 @@ public class StrategyDebug extends MulticastStrategy
   {
     core = strg;
     dice = new Random();
-    sendQueue = new LinkedList<Pair<CommMessage, Collection>>();
-    incomingQueue = new LinkedList<CommMessage>();
+    sendQueue = new LinkedList<Pair<ComMessage, Collection>>();
+    incomingQueue = new LinkedList<ComMessage>();
     mixDelivering = false;
     mixReceiving = false;
   }
@@ -90,17 +90,17 @@ public class StrategyDebug extends MulticastStrategy
    * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
+  public void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     if ( mixDelivering )
     {
-      sendQueue.add( new Pair<CommMessage, Collection>( msg, group ) );
+      sendQueue.add( new Pair<ComMessage, Collection>( msg, group ) );
       Collections.shuffle( sendQueue );
     }
     // randomly deliver message
     if ( mixDelivering && dice.nextBoolean() )
     {
-      Pair<CommMessage, Collection> toSend = sendQueue.pop();
+      Pair<ComMessage, Collection> toSend = sendQueue.pop();
       core.send( toSend.getLeft(), toSend.getRight() );
     }
   }
@@ -112,23 +112,24 @@ public class StrategyDebug extends MulticastStrategy
    * @throws java.rmi.RemoteException
    */
   @Override
-  public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
+  public void receive ( ComMessage msg ) throws RemoteException
   {
-    try{
-	    incomingQueue.add( msg );
-	    // if random receiving is atived, then deliver messages if the dice want to
-	    if( mixReceiving && dice.nextBoolean() )
-	    {
-	      core.receive( incomingQueue.pop() );
-	    }
-	    else
-	    {
-	      // else, just deliver the message
-	      core.receive( incomingQueue.pop() );
-	    }
-    }catch(UnreachableRemoteObjectException exp) {
-
+    try
+    {
+      incomingQueue.add( msg );
+      // if random receiving is atived, then deliver messages if the dice want to
+      if ( mixReceiving && dice.nextBoolean() )
+      {
+        core.receive( incomingQueue.pop() );
+      }
+      else
+      {
+        // else, just deliver the message
+        core.receive( incomingQueue.pop() );
+      }
     }
+    catch ( UnreachableRemoteObjectException exp )
+    {}
   }
 
 

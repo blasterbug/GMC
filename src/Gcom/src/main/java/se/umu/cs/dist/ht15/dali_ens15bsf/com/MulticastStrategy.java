@@ -32,7 +32,7 @@ public abstract class MulticastStrategy implements Serializable
    * @param group Group to send the message
    * @throws UnreachableRemoteObjectException
    */
-  public abstract void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException;
+  public abstract void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException;
 
   /**
    * receive a message regarding the used strategy
@@ -41,7 +41,7 @@ public abstract class MulticastStrategy implements Serializable
    * @throws java.rmi.RemoteException
    * @throws se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException
    */
-  public abstract void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException;
+  public abstract void receive ( ComMessage msg ) throws RemoteException, UnreachableRemoteObjectException;
 
   /**
    * Choose a remote member for the strategy

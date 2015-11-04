@@ -52,7 +52,7 @@ public class ComObservable
 
   public void notifyNewLeader(RemoteMember newLead, String groupId) {
 	  for ( ComObserver ob : observers ) {
-		  ob.notifyNewLeader(newLead, groupId);
+		  ob.notifyNewLeader( newLead, groupId );
 	  }
   }
 
@@ -60,7 +60,7 @@ public class ComObservable
    * Notify observers on incoming messages
    * @param msg New incoming message
    */
-  void notify ( CommMessage msg )
+  void notify ( ComMessage msg )
   {
     for ( ComObserver ob : observers )
       ob.notifyObservers( msg );

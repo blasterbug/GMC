@@ -2,9 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import org.junit.Ignore;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Observer;
 import java.util.Observable;
@@ -13,12 +11,10 @@ import java.rmi.RemoteException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.CommMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
 
 public class MemberTest {
@@ -110,7 +106,7 @@ public class MemberTest {
 	
 			Member m = new MemberImpl(causal, strg);
 
-			CommMessage<Message> msg = new CommMessage<Message>(causal.prepareMessage(new Message("id1", "m1")));
+			ComMessage<Message> msg = new ComMessage<Message>(causal.prepareMessage(new Message("id1", "m1")));
 			msg.setSource(m.getRemoteMember());
 			strg.receive(msg);
 		}catch(RemoteException | UnreachableRemoteObjectException exp) {

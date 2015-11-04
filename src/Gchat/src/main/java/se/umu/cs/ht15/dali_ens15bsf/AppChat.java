@@ -25,7 +25,7 @@ public class AppChat
     // open the chat window
     Gchat chatModel = new Gchat( ConnectionWindow.getRandomUserName() );
     ChatWindow chatView = new ChatWindow( chatModel );
-    
+
     chatView.setVisible( true );
 
 
