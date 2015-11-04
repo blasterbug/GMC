@@ -27,10 +27,13 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	private RemoteMember leader;
 	private String id;
 	private NamingServiceRemote nameserver;
+	private Map<String, RemoteMember> groups;
+	private String groupId; // Will be superseded by above line once full support is implemented
 
 	public MemberImpl(Orderer o, MulticastStrategy strg) throws RemoteException{
 		view = new HashMap<String, RemoteMember>();
 //		view = new ArrayList<RemoteMember>();
+		groups = new HashMap<String, RemoteMember>();
 		orderer = o;
 
 		self = new CommMember(strg, this);
@@ -56,6 +59,8 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	@Override
 	public void joinGroup(String gid) throws RemoteException{
 		leader = nameserver.joinGroup(gid, self);
+		this.groups.put(gid, leader);
+		this.groupId = gid;
 	}
 
 	@Override
@@ -135,8 +140,14 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		try {
 			self.post(msg, view.values());
 		} catch(UnreachableRemoteObjectException exp) {
-			System.out.println("BINOG");	
-			exp.printStackTrace();
+	//		exp.printStackTrace();
+			try {
+				for ( RemoteMember rm : self.getUnreachableRemoteObjects() ) 
+					handleUnavailableMember(rm);
+			} catch (RemoteException ex) {
+				System.out.println(ex.getMessage());	
+			}
+
 		}
 		
 //		System.out.println("BINOG");	
@@ -189,7 +200,26 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	}
 
 	@Override
+	public void notifyNewLeader ( RemoteMember newLeader, String groupId) {
+		System.out.println("Setting new leader");	
+		this.groups.put(groupId, newLeader);
+	}
+
+	@Override
 	public void notifyAddToView(RemoteMember m, String id) {
 		this.addToView(m,id);
+	}
+
+	private void handleUnavailableMember(RemoteMember member) throws RemoteException {
+		System.out.println("Trying to update leader");	
+		RemoteMember lead = groups.get(this.groupId);
+
+		if ( lead != null && member.equals(lead)) {
+			nameserver.updateLeader(this.groupId,this.getRemoteMember());
+			for ( RemoteMember rm : view.values()) {
+				rm.updateLeader(lead, this.groupId);
+			}
+		}
+		view.remove(member.getId());
 	}
 }

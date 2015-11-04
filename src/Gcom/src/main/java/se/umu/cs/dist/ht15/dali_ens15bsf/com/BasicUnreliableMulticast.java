@@ -44,7 +44,7 @@ public class BasicUnreliableMulticast extends MulticastStrategy
         member.deliver( msg );
       } catch ( RemoteException e )
       {
-        //unreachableMembers.add( member );
+        unreachableMembers.add( member );
         expt_activated = true;
       }
     }

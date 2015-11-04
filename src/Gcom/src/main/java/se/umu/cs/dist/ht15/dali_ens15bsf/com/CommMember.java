@@ -124,4 +124,9 @@ public class CommMember extends ComObservable implements RemoteMember, Serializa
   public void addToView(RemoteMember m, String id) {
 	  super.notifyAddToView(m, id);
   }
+
+  @Override
+  public void updateLeader(RemoteMember newLead, String groupId) {
+	  super.notifyNewLeader(newLead, groupId);
+  }
 }

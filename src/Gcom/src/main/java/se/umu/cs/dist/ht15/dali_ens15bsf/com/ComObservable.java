@@ -50,6 +50,12 @@ public class ComObservable
 	  }
   }
 
+  public void notifyNewLeader(RemoteMember newLead, String groupId) {
+	  for ( ComObserver ob : observers ) {
+		  ob.notifyNewLeader(newLead, groupId);
+	  }
+  }
+
   /**
    * Notify observers on incoming messages
    * @param msg New incoming message
