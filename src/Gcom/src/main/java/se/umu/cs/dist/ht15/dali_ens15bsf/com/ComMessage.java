@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by ens15bsf on 2015-10-07.
  * Define Message type exchange between Members
  */
-public class CommMessage<T extends Serializable> implements Serializable
+public class ComMessage<T extends Serializable> implements Serializable
 {
   private static final long serialVersionUID = 5554064569627466554L;
   protected final T content;
@@ -17,7 +17,7 @@ public class CommMessage<T extends Serializable> implements Serializable
    *
    * @param content Content of the message
    */
-  public CommMessage ( T content )
+  public ComMessage ( T content )
   {
     this.content = content;
   }

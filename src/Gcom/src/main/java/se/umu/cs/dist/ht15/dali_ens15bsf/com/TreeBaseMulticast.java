@@ -13,7 +13,7 @@ public class TreeBaseMulticast extends MulticastStrategy
 {
 
   // remember the last send message which don't get back
-  protected ArrayList<CommMessage> lastSend;
+  protected ArrayList<ComMessage> lastSend;
 
   /**
    * Create a new node
@@ -21,7 +21,7 @@ public class TreeBaseMulticast extends MulticastStrategy
   public TreeBaseMulticast ()
   {
     super();
-    lastSend = new ArrayList<CommMessage>();
+    lastSend = new ArrayList<ComMessage>();
   }
 
   /**
@@ -32,7 +32,7 @@ public class TreeBaseMulticast extends MulticastStrategy
    * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void send ( CommMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
+  public void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     // if the message has not a source,
     // i.e. This member is the source
@@ -89,7 +89,7 @@ public class TreeBaseMulticast extends MulticastStrategy
    * @throws UnreachableRemoteObjectException
    */
   @Override
-  public void receive ( CommMessage msg ) throws RemoteException, UnreachableRemoteObjectException
+  public void receive ( ComMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
     // if I am the sender
     if ( lastSend.contains( msg ) )

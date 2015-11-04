@@ -11,8 +11,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by ens15bsf on 2015-10-12.
@@ -31,7 +29,7 @@ public class groupRegisteringTest implements ComObserver
     try
     {
       ComObserver m = new MemberImpl(causal, tree);
-      CommMember mbr1 = new CommMember( tree, m );
+      ComMember mbr1 = new ComMember( tree, m );
       mbr1.addObserver( new groupRegisteringTest() );
       Registry dictionary = LocateRegistry.getRegistry( NamingService.SERVER_PORT );
       NamingServiceRemote server = (NamingServiceRemote) dictionary.lookup( NamingService.SERVICE_NAME );
@@ -44,7 +42,7 @@ public class groupRegisteringTest implements ComObserver
       }
       RemoteMember leader = server.joinGroup( "TestGroup", mbr1 );
       System.out.println(leader.toString());
-      leader.deliver( new CommMessage<String>( new String("Hej Hej!") ) );
+      leader.deliver( new ComMessage<String>( new String("Hej Hej!") ) );
       //mbr.post( new CommMessage<String>( new String("Hej Hej!") ), server.getSharedObjects() ) ;
     } catch ( RemoteException e )
     {
@@ -62,7 +60,7 @@ public class groupRegisteringTest implements ComObserver
    * @param msg message to give to the Observer
    */
   @Override
-  public void notifyObservers ( CommMessage msg )
+  public void notifyObservers ( ComMessage msg )
   {
     System.out.println( msg.getSource().toString() + " : " + msg.getContent().toString() );
   }
