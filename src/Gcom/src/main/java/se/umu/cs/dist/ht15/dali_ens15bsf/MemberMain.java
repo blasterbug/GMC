@@ -15,7 +15,7 @@ public class MemberMain {
 		public static void main(String [] args) {
 			System.out.println("Initiating member");	
 			try {
-				Member m = new MemberImpl(new CausalOrderer(), new TreeBaseMulticast());
+				Member m = new MemberImpl(new UnorderedStrategy(), new BasicReliableMulticast());
 				System.out.println("Connecting to server");	
 				m.connectToNameserver();
 				System.out.println("Joining group Bingo");
