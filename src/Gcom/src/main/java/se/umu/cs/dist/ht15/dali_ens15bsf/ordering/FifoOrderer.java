@@ -45,8 +45,9 @@ public class FifoOrderer extends Orderer {
 	@Override
 	public Message prepareMessage ( Message msg )
 	{
-		FifoMessage fifo = new FifoMessage(msg, orderClock);
-		orderClock.increment(msg.getId());
+		VectorClock c = new VectorClock(orderClock);
+		c.increment(msg.getId());
+		FifoMessage fifo = new FifoMessage(msg, c);
 		
 		return fifo;
 	}
