@@ -42,7 +42,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	}
 
 	@Override
-	public void connectToNameserver() throws RemoteException, NotBoundException {
+	public void connectToNameserver() throws RemoteException, NamingServiceUnavailableException {
 		nameserver = NamingServerFabric.NamingService();
 	}
 

@@ -2,6 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.UnorderedStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
@@ -37,7 +38,7 @@ public class MemberMain {
 						e.printStackTrace();
 					}
 				}
-			} catch (RemoteException | NotBoundException e ) {
+			} catch (RemoteException | NamingServiceUnavailableException e ) {
 				System.out.println("Couldn't connect to ns");	
 				System.out.println(e.getMessage());
 			}

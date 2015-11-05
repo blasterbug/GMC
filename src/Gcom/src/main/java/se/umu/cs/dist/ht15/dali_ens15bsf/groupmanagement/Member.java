@@ -2,6 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 
 import java.util.Collection;
 import java.util.Observable;
@@ -16,7 +17,7 @@ public interface Member {
 	public Collection<RemoteMember> getView();
 	public RemoteMember getRemoteMember();
 	public void setId(String id);
-	public void connectToNameserver() throws RemoteException, NotBoundException;
+	public void connectToNameserver() throws RemoteException, NamingServiceUnavailableException;
 	public void joinGroup(String gid) throws RemoteException;
 	public void updateIdFromNameServer() throws RemoteException;
 	public String getId();

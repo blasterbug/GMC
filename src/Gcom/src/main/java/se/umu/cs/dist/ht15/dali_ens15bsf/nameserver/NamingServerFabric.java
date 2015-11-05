@@ -13,26 +13,21 @@ public class NamingServerFabric
 
   private static NamingServiceRemote ns;
 
-  private static void initNamingService()
-  {
-    Registry dictionary = null;
-    try
-    {
-      dictionary = LocateRegistry.getRegistry( NamingService.SERVER_PORT );
-      ns = (NamingServiceRemote) dictionary.lookup(NamingService.SERVICE_NAME);
-    } catch ( RemoteException e )
-    {
-      e.printStackTrace();
-    } catch ( NotBoundException e )
-    {
-      e.printStackTrace();
-    }
-  }
 
-  public static NamingServiceRemote NamingService()
+  public static NamingServiceRemote NamingService() throws NamingServiceUnavailableException
   {
     if ( null == ns )
-      initNamingService();
+    {
+      try
+      {
+        Registry dictionary = LocateRegistry.getRegistry( NamingService.SERVER_PORT );
+        ns = (NamingServiceRemote) dictionary.lookup(NamingService.SERVICE_NAME);
+      }
+      catch ( RemoteException | NotBoundException e )
+      {
+        throw new NamingServiceUnavailableException( e.getMessage() );
+      }
+    }
     return ns;
   }
 }
