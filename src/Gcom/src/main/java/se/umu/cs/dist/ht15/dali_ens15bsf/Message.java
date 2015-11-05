@@ -33,4 +33,10 @@ public class Message<T extends Serializable> implements Serializable
 		return m.getId().equals(id) &&
 			m.getContent().equals(content);
 	}
+
+	@Override
+	public String toString ()
+	{
+		return getId() + " : " + getContent();
+	}
 }
