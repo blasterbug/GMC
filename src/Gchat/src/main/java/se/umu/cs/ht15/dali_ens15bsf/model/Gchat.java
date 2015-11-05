@@ -1,9 +1,6 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.Gcom;
-import se.umu.cs.dist.ht15.dali_ens15bsf.GcomFactory;
-import se.umu.cs.dist.ht15.dali_ens15bsf.MulticastStrategyEnum;
-import se.umu.cs.dist.ht15.dali_ens15bsf.OrderingStrategyEnum;
+import se.umu.cs.dist.ht15.dali_ens15bsf.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
 import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
@@ -15,19 +12,19 @@ import java.util.*;
  * Created by ens15bsf on 2015-10-28.
  * model class for the Gchat
  */
-public class Gchat implements Observer
+public class Gchat implements Observer, GcomObserver
 {
-  private HashMap<String, GUser> users;
-  private LinkedList<GMessage> messages;
-  private GUser user;
+  private HashMap<String, GUserDisplay> users;
+  private LinkedList<GMessageDisplay> messages;
+  private GUserDisplay user;
   private LinkedList<GModelObserver> observers;
   private Gcom gcomMb;
 
   public Gchat ( String userName )
   {
-    users = new HashMap<String, GUser>();
-    messages = new LinkedList<GMessage>();
-    user = new GUser( userName );
+    users = new HashMap<String, GUserDisplay>();
+    messages = new LinkedList<GMessageDisplay>();
+    user = new GUserDisplay( userName );
     users.put( userName, user );
 
     observers = new LinkedList<GModelObserver>();
@@ -35,6 +32,7 @@ public class Gchat implements Observer
     try
     {
       gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.FIFO, MulticastStrategyEnum.RELIABLE_MULTICAST );
+      gcomMb.addObserver( this );
       gcomMb.connect();
       ConnectionWindow cntView = new ConnectionWindow( this );
       cntView.setVisible( true );
@@ -55,21 +53,21 @@ public class Gchat implements Observer
 
   public void createGroup ( String groupName )
   {
-    gcomMb.join( groupName );
+    //ns;
     //window.addGroup( window.newGroupName() );
   }
 
-  public Collection<GUser> getUsers ()
+  public Collection<GUserDisplay> getUsers ()
   {
     return users.values();
   }
 
-  public LinkedList<GMessage> getMessages ()
+  public LinkedList<GMessageDisplay> getMessages ()
   {
     return messages;
   }
 
-  public GUser getUser ()
+  public GUserDisplay getUser ()
   {
     return user;
   }
@@ -81,7 +79,7 @@ public class Gchat implements Observer
 
   public void addUser ( String newUser )
   {
-    users.put( newUser, new GUser( newUser ) );
+    users.put( newUser, new GUserDisplay( newUser ) );
 
     for ( GModelObserver ob : observers )
       ob.newUser();
@@ -89,7 +87,7 @@ public class Gchat implements Observer
 
   public void sendMessage ( String content )
   {
-    messages.addLast( new GMessage( user, content ) );
+    messages.addLast( new GMessageDisplay( user, content ) );
     for ( GModelObserver ob : observers )
       ob.newMessage();
   }
@@ -108,5 +106,17 @@ public class Gchat implements Observer
   public String[] getAvailableGroups ()
   {
     return gcomMb.getGroups();
+  }
+
+  @Override
+  public void newMessage ( Message message )
+  {
+    System.out.println( "TODO" );
+    System.out.println( message.toString() );
+  }
+
+  public void join( String userName, String group )
+  {
+    gcomMb.join( group );
   }
 }

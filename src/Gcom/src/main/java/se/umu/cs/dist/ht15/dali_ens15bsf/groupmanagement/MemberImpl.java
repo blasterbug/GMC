@@ -2,7 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
-import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFabric;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFactory;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
@@ -37,7 +37,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 
 	@Override
 	public void connectToNameserver() throws RemoteException, NamingServiceUnavailableException {
-		nameserver = NamingServerFabric.NamingService();
+		nameserver = NamingServerFactory.NamingService();
 	}
 
 	@Override

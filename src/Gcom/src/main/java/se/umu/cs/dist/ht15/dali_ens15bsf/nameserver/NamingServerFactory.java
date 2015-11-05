@@ -8,7 +8,7 @@ import java.rmi.registry.Registry;
 /**
  * Created by ens15bsf on 2015-11-05.
  */
-public class NamingServerFabric
+public class NamingServerFactory
 {
 
   private static NamingServiceRemote ns;

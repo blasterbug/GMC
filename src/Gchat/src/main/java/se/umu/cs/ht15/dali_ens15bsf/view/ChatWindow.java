@@ -1,9 +1,9 @@
 package se.umu.cs.ht15.dali_ens15bsf.view;
 
 
-import se.umu.cs.ht15.dali_ens15bsf.model.GMessage;
+import se.umu.cs.ht15.dali_ens15bsf.model.GMessageDisplay;
 import se.umu.cs.ht15.dali_ens15bsf.model.GModelObserver;
-import se.umu.cs.ht15.dali_ens15bsf.model.GUser;
+import se.umu.cs.ht15.dali_ens15bsf.model.GUserDisplay;
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.EnterToSend;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.SendAction;
@@ -18,7 +18,7 @@ public class ChatWindow extends JFrame implements GModelObserver
 {
 
   private Gchat model;
-  private JList<GUser> listUsers;
+  private JList<GUserDisplay> listUsers;
   private JPanel messageList;
   private JTextArea chatInput;
   private JScrollPane scrollMSG;
@@ -33,17 +33,17 @@ public class ChatWindow extends JFrame implements GModelObserver
     model.addObserver( this );
 
     // Create a spilt panel for the list of users
-    listUsers = new JList<GUser>();
+    listUsers = new JList<GUserDisplay>();
     listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
     listUsers.setFixedCellHeight( 60 );
     listUsers.setLayoutOrientation( JList.HORIZONTAL_WRAP );
-    listUsers.setModel( new DefaultComboBoxModel<GUser>() );
+    listUsers.setModel( new DefaultComboBoxModel<GUserDisplay>() );
     JViewport userlistVP = new JViewport();
     userlistVP.setView( listUsers );
     JScrollPane scrollUSR = new JScrollPane( userlistVP );
     scrollUSR.setAutoscrolls( true );
 
-    for ( GUser usr : model.getUsers() )
+    for ( GUserDisplay usr : model.getUsers() )
       listUsers.add( usr );
 
     // panel for messages
@@ -65,7 +65,7 @@ public class ChatWindow extends JFrame implements GModelObserver
 
     messageList.setAutoscrolls( true );
 
-    for ( GMessage gmsg : model.getMessages() )
+    for ( GMessageDisplay gmsg : model.getMessages() )
       messageList.add( gmsg );
 
     // create the panel with the text input and the join button
@@ -137,7 +137,7 @@ public class ChatWindow extends JFrame implements GModelObserver
   public void newMessage ()
   {
     messageList.removeAll();
-    for ( GMessage msg : model.getMessages() )
+    for ( GMessageDisplay msg : model.getMessages() )
       messageList.add( msg );
 
     messageList.add( Box.createVerticalGlue() );
@@ -149,7 +149,7 @@ public class ChatWindow extends JFrame implements GModelObserver
   public void newUser ()
   {
     listUsers.removeAll();
-    for ( GUser usr : model.getUsers() )
+    for ( GUserDisplay usr : model.getUsers() )
       listUsers.add( usr );
     listUsers.add( Box.createVerticalGlue() );
     listUsers.updateUI();

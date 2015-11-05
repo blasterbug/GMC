@@ -2,19 +2,17 @@ package se.umu.cs.ht15.dali_ens15bsf.model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.Serializable;
 
 /**
  * Created by ens15bsf on 2015-10-28.
  */
-public class GMessage extends JPanel implements Serializable
+public class GMessageDisplay extends JPanel
 {
-  private static final long serialVersionUID = 1849044502961262080L;
-  private GUser from;
+  private GUserDisplay from;
   private String content;
 
 
-  public GMessage ( GUser user, String msg )
+  public GMessageDisplay ( GUserDisplay user, String msg )
   {
     super();
     from = user;

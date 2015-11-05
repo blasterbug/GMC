@@ -2,7 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
-import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFabric;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFactory;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
@@ -27,7 +27,7 @@ public class GcomProxy implements Observer, Gcom
 
   public GcomProxy( Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
   {
-    nsRemote = NamingServerFabric.NamingService();
+    nsRemote = NamingServerFactory.NamingService();
     observers = new Vector<GcomObserver>();
     mbr = new MemberImpl( order, ms );
     mbr.addObserver( this );
