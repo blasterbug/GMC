@@ -86,4 +86,10 @@ public class groupRegisteringTest implements ComObserver
   public void notifyNewLeader(RemoteMember newLead, String groupId) {
 
   }
+
+  @Override
+  public void notifyRemoveFromView ( RemoteMember m, String id )
+  {
+    // TODO
+  }
 }

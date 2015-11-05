@@ -2,6 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFabric;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingService;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
@@ -11,9 +12,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Created by ens15bsf on 2015-11-05.
@@ -22,12 +21,14 @@ import java.util.Vector;
  */
 public class GcomProxy implements Observer, Gcom
 {
+  private NamingServiceRemote nsRemote;
   private MemberImpl mbr;
   private Vector<GcomObserver> observers;
 
 
-  public GcomProxy( Orderer order, MulticastStrategy ms ) throws RemoteException
+  public GcomProxy( Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
   {
+    nsRemote = NamingServerFabric.NamingService();
     observers = new Vector<GcomObserver>();
     mbr = new MemberImpl( order, ms );
     mbr.addObserver( this );
@@ -47,6 +48,26 @@ public class GcomProxy implements Observer, Gcom
     } catch ( NamingServiceUnavailableException e )
     {
       e.printStackTrace();
+    }
+  }
+
+  /**
+   * Get the list of all available group
+   *
+   * @return List of the available groups name, return null if Naming Server is unavailable
+   */
+  @Override
+  public String[] getGroups ()
+  {
+    try
+    {
+      LinkedList<String> groupsLL = nsRemote.getGroups();
+      String[] res = new String[groupsLL.size()];
+      return groupsLL.toArray( res );
+    }
+    catch ( RemoteException e )
+    {
+      return null;
     }
   }
 
@@ -91,10 +112,5 @@ public class GcomProxy implements Observer, Gcom
     Message msg = (Message)o;
     for ( GcomObserver obs : observers )
       obs.newMessage( msg );
-  }
-
-  public void updateAvailableGroups()
-  {
-
   }
 }

@@ -4,6 +4,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicReliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.TreeBaseMulticast;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
@@ -14,24 +15,6 @@ import java.rmi.RemoteException;
 /**
  * Created by ens15bsf on 2015-11-05.
  */
-
-/**
- * Define an enumeration for possible Message ordering strategies
- */
-enum OrderingStrategyEnum {
-  FIFO,
-  CAUSAL,
-  UNORDERED
-}
-
-/**
- * Define an enumeration for possible multicast strategy
- */
-enum MulticastStrategyEnum {
-  TREE_BASE,
-  RELIABLE_MULTICAST,
-  UNRELIABLE_MULTICAST
-}
 
 /**
  * Factory to build Gcom module
@@ -45,7 +28,7 @@ public class GcomFactory
    * @return Gcom module
    * @throws RemoteException
    */
-  public static Gcom createGcom( OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws RemoteException
+  public static Gcom createGcom( OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
   {
     Orderer odr;
     switch ( order )

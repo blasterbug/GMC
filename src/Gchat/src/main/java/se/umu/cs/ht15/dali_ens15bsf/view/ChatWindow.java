@@ -37,7 +37,7 @@ public class ChatWindow extends JFrame implements GModelObserver
     listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
     listUsers.setFixedCellHeight( 60 );
     listUsers.setLayoutOrientation( JList.HORIZONTAL_WRAP );
-    listUsers.setModel( new DefaultComboBoxModel<GUser>(  ) );
+    listUsers.setModel( new DefaultComboBoxModel<GUser>() );
     JViewport userlistVP = new JViewport();
     userlistVP.setView( listUsers );
     JScrollPane scrollUSR = new JScrollPane( userlistVP );
@@ -49,7 +49,7 @@ public class ChatWindow extends JFrame implements GModelObserver
     // panel for messages
     messageList = new JPanel();
     messageList.setAutoscrolls( false );
-    listLayout =  new BoxLayout( messageList, BoxLayout.PAGE_AXIS);
+    listLayout = new BoxLayout( messageList, BoxLayout.PAGE_AXIS );
     messageList.setLayout( listLayout );
     JViewport viewportMessages = new JViewport();
     viewportMessages.setLayout( new BoxLayout( viewportMessages, BoxLayout.PAGE_AXIS ) );
@@ -125,7 +125,7 @@ public class ChatWindow extends JFrame implements GModelObserver
                                     .addComponent( bottomPanel )
                     )
     );
-   // super.pack();
+    // super.pack();
     // define the behavior when clicking on the close button
     super.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     super.setSize( new Dimension( 800, 500 ) );

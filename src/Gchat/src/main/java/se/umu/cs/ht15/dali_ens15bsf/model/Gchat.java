@@ -1,14 +1,13 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicReliableMulticast;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.Gcom;
+import se.umu.cs.dist.ht15.dali_ens15bsf.GcomFactory;
+import se.umu.cs.dist.ht15.dali_ens15bsf.MulticastStrategyEnum;
+import se.umu.cs.dist.ht15.dali_ens15bsf.OrderingStrategyEnum;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
 import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -22,11 +21,9 @@ public class Gchat implements Observer
   private LinkedList<GMessage> messages;
   private GUser user;
   private LinkedList<GModelObserver> observers;
+  private Gcom gcomMb;
 
-  private Member gcomMb;
-
-
-  public Gchat ( String userName ) throws UnableToJoinException
+  public Gchat ( String userName )
   {
     users = new HashMap<String, GUser>();
     messages = new LinkedList<GMessage>();
@@ -37,43 +34,31 @@ public class Gchat implements Observer
 
     try
     {
-      gcomMb = new MemberImpl( new CausalOrderer(), new BasicReliableMulticast() );
-      gcomMb.connectToNameserver();
+      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.FIFO, MulticastStrategyEnum.RELIABLE_MULTICAST );
+      gcomMb.connect();
       ConnectionWindow cntView = new ConnectionWindow( this );
-    } catch ( RemoteException e )
-    {
-      e.printStackTrace();
-    } catch ( NotBoundException e )
+      cntView.setVisible( true );
+    }
+    catch ( RemoteException | NamingServiceUnavailableException e )
     {
       e.printStackTrace();
     }
 
   }
 
-  public void connect() throws UnableToJoinException
+  public void connect () throws UnableToJoinException
   {
-    try
-    {
-      gcomMb = new MemberImpl( new CausalOrderer(), new BasicUnreliableMulticast() );
-      ChatWindow chatView = new ChatWindow( this );
-      chatView.setVisible( true );
-    } catch ( RemoteException e )
-    {
-      throw new UnableToJoinException( e );
-    }
+    gcomMb.connect();
+    ChatWindow chatView = new ChatWindow( this );
+    chatView.setVisible( true );
   }
 
-  public void createGroup( String groupName )
+  public void createGroup ( String groupName )
   {
-    try
-    {
-      gcomMb.joinGroup( groupName );
-    } catch ( RemoteException e )
-    {
-      e.printStackTrace();
-    }
+    gcomMb.join( groupName );
     //window.addGroup( window.newGroupName() );
   }
+
   public Collection<GUser> getUsers ()
   {
     return users.values();
@@ -117,6 +102,11 @@ public class Gchat implements Observer
   @Override
   public void update ( Observable observable, Object o )
   {
-    System.out.println(o.toString());
+    System.out.println( o.toString() );
+  }
+
+  public String[] getAvailableGroups ()
+  {
+    return gcomMb.getGroups();
   }
 }

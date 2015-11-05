@@ -15,12 +15,13 @@ public class EnterToSend implements KeyListener
   private Gchat model;
   private JTextArea input;
 
-  public EnterToSend( Gchat chat, JTextArea messageInput )
+  public EnterToSend ( Gchat chat, JTextArea messageInput )
   {
     super();
     model = chat;
     input = messageInput;
   }
+
   @Override
   public void keyTyped ( KeyEvent keyEvent )
   {

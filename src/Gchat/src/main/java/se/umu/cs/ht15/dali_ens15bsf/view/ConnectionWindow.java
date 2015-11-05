@@ -60,7 +60,7 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
 
     // create the windows
     super( "Gchat - Join a group" );
-    listGroups = new String[] { "group1", "group2", "group3" };
+    listGroups = model.getAvailableGroups();
 
     // Create a panel for the list of available groups
     JScrollPane list = new JScrollPane();
@@ -170,7 +170,12 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     super.setSize( new Dimension( 260, 250 ) );
     super.setLocationRelativeTo( null );
     super.setResizable( false );
-    super.setVisible( true );
+    //super.setVisible( true );
+  }
+
+  public static String getRandomUserName ()
+  {
+    return NAMES[dice.nextInt( NAMES.length )];
   }
 
   public String getGroupConnection ()
@@ -186,11 +191,6 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
   public String newGroupName ()
   {
     return newGroupName.getText();
-  }
-
-  public static String getRandomUserName ()
-  {
-    return NAMES[dice.nextInt( NAMES.length )];
   }
 
   public void addGroup ( String newGroup )
