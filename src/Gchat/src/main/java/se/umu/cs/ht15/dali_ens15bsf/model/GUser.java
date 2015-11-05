@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * Created by ens15bsf on 2015-10-28.
  */
-public class GUserDisplay extends JLabel implements Serializable
+public class GUser extends JLabel implements Serializable
 {
 
   private static final long serialVersionUID = -6777933872396080915L;
@@ -18,7 +18,7 @@ public class GUserDisplay extends JLabel implements Serializable
   private String name;
   private Color color;
 
-  public GUserDisplay ( String name )
+  public GUser ( String name )
   {
     super( name );
     this.name = name;

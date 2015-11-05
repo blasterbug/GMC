@@ -23,7 +23,12 @@ public class ConnectAction implements ActionListener
   @Override
   public void actionPerformed ( ActionEvent actionEvent )
   {
-    System.out.println( window.getUserName() + " wants to join " + window.getGroupConnection() );
+    String group = window.getGroupConnection();
+    if(null == group)
+      group = window.newGroupName();
+    //mdl.createGroup( group);
+    System.out.println( window.getUserName() + " wants to join " +  group );
+    chat.createGroup( group );
     chat.join( window.getUserName(), window.newGroupName() );
   }
 }

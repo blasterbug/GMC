@@ -8,11 +8,11 @@ import java.awt.*;
  */
 public class GMessageDisplay extends JPanel
 {
-  private GUserDisplay from;
+  private GUser from;
   private String content;
 
 
-  public GMessageDisplay ( GUserDisplay user, String msg )
+  public GMessageDisplay ( GUser user, String msg )
   {
     super();
     from = user;

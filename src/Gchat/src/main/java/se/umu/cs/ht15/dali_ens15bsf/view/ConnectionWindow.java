@@ -48,6 +48,28 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
           "Mace Windu",
           "Yoda"
   };
+
+  private static final String[] PLACES = {
+          "Alderaan",
+          "Bespin",
+          "Coruscant",
+          "Dagobah",
+          "Endor",
+          "Geonosis",
+          "Hoth",
+          "Jakku",
+          "Kamoni",
+          "Kashyyyk",
+          "Lothal",
+          "Mustafar",
+          "Naboo",
+          "Sullust",
+          "Tatooine",
+          "Utapau",
+          "Yavin",
+          "Yavin 4"
+  };
+
   private static final Random dice = new Random();
 
   private JTextField userName;
@@ -79,21 +101,20 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     newGroupLayout.setAutoCreateContainerGaps( false );
     // define the components of the panel to create a group
     // a text area
-    newGroupName = new JTextField( CREATE_GROUP, 30 );
+    newGroupName = new JTextField( getRandomGroupName() , 30 );
     // and a button
-    JButton addBT = new JButton( "add" );
-    addBT.addActionListener( new AddGroupAction( this, model ) );
+    JLabel newGroupLabel = new JLabel( "Join : " );
     // add the components to the bottom panel
     newGroupLayout.setHorizontalGroup(
             newGroupLayout.createSequentialGroup()
+                    .addComponent( newGroupLabel )
                     .addComponent( newGroupName )
-                    .addComponent( addBT )
     );
     newGroupLayout.setVerticalGroup(
             newGroupLayout.createSequentialGroup()
                     .addGroup( newGroupLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
-                            .addComponent( newGroupName )
-                            .addComponent( addBT ) )
+                            .addComponent( newGroupLabel )
+                            .addComponent( newGroupName ) )
     );
 
     // create the panel with the text input and the join button
@@ -106,10 +127,10 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     // define the components of the panel for join a group
     // a text area
     userName = new JTextField( getRandomUserName(), 30 );
-    userName.addActionListener( new ConnectAction( this ) );
+    userName.addActionListener( new ConnectAction( this, model ) );
     // and a button
     JButton joinBT = new JButton( "join" );
-    joinBT.addActionListener( new ConnectAction( this ) );
+    joinBT.addActionListener( new ConnectAction( this, model ) );
     // add the components to the bottom panel
     JoinPanelLayout.setHorizontalGroup(
             JoinPanelLayout.createSequentialGroup()
@@ -176,6 +197,11 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
   public static String getRandomUserName ()
   {
     return NAMES[dice.nextInt( NAMES.length )];
+  }
+
+  public static String getRandomGroupName ()
+  {
+    return PLACES[dice.nextInt( PLACES.length )];
   }
 
   public String getGroupConnection ()

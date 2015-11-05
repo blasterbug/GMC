@@ -14,17 +14,17 @@ import java.util.*;
  */
 public class Gchat implements Observer, GcomObserver
 {
-  private HashMap<String, GUserDisplay> users;
+  private HashMap<String, GUser> users;
   private LinkedList<GMessageDisplay> messages;
-  private GUserDisplay user;
+  private GUser user;
   private LinkedList<GModelObserver> observers;
   private Gcom gcomMb;
 
   public Gchat ( String userName )
   {
-    users = new HashMap<String, GUserDisplay>();
+    users = new HashMap<String, GUser>();
     messages = new LinkedList<GMessageDisplay>();
-    user = new GUserDisplay( userName );
+    user = new GUser( userName );
     users.put( userName, user );
 
     observers = new LinkedList<GModelObserver>();
@@ -53,11 +53,11 @@ public class Gchat implements Observer, GcomObserver
 
   public void createGroup ( String groupName )
   {
-    //ns;
+    gcomMb.join( groupName );
     //window.addGroup( window.newGroupName() );
   }
 
-  public Collection<GUserDisplay> getUsers ()
+  public Collection<GUser> getUsers ()
   {
     return users.values();
   }
@@ -67,7 +67,7 @@ public class Gchat implements Observer, GcomObserver
     return messages;
   }
 
-  public GUserDisplay getUser ()
+  public GUser getUser ()
   {
     return user;
   }
@@ -79,7 +79,7 @@ public class Gchat implements Observer, GcomObserver
 
   public void addUser ( String newUser )
   {
-    users.put( newUser, new GUserDisplay( newUser ) );
+    users.put( newUser, new GUser( newUser ) );
 
     for ( GModelObserver ob : observers )
       ob.newUser();

@@ -7,8 +7,7 @@ public class JoinMessage extends GMessage
 {
   public JoinMessage( String user )
   {
-    author = user;
-    content = user + "wants to join";
+    super( user, user + "wants to join" );
   }
 
   @Override

@@ -41,6 +41,7 @@ public class GcomProxy implements Observer, Gcom
     try
     {
       mbr.connectToNameserver();
+      mbr.updateIdFromNameServer();
     } catch ( RemoteException e )
     {
       e.printStackTrace();

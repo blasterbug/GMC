@@ -1,7 +1,5 @@
 package se.umu.cs.ht15.dali_ens15bsf.model.msg;
 
-import se.umu.cs.ht15.dali_ens15bsf.model.GUserDisplay;
-
 import java.io.Serializable;
 
 /**
@@ -14,7 +12,11 @@ public abstract class GMessage implements Serializable
   protected String author;
   protected String content;
 
-  private
+  protected GMessage( String user, String content )
+  {
+    author = user;
+    this.content = content;
+  }
 
   /**
    * Get the content of the message

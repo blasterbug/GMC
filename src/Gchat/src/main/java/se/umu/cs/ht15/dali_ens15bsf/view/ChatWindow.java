@@ -3,7 +3,7 @@ package se.umu.cs.ht15.dali_ens15bsf.view;
 
 import se.umu.cs.ht15.dali_ens15bsf.model.GMessageDisplay;
 import se.umu.cs.ht15.dali_ens15bsf.model.GModelObserver;
-import se.umu.cs.ht15.dali_ens15bsf.model.GUserDisplay;
+import se.umu.cs.ht15.dali_ens15bsf.model.GUser;
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.EnterToSend;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.SendAction;
@@ -18,7 +18,7 @@ public class ChatWindow extends JFrame implements GModelObserver
 {
 
   private Gchat model;
-  private JList<GUserDisplay> listUsers;
+  private JList<GUser> listUsers;
   private JPanel messageList;
   private JTextArea chatInput;
   private JScrollPane scrollMSG;
@@ -33,17 +33,17 @@ public class ChatWindow extends JFrame implements GModelObserver
     model.addObserver( this );
 
     // Create a spilt panel for the list of users
-    listUsers = new JList<GUserDisplay>();
+    listUsers = new JList<GUser>();
     listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
     listUsers.setFixedCellHeight( 60 );
     listUsers.setLayoutOrientation( JList.HORIZONTAL_WRAP );
-    listUsers.setModel( new DefaultComboBoxModel<GUserDisplay>() );
+    listUsers.setModel( new DefaultComboBoxModel<GUser>() );
     JViewport userlistVP = new JViewport();
     userlistVP.setView( listUsers );
     JScrollPane scrollUSR = new JScrollPane( userlistVP );
     scrollUSR.setAutoscrolls( true );
 
-    for ( GUserDisplay usr : model.getUsers() )
+    for ( GUser usr : model.getUsers() )
       listUsers.add( usr );
 
     // panel for messages
@@ -149,7 +149,7 @@ public class ChatWindow extends JFrame implements GModelObserver
   public void newUser ()
   {
     listUsers.removeAll();
-    for ( GUserDisplay usr : model.getUsers() )
+    for ( GUser usr : model.getUsers() )
       listUsers.add( usr );
     listUsers.add( Box.createVerticalGlue() );
     listUsers.updateUI();
