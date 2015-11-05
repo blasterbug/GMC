@@ -16,17 +16,12 @@ public class AppChat
   public static void main ( String[] args ) throws UnableToJoinException
   {
     // create connection object
-    // get a list of the existing groups
+    Gchat chatModel = new Gchat( ConnectionWindow.getRandomUserName() );
     // offer to the user to join a group or to create a new one
-    new ConnectionWindow();
     // connect to the group
 
-    LinkedList<String> users = new LinkedList<String>();
     // open the chat window
-    Gchat chatModel = new Gchat( ConnectionWindow.getRandomUserName() );
-    ChatWindow chatView = new ChatWindow( chatModel );
 
-    chatView.setVisible( true );
 
 
 

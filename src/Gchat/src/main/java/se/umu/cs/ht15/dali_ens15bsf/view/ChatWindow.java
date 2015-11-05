@@ -138,9 +138,7 @@ public class ChatWindow extends JFrame implements GModelObserver
   {
     messageList.removeAll();
     for ( GMessage msg : model.getMessages() )
-    {
       messageList.add( msg );
-    }
 
     messageList.add( Box.createVerticalGlue() );
     messageList.updateUI();

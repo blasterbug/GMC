@@ -1,6 +1,7 @@
 package se.umu.cs.ht15.dali_ens15bsf.view;
 
 
+import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.AddGroupAction;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.ConnectAction;
 
@@ -12,7 +13,7 @@ import java.util.Random;
  * Created by ens15bsf on 2015-10-13.
  * Code for the app demonstration of Gcom Module
  */
-public class ConnectionWindow extends JFrame
+public class ConnectionWindow extends JFrame implements ConnectionObserver
 {
   public final static String CREATE_GROUP = "Create a new group?";
   private static final String[] NAMES = {
@@ -54,7 +55,7 @@ public class ConnectionWindow extends JFrame
   private String[] listGroups;
   private JList<String> groups;
 
-  public ConnectionWindow ()
+  public ConnectionWindow ( Gchat model )
   {
 
     // create the windows
@@ -81,7 +82,7 @@ public class ConnectionWindow extends JFrame
     newGroupName = new JTextField( CREATE_GROUP, 30 );
     // and a button
     JButton addBT = new JButton( "add" );
-    addBT.addActionListener( new AddGroupAction( this ) );
+    addBT.addActionListener( new AddGroupAction( this, model ) );
     // add the components to the bottom panel
     newGroupLayout.setHorizontalGroup(
             newGroupLayout.createSequentialGroup()
@@ -96,10 +97,10 @@ public class ConnectionWindow extends JFrame
     );
 
     // create the panel with the text input and the join button
-    JPanel JoinPanel = new JPanel();
+    JPanel joinPanel = new JPanel();
     // define a layout for the panel
-    GroupLayout JoinPanelLayout = new GroupLayout( JoinPanel );
-    JoinPanel.setLayout( JoinPanelLayout );
+    GroupLayout JoinPanelLayout = new GroupLayout( joinPanel );
+    joinPanel.setLayout( JoinPanelLayout );
     JoinPanelLayout.setAutoCreateGaps( true );
     JoinPanelLayout.setAutoCreateContainerGaps( false );
     // define the components of the panel for join a group
@@ -133,13 +134,13 @@ public class ConnectionWindow extends JFrame
     bottomLayout.setVerticalGroup(
             bottomLayout.createSequentialGroup()
                     .addComponent( newGroupPanel )
-                    .addComponent( JoinPanel )
+                    .addComponent( joinPanel )
     );
     bottomLayout.setHorizontalGroup(
             bottomLayout.createSequentialGroup()
                     .addGroup( bottomLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
                             .addComponent( newGroupPanel )
-                            .addComponent( JoinPanel ) )
+                            .addComponent( joinPanel ) )
     );
 
 

@@ -1,10 +1,14 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicReliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
+import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -33,15 +37,43 @@ public class Gchat implements Observer
 
     try
     {
+      gcomMb = new MemberImpl( new CausalOrderer(), new BasicReliableMulticast() );
+      gcomMb.connectToNameserver();
+      ConnectionWindow cntView = new ConnectionWindow( this );
+    } catch ( RemoteException e )
+    {
+      e.printStackTrace();
+    } catch ( NotBoundException e )
+    {
+      e.printStackTrace();
+    }
+
+  }
+
+  public void connect() throws UnableToJoinException
+  {
+    try
+    {
       gcomMb = new MemberImpl( new CausalOrderer(), new BasicUnreliableMulticast() );
+      ChatWindow chatView = new ChatWindow( this );
+      chatView.setVisible( true );
     } catch ( RemoteException e )
     {
       throw new UnableToJoinException( e );
     }
-
-
   }
 
+  public void createGroup( String groupName )
+  {
+    try
+    {
+      gcomMb.joinGroup( groupName );
+    } catch ( RemoteException e )
+    {
+      e.printStackTrace();
+    }
+    //window.addGroup( window.newGroupName() );
+  }
   public Collection<GUser> getUsers ()
   {
     return users.values();

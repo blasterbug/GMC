@@ -28,9 +28,11 @@ public class GcomDebug extends JFrame implements ComDebugObserver
     comIncomimgMsg = new List();
     comIncomimgMsg.setFocusable( false );
     JScrollPane comIMScroll = new JScrollPane( comIncomimgMsg );
+    comIMScroll.setBorder( BorderFactory.createTitledBorder( "Incoming messages" ) );
 
     comOutgoingMsg = new List();
-
+    comOutgoingMsg.setFocusable( false );
+    JScrollPane comOMScroll = new JScrollPane( comIncomimgMsg );
 
     // ######## ORDERING MODULE DATA
     //TODO
