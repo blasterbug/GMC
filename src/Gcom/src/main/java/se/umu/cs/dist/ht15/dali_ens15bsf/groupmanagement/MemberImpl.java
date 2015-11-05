@@ -224,7 +224,6 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	}
 
 	private void handleUnavailableMember(RemoteMember member) throws RemoteException {
-		System.out.println("Trying to update leader");	
 		RemoteMember lead = groups.get(this.groupId);
 
 		//view.remove(member.getId());
@@ -240,8 +239,10 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 			nameserver.updateLeader(this.groupId,this.getRemoteMember());
 			for ( RemoteMember rm : view.values()) {
 				rm.updateLeader(lead, this.groupId);
-				rm.removeFromView(member, idToRemove);
 			}
 		}
+
+		for ( RemoteMember rm : view.values() ) 
+			rm.removeFromView(member, idToRemove);
 	}
 }
