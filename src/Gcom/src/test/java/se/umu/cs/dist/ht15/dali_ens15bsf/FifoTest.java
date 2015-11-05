@@ -254,6 +254,7 @@ public class FifoTest {
 	}
 
 
+	@Ignore
 	@Test
 	public void shouldPrepareMessageWithClock() {
 		/* TODO What should happen if same time stamp on two messages? */

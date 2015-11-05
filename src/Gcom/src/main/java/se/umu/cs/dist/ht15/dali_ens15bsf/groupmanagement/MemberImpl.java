@@ -114,6 +114,11 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 //		System.out.println("Adding ["+id+"] to view in "+this.id);	
 		view.put(id, m);
 	}
+/*
+	@Override
+	public void removeFromView(RemoteMember m, String id) {
+		view.remove(id);
+	}*/
 
 	/**
 	  * @param m A message to send to the group
@@ -144,7 +149,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 				Collection<RemoteMember> tmp = self.getUnreachableRemoteObjects();
 				System.out.println("Handling unreachables " + tmp.size());	
 				for ( RemoteMember rm : tmp ) {
-					System.out.println("Handling " +rm.getId());	
+					System.out.println("Handling " +rm);	
 					handleUnavailableMember(rm);
 				}
 			} catch (RemoteException ex) {
@@ -212,16 +217,30 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	public void notifyAddToView(RemoteMember m, String id) {
 		this.addToView( m, id );
 	}
-
+/*
+	@Override
+	public void notifyRemoveFromView(RemoteMember m, String id) {
+		this.removeFromView(m, id);
+	}
+*/
 	private void handleUnavailableMember(RemoteMember member) throws RemoteException {
 		System.out.println("Trying to update leader");	
 		RemoteMember lead = groups.get(this.groupId);
 
-		view.remove(member.getId());
+		//view.remove(member.getId());
+		String idToRemove = "";
+		for ( String id : view.keySet() ) {
+			if (view.get(id).equals(member)) {
+				idToRemove = id;
+				view.remove(id);
+				break;
+			}
+		}
 		if ( lead != null && member.equals(lead)) {
 			nameserver.updateLeader(this.groupId,this.getRemoteMember());
 			for ( RemoteMember rm : view.values()) {
 				rm.updateLeader(lead, this.groupId);
+//				rm.removeMember(member, idToRemove);
 			}
 		}
 	}
