@@ -22,4 +22,5 @@ public interface Member {
 	public String getId();
 	public RemoteMember getLeader();
 	public void addToView(RemoteMember m, String id);
+	public void removeFromView(RemoteMember m, String id);
 }

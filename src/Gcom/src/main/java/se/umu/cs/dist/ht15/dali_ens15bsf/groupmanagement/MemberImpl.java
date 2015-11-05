@@ -114,11 +114,11 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 //		System.out.println("Adding ["+id+"] to view in "+this.id);	
 		view.put(id, m);
 	}
-/*
+
 	@Override
 	public void removeFromView(RemoteMember m, String id) {
 		view.remove(id);
-	}*/
+	}
 
 	/**
 	  * @param m A message to send to the group
@@ -217,12 +217,12 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	public void notifyAddToView(RemoteMember m, String id) {
 		this.addToView( m, id );
 	}
-/*
+
 	@Override
 	public void notifyRemoveFromView(RemoteMember m, String id) {
 		this.removeFromView(m, id);
 	}
-*/
+
 	private void handleUnavailableMember(RemoteMember member) throws RemoteException {
 		System.out.println("Trying to update leader");	
 		RemoteMember lead = groups.get(this.groupId);
@@ -240,7 +240,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 			nameserver.updateLeader(this.groupId,this.getRemoteMember());
 			for ( RemoteMember rm : view.values()) {
 				rm.updateLeader(lead, this.groupId);
-//				rm.removeMember(member, idToRemove);
+				rm.removeFromView(member, idToRemove);
 			}
 		}
 	}

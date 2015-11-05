@@ -23,4 +23,6 @@ public interface ComObserver
   public void notifyAddToView ( RemoteMember m, String id);
 
   public void notifyNewLeader ( RemoteMember newLeader, String groupId );
+  
+  public void notifyRemoveFromView ( RemoteMember m, String id);
 }

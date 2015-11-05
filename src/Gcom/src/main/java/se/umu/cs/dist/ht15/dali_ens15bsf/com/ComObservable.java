@@ -56,6 +56,11 @@ public class ComObservable
 	  }
   }
 
+  public void notifyRemoveFromView(RemoteMember m, String id) {
+	  for ( ComObserver ob : observers )
+		  ob.notifyRemoveFromView(m, id);
+  }
+
   /**
    * Notify observers on incoming messages
    * @param msg New incoming message

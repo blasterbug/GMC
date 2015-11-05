@@ -34,4 +34,6 @@ public interface RemoteMember extends Remote, Serializable
   public void addToView(RemoteMember m, String id) throws RemoteException;
 
   public void updateLeader(RemoteMember m, String groupId) throws RemoteException;
+
+  public void removeFromView(RemoteMember m, String id) throws RemoteException;
 }
