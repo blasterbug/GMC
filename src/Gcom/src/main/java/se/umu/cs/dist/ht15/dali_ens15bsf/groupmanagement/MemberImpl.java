@@ -43,8 +43,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 
 	@Override
 	public void connectToNameserver() throws RemoteException, NotBoundException {
-		Registry dictionary = LocateRegistry.getRegistry(NamingService.SERVER_PORT);
-		nameserver = (NamingServiceRemote) dictionary.lookup(NamingService.SERVICE_NAME);
+		nameserver = NamingServerFabric.NamingService();
 	}
 
 	@Override

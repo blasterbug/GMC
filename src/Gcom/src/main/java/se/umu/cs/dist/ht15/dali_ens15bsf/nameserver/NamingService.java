@@ -41,6 +41,7 @@ public class NamingService implements Serializable, NamingServiceRemote
   //protected HashMap<String, RemoteMember> idMap;
   private int memberCounter = 0;
 
+
   /**
    * Create a new master node
    *
