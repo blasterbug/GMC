@@ -13,7 +13,6 @@ public class Message<T extends Serializable> implements Serializable
 	public Message(Message<T> m)  {
 		this.id = m.getId();
 		this.content = m.getContent();
-
 	}
 
 	public Message(String id, T content) {
