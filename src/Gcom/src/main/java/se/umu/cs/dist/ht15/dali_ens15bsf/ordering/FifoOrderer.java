@@ -1,13 +1,13 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.ordering;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.FifoMessage;
-import java.util.Queue;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.LinkedList;
+import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
-import java.util.Observable;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 
 public class FifoOrderer extends Orderer {
 	private Map<String, Queue> holdbackQueues; 

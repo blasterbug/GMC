@@ -1,10 +1,11 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingService;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.*;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

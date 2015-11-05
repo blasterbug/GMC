@@ -1,16 +1,14 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.*;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicReliableMulticast;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.UnorderedStrategy;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.rmi.RemoteException;
-import java.rmi.NotBoundException;
-
-import java.io.*;
 
 public class MemberMain {
 		public static void main(String [] args) {

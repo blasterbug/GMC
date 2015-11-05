@@ -2,20 +2,19 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import junit.framework.Assert;
 import org.junit.Test;
-
-import java.util.LinkedList;
-import java.util.Observer;
-import java.util.Observable;
-import java.rmi.RemoteException;
-
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
-import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
+
+import java.rmi.RemoteException;
+import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 
 public class MemberTest {
 

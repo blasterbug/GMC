@@ -2,20 +2,14 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFabric;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
-import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.*;
 
 import java.rmi.RemoteException;
-import java.rmi.NotBoundException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Collection;
+import java.util.*;
 
 public class MemberImpl extends Observable implements Member, ComObserver, Observer
 {

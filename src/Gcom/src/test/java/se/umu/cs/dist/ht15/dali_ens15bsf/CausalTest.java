@@ -6,7 +6,6 @@ import org.junit.Test;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
-import se.umu.cs.dist.ht15.dali_ens15bsf.CausalMessage;
 
 import java.util.LinkedList;
 import java.util.Observable;

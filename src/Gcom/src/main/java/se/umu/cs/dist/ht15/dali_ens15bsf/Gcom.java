@@ -1,8 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 
-import java.util.Collection;
-
 /**
  * Created by ens15bsf on 2015-11-05.
  */
