@@ -63,8 +63,6 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public RemoteMember joinGroup ( String groupName, RemoteMember m ) throws RemoteException
   {
-	  System.out.println("BINOG");	
-
     // if the group is already registered
     RemoteMember leader = groups.get( groupName );
     if ( null != leader )
@@ -93,7 +91,22 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public LinkedList<String> getGroups () throws RemoteException
   {
-    return new LinkedList<String>( groups.keySet() );
+    LinkedList<String> groupsLL = new LinkedList<String>();
+    // check if all the leaders are alive
+    for ( String gid : groupsLL )
+    {
+      try {
+        groups.get( gid ).getId();
+        groupsLL.add( gid );
+      }
+      // if not
+      catch ( RemoteException e )
+      {
+        // remote them from the registery
+        groups.remove( gid );
+      }
+    }
+    return groupsLL;
   }
 
   /**
