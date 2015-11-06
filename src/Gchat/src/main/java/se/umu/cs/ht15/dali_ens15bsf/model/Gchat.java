@@ -14,7 +14,7 @@ import java.util.*;
  * Created by ens15bsf on 2015-10-28.
  * model class for the Gchat
  */
-public class Gchat implements Observer, GcomObserver
+public class Gchat implements GcomObserver
 {
   private HashMap<String, GUser> users;
   private LinkedList<GMessage> messages;
@@ -32,7 +32,7 @@ public class Gchat implements Observer, GcomObserver
     messages = new LinkedList<GMessage>();
 
     user =  uid;
-    users.put( uid, new GUser( user ) );
+    //users.put( uid, new GUser( user ) );
     groupName = gid;
 
     chatObs = new LinkedList<GModelObserver>();
@@ -62,7 +62,8 @@ public class Gchat implements Observer, GcomObserver
   public void connected ()
   {
     //gcomMb.connect();
-    addUser( user );
+    //addUser( user );
+    gcomMb.send( new GJoinMessage( user, groupName ) );
     for ( ConnectionObserver observer : connectionObs )
       observer.connected( user );
   }
@@ -101,21 +102,13 @@ public class Gchat implements Observer, GcomObserver
 
   public void sendMessage ( String content )
   {
+    System.out.println(user);
     gcomMb.send(new GTextMessage( user, content ) );
   }
 
   public void addObserver ( GModelObserver obs )
   {
     chatObs.add( obs );
-  }
-
-  @Override
-  public void update ( Observable observable, Object o )
-  {
-    System.out.println( "update" );
-    System.out.println( o.getClass() );
-    System.out.println( observable.getClass() );
-    System.out.println( o.toString() );
   }
 
   public String[] getAvailableGroups ()
@@ -126,29 +119,26 @@ public class Gchat implements Observer, GcomObserver
   @Override
   public void newMessage ( Message message )
   {
-    System.out.println( "Receiving " + message.getId() );
     GMessage msg = (GMessage) message.getContent();
     if ( msg.isJoinMessage() )
     {
       // broadcast my name
-      if ( !( msg.getAuthor().equals(  user ) ) )
+      if ( ( msg.getAuthor().equals(  user ) ) )
+      {
+        System.out.println("i am here");
         gcomMb.send( new GJoinMessage( user, groupName ) );
+      }
       users.put( msg.getAuthor(), new GUser( msg.getAuthor() ) );
-      for ( ConnectionObserver obs : connectionObs )
-        obs.connected( msg.getAuthor() );
+      for ( GModelObserver obs : chatObs )
+        obs.newUser();
     }
     //if ( message.isMessage() )
     if ( msg.isTextMessage() )
     {
       messages.addLast( msg );
       for ( GModelObserver obs : chatObs )
-      {
         obs.newMessage();
-      }
-
     }
-    System.out.println( "TODO" );
-    System.out.println( message.toString() );
   }
 
   @Override
@@ -165,12 +155,11 @@ public class Gchat implements Observer, GcomObserver
     try
     {
       gcomMb.join( group );
-      gcomMb.send( new GJoinMessage( userName, group ) );
       //connected();
     }
     catch ( CantJoinException e )
     {
-      System.err.println( user + "can't join " + group );
+      System.err.println( user + " can't join " + group );
       //e.printStackTrace();
       for ( ConnectionObserver obs : connectionObs )
         obs.disconnected( userName );

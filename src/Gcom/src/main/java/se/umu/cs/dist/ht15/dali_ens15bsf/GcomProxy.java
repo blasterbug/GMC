@@ -69,6 +69,7 @@ public class GcomProxy<T extends Serializable> implements Observer, Gcom
     }
     catch ( RemoteException e )
     {
+      System.err.println( e.getMessage() );
       return new String[0];
     }
   }
