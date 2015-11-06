@@ -2,8 +2,10 @@ package se.umu.cs.ht15.dali_ens15bsf.model;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
-import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
-import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
+import se.umu.cs.ht15.dali_ens15bsf.model.msg.GJoinMessage;
+import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
+import se.umu.cs.ht15.dali_ens15bsf.model.msg.GTextMessage;
+import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionObserver;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -14,60 +16,68 @@ import java.util.*;
  */
 public class Gchat implements Observer, GcomObserver
 {
-  private HashMap<String, GUserDisplay> users;
-  private LinkedList<GMessageDisplay> messages;
-  private GUserDisplay user;
-  private LinkedList<GModelObserver> observers;
+  private HashMap<String, GUser> users;
+  private LinkedList<GMessage> messages;
+  private GUser user;
+  private LinkedList<GModelObserver> chatObs;
   private Gcom gcomMb;
+  private Vector<ConnectionObserver> connectionObs;
+  private String groupName;
 
-  public Gchat ( String userName )
+  public Gchat ( String uid, String gid)
   {
-    users = new HashMap<String, GUserDisplay>();
-    messages = new LinkedList<GMessageDisplay>();
-    user = new GUserDisplay( userName );
-    users.put( userName, user );
 
-    observers = new LinkedList<GModelObserver>();
+    users = new HashMap<String, GUser>();
+    messages = new LinkedList<GMessage>();
+
+    user = new GUser( uid );
+    users.put( uid, user );
+    groupName = gid;
+
+    chatObs = new LinkedList<GModelObserver>();
+    connectionObs = new Vector<ConnectionObserver>();
 
     try
     {
       gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.FIFO, MulticastStrategyEnum.RELIABLE_MULTICAST );
       gcomMb.addObserver( this );
       gcomMb.connect();
-      ConnectionWindow cntView = new ConnectionWindow( this );
-      cntView.setVisible( true );
     }
     catch ( RemoteException | NamingServiceUnavailableException e )
     {
+      System.err.println( "Can't connect to the Naming Server..." );
       e.printStackTrace();
     }
 
   }
 
-  public void connect () throws UnableToJoinException
+  public void setUserName( String newUID )
   {
-    gcomMb.connect();
-    ChatWindow chatView = new ChatWindow( this );
-    chatView.setVisible( true );
+    user.setUID( newUID );
+  }
+  public void connected ()
+  {
+    //gcomMb.connect();
+    for ( ConnectionObserver observer : connectionObs )
+      observer.connected( user.getName() );
   }
 
-  public void createGroup ( String groupName )
-  {
-    //ns;
-    //window.addGroup( window.newGroupName() );
-  }
-
-  public Collection<GUserDisplay> getUsers ()
+  public Collection<GUser> getUsers ()
   {
     return users.values();
   }
 
-  public LinkedList<GMessageDisplay> getMessages ()
+  public GUser getUser ( String uid )
+  {
+    return users.get( uid );
+  }
+
+  public LinkedList<GMessage> getMessages ()
   {
     return messages;
   }
 
-  public GUserDisplay getUser ()
+  public GUser getUser ()
   {
     return user;
   }
@@ -79,27 +89,28 @@ public class Gchat implements Observer, GcomObserver
 
   public void addUser ( String newUser )
   {
-    users.put( newUser, new GUserDisplay( newUser ) );
+    users.put( newUser, new GUser( newUser ) );
 
-    for ( GModelObserver ob : observers )
+    for ( GModelObserver ob : chatObs )
       ob.newUser();
   }
 
   public void sendMessage ( String content )
   {
-    messages.addLast( new GMessageDisplay( user, content ) );
-    for ( GModelObserver ob : observers )
-      ob.newMessage();
+    gcomMb.send( new Message( "GCHAT_MESSAGE", new GTextMessage( user.getName(), content ) ) );
   }
 
   public void addObserver ( GModelObserver obs )
   {
-    observers.add( obs );
+    chatObs.add( obs );
   }
 
   @Override
   public void update ( Observable observable, Object o )
   {
+    System.out.println( "update" );
+    System.out.println( o.getClass() );
+    System.out.println( observable.getClass() );
     System.out.println( o.toString() );
   }
 
@@ -111,12 +122,58 @@ public class Gchat implements Observer, GcomObserver
   @Override
   public void newMessage ( Message message )
   {
+    System.out.println( "Receiving " + message.getId() );
+    GMessage msg = (GMessage) message.getContent();
+    if ( msg.isJoinMessage() )
+    {
+      users.put( msg.getAuthor(), new GUser( msg.getAuthor() ) );
+      for ( ConnectionObserver obs : connectionObs )
+        obs.connected( msg.getAuthor() );
+    }
+    //if ( message.isMessage() )
+    if ( msg.isTextMessage() )
+    {
+      messages.addLast( msg );
+      for ( GModelObserver obs : chatObs )
+      {
+        obs.newMessage();
+      }
+
+    }
     System.out.println( "TODO" );
     System.out.println( message.toString() );
   }
 
-  public void join( String userName, String group )
+  public void join ( String userName, String group )
   {
-    gcomMb.join( group );
+    for ( ConnectionObserver obs : connectionObs )
+      obs.connecting( userName );
+    try
+    {
+      gcomMb.join( group );
+      gcomMb.send( new Message( "GCHAT_CONNECTING", new GJoinMessage( userName ) ) );
+    }
+    catch ( CantJoinException e )
+    {
+      System.err.println( user + "can't join " + group );
+      //e.printStackTrace();
+      for ( ConnectionObserver obs : connectionObs )
+        obs.disconnected( userName );
+    }
+  }
+
+  public void addConnectionObserver ( ConnectionObserver connectionAgent )
+  {
+    connectionObs.add( connectionAgent );
+  }
+
+  public String getGroupName ()
+  {
+    return groupName;
+  }
+
+  public void setGroupName ( String groupName )
+  {
+    this.groupName = groupName;
   }
 }

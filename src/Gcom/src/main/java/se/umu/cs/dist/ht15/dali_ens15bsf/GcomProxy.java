@@ -35,18 +35,18 @@ public class GcomProxy implements Observer, Gcom
 
   /**
    * Connect the member to the NameServer, should be called first.
+   * @exception NamingServiceUnavailableException
    */
-  public void connect()
+  public void connect() throws NamingServiceUnavailableException
   {
     try
     {
       mbr.connectToNameserver();
-    } catch ( RemoteException e )
+      mbr.updateIdFromNameServer();
+    }
+    catch ( RemoteException | NamingServiceUnavailableException e )
     {
-      e.printStackTrace();
-    } catch ( NamingServiceUnavailableException e )
-    {
-      e.printStackTrace();
+      throw new NamingServiceUnavailableException( e.getMessage() );
     }
   }
 
@@ -66,7 +66,7 @@ public class GcomProxy implements Observer, Gcom
     }
     catch ( RemoteException e )
     {
-      return null;
+      return new String[0];
     }
   }
 
@@ -74,14 +74,14 @@ public class GcomProxy implements Observer, Gcom
    * Join a group of member
    * @param groupid name of the group to join
    */
-  public void join( String groupid )
+  public void join( String groupid ) throws CantJoinException
   {
     try
     {
       mbr.joinGroup( groupid );
     } catch ( RemoteException e )
     {
-      e.printStackTrace();
+      throw new CantJoinException( e.getMessage() );
     }
   }
 

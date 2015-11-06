@@ -3,8 +3,9 @@ package se.umu.cs.ht15.dali_ens15bsf.view;
 
 import se.umu.cs.ht15.dali_ens15bsf.model.GMessageDisplay;
 import se.umu.cs.ht15.dali_ens15bsf.model.GModelObserver;
-import se.umu.cs.ht15.dali_ens15bsf.model.GUserDisplay;
+import se.umu.cs.ht15.dali_ens15bsf.model.GUser;
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
+import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.EnterToSend;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.SendAction;
 
@@ -14,11 +15,11 @@ import java.awt.*;
 /**
  * Created by ens15bsf on 2015-10-21.
  */
-public class ChatWindow extends JFrame implements GModelObserver
+public class ChatWindow extends JFrame implements GModelObserver, ConnectionObserver
 {
 
   private Gchat model;
-  private JList<GUserDisplay> listUsers;
+  private JList<GUser> listUsers;
   private JPanel messageList;
   private JTextArea chatInput;
   private JScrollPane scrollMSG;
@@ -33,18 +34,15 @@ public class ChatWindow extends JFrame implements GModelObserver
     model.addObserver( this );
 
     // Create a spilt panel for the list of users
-    listUsers = new JList<GUserDisplay>();
+    listUsers = new JList<GUser>();
     listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
     listUsers.setFixedCellHeight( 60 );
     listUsers.setLayoutOrientation( JList.HORIZONTAL_WRAP );
-    listUsers.setModel( new DefaultComboBoxModel<GUserDisplay>() );
+    listUsers.setModel( new DefaultComboBoxModel<GUser>() );
     JViewport userlistVP = new JViewport();
     userlistVP.setView( listUsers );
     JScrollPane scrollUSR = new JScrollPane( userlistVP );
     scrollUSR.setAutoscrolls( true );
-
-    for ( GUserDisplay usr : model.getUsers() )
-      listUsers.add( usr );
 
     // panel for messages
     messageList = new JPanel();
@@ -64,9 +62,6 @@ public class ChatWindow extends JFrame implements GModelObserver
     topPanel.setDividerLocation( 600 );
 
     messageList.setAutoscrolls( true );
-
-    for ( GMessageDisplay gmsg : model.getMessages() )
-      messageList.add( gmsg );
 
     // create the panel with the text input and the join button
     JPanel bottomPanel = new JPanel();
@@ -137,8 +132,8 @@ public class ChatWindow extends JFrame implements GModelObserver
   public void newMessage ()
   {
     messageList.removeAll();
-    for ( GMessageDisplay msg : model.getMessages() )
-      messageList.add( msg );
+    for ( GMessage msg : model.getMessages() )
+      messageList.add( new GMessageDisplay( model.getUser( msg.getAuthor() ), msg ) );
 
     messageList.add( Box.createVerticalGlue() );
     messageList.updateUI();
@@ -149,9 +144,44 @@ public class ChatWindow extends JFrame implements GModelObserver
   public void newUser ()
   {
     listUsers.removeAll();
-    for ( GUserDisplay usr : model.getUsers() )
+    for ( GUser usr : model.getUsers() )
       listUsers.add( usr );
     listUsers.add( Box.createVerticalGlue() );
     listUsers.updateUI();
+  }
+
+  /**
+   * Get notified when a user is connected
+   *
+   * @param uid New user ID
+   */
+  @Override
+  public void connected ( String uid )
+  {
+    newUser();
+    newMessage();
+    setVisible( true );
+  }
+
+  /**
+   * Get notified when the current is trying to join a group
+   *
+   * @param uid username
+   */
+  @Override
+  public void connecting ( String uid )
+  {
+    // DO NOTHING
+  }
+
+  /**
+   * Get notified when an user get disconnected
+   *
+   * @param uid disconnected user ID
+   */
+  @Override
+  public void disconnected ( String uid )
+  {
+    setVisible( false );
   }
 }

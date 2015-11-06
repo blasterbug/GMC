@@ -8,20 +8,20 @@ import java.util.Random;
 /**
  * Created by ens15bsf on 2015-10-28.
  */
-public class GUserDisplay extends JLabel implements Serializable
+public class GUser extends JLabel implements Serializable
 {
 
   private static final long serialVersionUID = -6777933872396080915L;
   private static Random rd = new Random();
 
 
-  private String name;
+  private String gname;
   private Color color;
 
-  public GUserDisplay ( String name )
+  public GUser ( String name )
   {
     super( name );
-    this.name = name;
+    this.gname = name;
     setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
     color = chooseColor();
     setBackground( color.brighter() );
@@ -42,12 +42,16 @@ public class GUserDisplay extends JLabel implements Serializable
 
   public String getName ()
   {
-    return name;
+    return gname;
   }
 
   public String toString ()
   {
-    return name;
+    return gname;
   }
 
+  public void setUID ( String UID )
+  {
+    this.gname = UID;
+  }
 }

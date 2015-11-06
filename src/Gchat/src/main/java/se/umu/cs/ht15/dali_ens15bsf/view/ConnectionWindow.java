@@ -2,12 +2,10 @@ package se.umu.cs.ht15.dali_ens15bsf.view;
 
 
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
-import se.umu.cs.ht15.dali_ens15bsf.view.listeners.AddGroupAction;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.ConnectAction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
 
 /**
  * Created by ens15bsf on 2015-10-13.
@@ -16,39 +14,6 @@ import java.util.Random;
 public class ConnectionWindow extends JFrame implements ConnectionObserver
 {
   public final static String CREATE_GROUP = "Create a new group?";
-  private static final String[] NAMES = {
-          "King AdasKing Adas",
-          "Padmé Amidala",
-          "Darth Andeddu",
-          "Jar Jar Binks",
-          "Chewbacca",
-          "Jango Fett",
-          "Boba Fett",
-          "Greedo",
-          "General Grievous",
-          "Jabba the Hutt",
-          "Qui-Gon Jinn",
-          "Obi-Wan Kenobi",
-          "Galen Marek",
-          "Darth Maul",
-          "Princess Leia Organa",
-          "Emperor Sheev Palpatine",
-          "R2-D2",
-          "Darth Sidious",
-          "Anakin Skywalker",
-          "Luke Skywalker",
-          "Anakin Solo",
-          "Han Solo",
-          "Jaina Solo",
-          "Ahsoka Tano",
-          "Grand Moff Wilhuff Tarkin",
-          "Darth Tyranus",
-          "Darth Vader",
-          "Watto",
-          "Mace Windu",
-          "Yoda"
-  };
-  private static final Random dice = new Random();
 
   private JTextField userName;
   private JTextField newGroupName;
@@ -60,6 +25,7 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
 
     // create the windows
     super( "Gchat - Join a group" );
+    model.addConnectionObserver( this );
     listGroups = model.getAvailableGroups();
 
     // Create a panel for the list of available groups
@@ -67,6 +33,11 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     groups = new JList<String>( listGroups );
     groups.setSelectedIndex( 0 );
     list.getViewport().setView( groups );
+    if ( listGroups.length < 1 )
+    {
+      groups.add( new JLabel( "No group available" ) );
+      groups.setEnabled( false );
+    }
     list.setPreferredSize( new Dimension( 220, 100 ) );
     groups.setAutoscrolls( true );
 
@@ -79,21 +50,20 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     newGroupLayout.setAutoCreateContainerGaps( false );
     // define the components of the panel to create a group
     // a text area
-    newGroupName = new JTextField( CREATE_GROUP, 30 );
+    newGroupName = new JTextField( model.getGroupName(), 30 );
     // and a button
-    JButton addBT = new JButton( "add" );
-    addBT.addActionListener( new AddGroupAction( this, model ) );
+    JLabel newGroupLabel = new JLabel( "Join : " );
     // add the components to the bottom panel
     newGroupLayout.setHorizontalGroup(
             newGroupLayout.createSequentialGroup()
+                    .addComponent( newGroupLabel )
                     .addComponent( newGroupName )
-                    .addComponent( addBT )
     );
     newGroupLayout.setVerticalGroup(
             newGroupLayout.createSequentialGroup()
                     .addGroup( newGroupLayout.createParallelGroup( GroupLayout.Alignment.BASELINE )
-                            .addComponent( newGroupName )
-                            .addComponent( addBT ) )
+                            .addComponent( newGroupLabel )
+                            .addComponent( newGroupName ) )
     );
 
     // create the panel with the text input and the join button
@@ -105,11 +75,11 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     JoinPanelLayout.setAutoCreateContainerGaps( false );
     // define the components of the panel for join a group
     // a text area
-    userName = new JTextField( getRandomUserName(), 30 );
-    userName.addActionListener( new ConnectAction( this ) );
+    userName = new JTextField( model.getUserName(), 30 );
+    userName.addActionListener( new ConnectAction( this, model ) );
     // and a button
     JButton joinBT = new JButton( "join" );
-    joinBT.addActionListener( new ConnectAction( this ) );
+    joinBT.addActionListener( new ConnectAction( this, model ) );
     // add the components to the bottom panel
     JoinPanelLayout.setHorizontalGroup(
             JoinPanelLayout.createSequentialGroup()
@@ -167,16 +137,22 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     );
 
 
+    // dqrken window in connection
+    getRootPane().setGlassPane( new JComponent()
+    {
+      public void paintComponent ( Graphics g )
+      {
+        g.setColor( new Color( 0, 0, 0, 100 ) );
+        g.fillRect( 0, 0, getWidth(), getHeight() );
+        super.paintComponent( g );
+      }
+    } );
     super.setSize( new Dimension( 260, 250 ) );
     super.setLocationRelativeTo( null );
     super.setResizable( false );
     //super.setVisible( true );
   }
 
-  public static String getRandomUserName ()
-  {
-    return NAMES[dice.nextInt( NAMES.length )];
-  }
 
   public String getGroupConnection ()
   {
@@ -207,5 +183,35 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     groups.setListData( listGroups );
     groups.setSelectedIndex( i );
     groups.updateUI();
+  }
+
+  /**
+   * Get notified when a user is connected
+   *
+   * @param uid New user ID
+   */
+  @Override
+  public void connected ( String uid )
+  {
+    setVisible( false );
+  }
+
+  public void connecting ( String uid )
+  {
+    getRootPane().getGlassPane().setVisible( true );
+    setEnabled( false );
+  }
+
+  /**
+   * Get notified when an user get disconnected
+   *
+   * @param uid disconnected user ID
+   */
+  @Override
+  public void disconnected ( String uid )
+  {
+    getRootPane().getGlassPane().setVisible( false );
+    setEnabled( true );
+    setVisible( true );
   }
 }

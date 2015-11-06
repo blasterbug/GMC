@@ -1,6 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
-import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.time.VectorClock;
 
 public class FifoMessage extends MessageDecorator {
 	private VectorClock clock;

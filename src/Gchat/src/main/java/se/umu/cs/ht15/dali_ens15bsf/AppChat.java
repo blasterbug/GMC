@@ -2,6 +2,7 @@ package se.umu.cs.ht15.dali_ens15bsf;
 
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.model.UnableToJoinException;
+import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
 import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 
 /**
@@ -13,8 +14,10 @@ public class AppChat
   public static void main ( String[] args ) throws UnableToJoinException
   {
 
-    Gchat chatModel = new Gchat( ConnectionWindow.getRandomUserName() );
-
-
+    Gchat chatModel = new Gchat( RandomNames.getRandomUserName(), RandomNames.getRandomGroupName());
+    ConnectionWindow connectionWindow = new ConnectionWindow( chatModel );
+    ChatWindow chatView = new ChatWindow( chatModel );
+    connectionWindow.setVisible( true );
+    //System.exit( 0 );
   }
 }

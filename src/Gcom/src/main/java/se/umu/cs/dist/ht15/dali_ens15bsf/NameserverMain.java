@@ -12,7 +12,8 @@ public class NameserverMain {
 		try {
 		 	NamingService ns = new NamingService();
 		}catch(RemoteException | AlreadyBoundException e) {
-			System.out.println("Couldn't start naming service");	
+			System.err.println( "Couldn't start naming service" );
+			System.exit( 1 );
 		}
 
 		try {

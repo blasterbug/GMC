@@ -2,7 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.ordering;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.CausalMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
-import se.umu.cs.dist.ht15.dali_ens15bsf.time.VectorClock;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.time.VectorClock;
 
 import java.util.HashMap;
 import java.util.LinkedList;

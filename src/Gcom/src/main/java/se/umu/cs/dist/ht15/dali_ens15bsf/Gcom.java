@@ -1,6 +1,8 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
+
 /**
  * Created by ens15bsf on 2015-11-05.
  */
@@ -9,7 +11,7 @@ public interface Gcom
   /**
    * Connect the member to the NameServer, should be called first.
    */
-  public void connect();
+  public void connect() throws NamingServiceUnavailableException;
 
   /**
    * Get the list of all available group
@@ -21,7 +23,7 @@ public interface Gcom
    * Join a group of member
    * @param groupid name of the group to join
    */
-  public void join( String groupid );
+  public void join( String groupid )  throws CantJoinException;
 
   /**
    * Send a message to the group

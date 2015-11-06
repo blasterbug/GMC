@@ -53,6 +53,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		leader = nameserver.joinGroup(gid, self);
 		this.groups.put( gid, leader );
 		this.groupId = gid;
+		notifyObservers( groupId );
 	}
 
 	@Override
