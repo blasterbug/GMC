@@ -1,6 +1,7 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GJoinMessage;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
@@ -42,7 +43,7 @@ public class Gchat implements GcomObserver
 
     try
     {
-      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
+      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.UNRELIABLE_MULTICAST );
       gcomMb.addObserver( this );
       gcomMb.connect();
     }
@@ -77,7 +78,13 @@ public class Gchat implements GcomObserver
 
   public GUser getUser ( String uid )
   {
-    return users.get( uid );
+    GUser gu =  users.get( uid );
+    if ( null == gu )
+    {
+      gu = new GUser( uid );
+      users.put( uid, gu );
+    }
+    return gu;
   }
 
   public LinkedList<GMessage> getMessages ()
@@ -121,13 +128,12 @@ public class Gchat implements GcomObserver
   @Override
   public void newMessage ( Message message )
   {
-    GMessage msg = (GMessage) message.getContent();
+    GMessage msg = (GMessage)message.getContent();
     if ( msg.isJoinMessage() )
     {
       // broadcast my name
       if ( ( msg.getAuthor().equals(  user ) ) )
       {
-        System.out.println("i am here");
         gcomMb.send( new GJoinMessage( user, groupName ) );
       }
       users.put( msg.getAuthor(), new GUser( msg.getAuthor() ) );
