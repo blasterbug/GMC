@@ -3,10 +3,12 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 
+import java.io.Serializable;
+
 /**
  * Created by ens15bsf on 2015-11-05.
  */
-public interface Gcom
+public interface Gcom<T extends Serializable>
 {
   /**
    * Connect the member to the NameServer, should be called first.
@@ -29,7 +31,7 @@ public interface Gcom
    * Send a message to the group
    * @param msg message to send
    */
-  public void send( Message msg );
+  public void send( T msg );
 
   /**
    * Add an observer to be notified when new message arrived

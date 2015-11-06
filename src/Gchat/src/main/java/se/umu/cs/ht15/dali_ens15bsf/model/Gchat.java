@@ -20,7 +20,7 @@ public class Gchat implements Observer, GcomObserver
   private LinkedList<GMessage> messages;
   private String user;
   private LinkedList<GModelObserver> chatObs;
-  private Gcom gcomMb;
+  private Gcom<GMessage> gcomMb;
   private Vector<ConnectionObserver> connectionObs;
   private String groupName;
   //private ChatState state; // TODO state pattern
@@ -40,7 +40,7 @@ public class Gchat implements Observer, GcomObserver
 
     try
     {
-      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.FIFO, MulticastStrategyEnum.RELIABLE_MULTICAST );
+      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
       gcomMb.addObserver( this );
       gcomMb.connect();
     }
@@ -101,7 +101,7 @@ public class Gchat implements Observer, GcomObserver
 
   public void sendMessage ( String content )
   {
-    gcomMb.send( new Message( "GCHAT_MESSAGE", new GTextMessage( user, content ) ) );
+    gcomMb.send(new GTextMessage( user, content ) );
   }
 
   public void addObserver ( GModelObserver obs )
@@ -132,7 +132,7 @@ public class Gchat implements Observer, GcomObserver
     {
       // broadcast my name
       if ( !( msg.getAuthor().equals(  user ) ) )
-        gcomMb.send( new Message( "ADD_ME", new GJoinMessage( user, groupName ) ) );
+        gcomMb.send( new GJoinMessage( user, groupName ) );
       users.put( msg.getAuthor(), new GUser( msg.getAuthor() ) );
       for ( ConnectionObserver obs : connectionObs )
         obs.connected( msg.getAuthor() );
@@ -152,9 +152,10 @@ public class Gchat implements Observer, GcomObserver
   }
 
   @Override
-  public void join ( String s )
+  public void join ( String groupID )
   {
-    
+    for ( ConnectionObserver obs : connectionObs )
+      obs.connected( groupID );
   }
 
   public void join ( String userName, String group )

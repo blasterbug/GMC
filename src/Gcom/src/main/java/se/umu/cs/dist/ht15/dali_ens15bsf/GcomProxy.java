@@ -7,6 +7,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.Observable;
@@ -18,7 +19,7 @@ import java.util.Vector;
  * Gcom is a middleware designed in a peer-to-peer approach.
  * All nodes, the member are huddled in groups.
  */
-public class GcomProxy implements Observer, Gcom
+public class GcomProxy<T extends Serializable> implements Observer, Gcom
 {
   private NamingServiceRemote nsRemote;
   private MemberImpl mbr;
@@ -62,6 +63,8 @@ public class GcomProxy implements Observer, Gcom
     {
       LinkedList<String> groupsLL = nsRemote.getGroups();
       String[] res = new String[groupsLL.size()];
+      for ( int i = 0 ; i < res.length ; i++ )
+        res[i] = groupsLL.get( i );
       return groupsLL.toArray( res );
     }
     catch ( RemoteException e )
@@ -83,13 +86,16 @@ public class GcomProxy implements Observer, Gcom
     {
       throw new CantJoinException( e.getMessage() );
     }
+    for ( GcomObserver obs : observers )
+      obs.join( groupid );
   }
+
 
   /**
    * Send a message to the group
    * @param msg message to send
    */
-  public void send( Message msg )
+  public void send( Serializable msg )
   {
     mbr.sendMessage( msg );
   }
@@ -112,4 +118,5 @@ public class GcomProxy implements Observer, Gcom
     for ( GcomObserver obs : observers )
       obs.newMessage( msg );
   }
+
 }

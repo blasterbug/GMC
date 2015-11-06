@@ -33,10 +33,11 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     groups = new JList<String>( listGroups );
     groups.setSelectedIndex( 0 );
     list.getViewport().setView( groups );
-    if ( listGroups.length < 1 )
+    System.out.println(listGroups.length);
+    if ( listGroups.length == 0 )
     {
-      groups.add( new JLabel( "No group available" ) );
       groups.setEnabled( false );
+      groups.setFocusable( false );
     }
     list.setPreferredSize( new Dimension( 220, 100 ) );
     groups.setAutoscrolls( true );
