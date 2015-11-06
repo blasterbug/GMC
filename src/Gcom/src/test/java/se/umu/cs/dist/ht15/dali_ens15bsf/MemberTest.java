@@ -177,9 +177,9 @@ public class MemberTest {
 			DummyObserver dummy = new DummyObserver();
 			m1.addObserver(dummy);
 
-			m1.sendMessage(msg1);
-			m2.sendMessage(msg2);
-			m3.sendMessage(msg3);
+			m1.sendMessage("test1");
+			m2.sendMessage("test2");
+			m3.sendMessage("test3");
 
 			Assert.assertTrue(dummy.containsAt(msg1, 0) 
 					&& dummy.containsAt(msg2, 1) 

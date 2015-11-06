@@ -7,4 +7,5 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 public interface GcomObserver
 {
   public void newMessage( Message msg );
+  public void join( String gid );
 }

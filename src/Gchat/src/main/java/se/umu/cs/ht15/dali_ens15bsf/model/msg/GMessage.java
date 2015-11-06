@@ -67,4 +67,9 @@ public abstract class GMessage implements Serializable
   {
     return false;
   }
+
+  public String toString()
+  {
+    return author + " : " + content;
+  }
 }
