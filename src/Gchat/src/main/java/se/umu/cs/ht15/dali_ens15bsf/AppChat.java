@@ -2,6 +2,7 @@ package se.umu.cs.ht15.dali_ens15bsf;
 
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.model.UnableToJoinException;
+import se.umu.cs.ht15.dali_ens15bsf.model.msg.GJoinMessage;
 import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
 import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 

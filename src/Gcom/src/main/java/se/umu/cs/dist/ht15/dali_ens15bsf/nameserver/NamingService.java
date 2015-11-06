@@ -94,19 +94,21 @@ public class NamingService implements Serializable, NamingServiceRemote
   {
     LinkedList<String> groupsLL = new LinkedList<String>();
     // check if all the leaders are alive
-    for ( String gid : groupsLL )
+    for ( String gid : groups.keySet() )
     {
       try {
         groups.get( gid ).getId();
-        groupsLL.add( gid );
+        groupsLL.add( new String( gid ) );
       }
       // if not
       catch ( RemoteException e )
       {
         // remote them from the registery
+        System.out.println( "Server : Group " + gid + " removed" );
         groups.remove( gid );
       }
     }
+    System.out.println(groupsLL);
     return groupsLL;
   }
 

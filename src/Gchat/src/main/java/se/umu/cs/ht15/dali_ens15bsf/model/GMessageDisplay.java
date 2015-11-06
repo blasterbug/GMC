@@ -3,6 +3,7 @@ package se.umu.cs.ht15.dali_ens15bsf.model;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 /**
@@ -45,7 +46,6 @@ public class GMessageDisplay extends JPanel
                             .addGap( 5 )
                             .addComponent( message ) )
     );
-
 
 //    Color backgroundColor = user.getColor().brighter().brighter();
 //    this.setBackground( backgroundColor );

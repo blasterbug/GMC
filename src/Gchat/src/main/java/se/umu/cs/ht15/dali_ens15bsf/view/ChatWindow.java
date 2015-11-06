@@ -135,7 +135,6 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
     messageList.removeAll();
     for ( GMessage msg : model.getMessages() )
       messageList.add( new GMessageDisplay( model.getUser( msg.getAuthor() ), msg ) );
-
     messageList.add( Box.createVerticalGlue() );
     messageList.updateUI();
     chatInput.requestFocus();
@@ -144,7 +143,7 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
 
   public void newUser ()
   {
-    listUsers.removeAll();
+    //listUsers.removeAll();
     for ( GUser usr : model.getUsers() )
       listUsers.add( usr );
     listUsers.add( Box.createVerticalGlue() );
@@ -154,12 +153,12 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
   /**
    * Get notified when a user is connected
    *
-   * @param uid New user ID
+   * @param guid Group ID
    */
   @Override
-  public void connected ( String uid )
+  public void connected ( String guid )
   {
-    setTitle( "GChat - " + uid + " @ " + model.getGroupName() );
+    setTitle( "GChat - " + model.getUserName() + " @ " + guid );
     newUser();
     newMessage();
     setVisible( true );
