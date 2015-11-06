@@ -103,6 +103,7 @@ public class NamingService implements Serializable, NamingServiceRemote
       catch ( RemoteException e )
       {
         // remote them from the registery
+        System.out.println( "Server : Group " + gid + " removed" );
         groups.remove( gid );
       }
     }
