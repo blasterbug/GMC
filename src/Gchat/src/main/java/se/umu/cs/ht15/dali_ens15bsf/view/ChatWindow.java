@@ -29,9 +29,10 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
   public ChatWindow ( Gchat chat )
   {
     // create the windows
-    super( "Gchat - " + chat.getUserName() );
+    super( "Gchat - [...]" );
     model = chat;
     model.addObserver( this );
+    model.addConnectionObserver( this );
 
     // Create a spilt panel for the list of users
     listUsers = new JList<GUser>();
@@ -158,6 +159,7 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
   @Override
   public void connected ( String uid )
   {
+    setTitle( "GChat - " + uid + " @ " + model.getGroupName() );
     newUser();
     newMessage();
     setVisible( true );

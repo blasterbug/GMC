@@ -18,11 +18,12 @@ public class Gchat implements Observer, GcomObserver
 {
   private HashMap<String, GUser> users;
   private LinkedList<GMessage> messages;
-  private GUser user;
+  private String user;
   private LinkedList<GModelObserver> chatObs;
   private Gcom gcomMb;
   private Vector<ConnectionObserver> connectionObs;
   private String groupName;
+  //private ChatState state; // TODO state pattern
 
   public Gchat ( String uid, String gid)
   {
@@ -30,8 +31,8 @@ public class Gchat implements Observer, GcomObserver
     users = new HashMap<String, GUser>();
     messages = new LinkedList<GMessage>();
 
-    user = new GUser( uid );
-    users.put( uid, user );
+    user =  uid;
+    users.put( uid, new GUser( user ) );
     groupName = gid;
 
     chatObs = new LinkedList<GModelObserver>();
@@ -53,13 +54,17 @@ public class Gchat implements Observer, GcomObserver
 
   public void setUserName( String newUID )
   {
-    user.setUID( newUID );
+    users.remove( user );
+    user = newUID;
+    users.put( newUID, new GUser( newUID ) );
   }
+
   public void connected ()
   {
     //gcomMb.connect();
+    addUser( user );
     for ( ConnectionObserver observer : connectionObs )
-      observer.connected( user.getName() );
+      observer.connected( user );
   }
 
   public Collection<GUser> getUsers ()
@@ -77,27 +82,26 @@ public class Gchat implements Observer, GcomObserver
     return messages;
   }
 
-  public GUser getUser ()
+  public String getUser ()
   {
     return user;
   }
 
   public String getUserName ()
   {
-    return user.getName();
+    return user;
   }
 
   public void addUser ( String newUser )
   {
     users.put( newUser, new GUser( newUser ) );
-
     for ( GModelObserver ob : chatObs )
       ob.newUser();
   }
 
   public void sendMessage ( String content )
   {
-    gcomMb.send( new Message( "GCHAT_MESSAGE", new GTextMessage( user.getName(), content ) ) );
+    gcomMb.send( new Message( "GCHAT_MESSAGE", new GTextMessage( user, content ) ) );
   }
 
   public void addObserver ( GModelObserver obs )
@@ -126,6 +130,9 @@ public class Gchat implements Observer, GcomObserver
     GMessage msg = (GMessage) message.getContent();
     if ( msg.isJoinMessage() )
     {
+      // broadcast my name
+      if ( !( msg.getAuthor().equals(  user ) ) )
+        gcomMb.send( new Message( "ADD_ME", new GJoinMessage( user, groupName ) ) );
       users.put( msg.getAuthor(), new GUser( msg.getAuthor() ) );
       for ( ConnectionObserver obs : connectionObs )
         obs.connected( msg.getAuthor() );
@@ -144,6 +151,12 @@ public class Gchat implements Observer, GcomObserver
     System.out.println( message.toString() );
   }
 
+  @Override
+  public void join ( String s )
+  {
+    
+  }
+
   public void join ( String userName, String group )
   {
     for ( ConnectionObserver obs : connectionObs )
@@ -151,7 +164,8 @@ public class Gchat implements Observer, GcomObserver
     try
     {
       gcomMb.join( group );
-      gcomMb.send( new Message( "GCHAT_CONNECTING", new GJoinMessage( userName ) ) );
+      gcomMb.send( new GJoinMessage( userName, group ) );
+      //connected();
     }
     catch ( CantJoinException e )
     {

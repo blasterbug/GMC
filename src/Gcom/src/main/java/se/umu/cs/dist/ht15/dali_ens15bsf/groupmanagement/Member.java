@@ -4,12 +4,13 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Collection;
 
-public interface Member {
+public interface Member<T extends Serializable> {
 	public void join(RemoteMember m, String id);
-	public void sendMessage(Message m);
+	public void sendMessage(T content);
 	public void receiveMessage(Message m);
 	public Collection<RemoteMember> getView();
 	public RemoteMember getRemoteMember();

@@ -7,6 +7,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
@@ -111,6 +112,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 //		System.out.println("Putting ["+id+"] to "+this.id);	
 	}
 
+
 	@Override
 	public synchronized void addToView(RemoteMember m, String id) {
 //		System.out.println("Adding ["+id+"] to view in "+this.id);	
@@ -123,10 +125,11 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	}
 
 	/**
-	  * @param m A message to send to the group
+	  * @param content A message to send to the group
 	  */
 	@Override
-	public void sendMessage(Message m) {
+	public void sendMessage(Serializable content) {
+		Message m = new Message( id, content );
 		/* Prepare according to orderer */
 		Message preparedMessage = orderer.prepareMessage(m);
 		
