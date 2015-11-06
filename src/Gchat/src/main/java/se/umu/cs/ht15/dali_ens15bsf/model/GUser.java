@@ -15,13 +15,13 @@ public class GUser extends JLabel implements Serializable
   private static Random rd = new Random();
 
 
-  private String name;
+  private String gname;
   private Color color;
 
   public GUser ( String name )
   {
     super( name );
-    this.name = name;
+    this.gname = name;
     setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
     color = chooseColor();
     setBackground( color.brighter() );
@@ -42,12 +42,16 @@ public class GUser extends JLabel implements Serializable
 
   public String getName ()
   {
-    return name;
+    return gname;
   }
 
   public String toString ()
   {
-    return name;
+    return gname;
   }
 
+  public void setUID ( String UID )
+  {
+    this.gname = UID;
+  }
 }

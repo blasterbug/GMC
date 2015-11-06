@@ -5,6 +5,7 @@ import se.umu.cs.ht15.dali_ens15bsf.model.GMessageDisplay;
 import se.umu.cs.ht15.dali_ens15bsf.model.GModelObserver;
 import se.umu.cs.ht15.dali_ens15bsf.model.GUser;
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
+import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.EnterToSend;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.SendAction;
 
@@ -14,7 +15,7 @@ import java.awt.*;
 /**
  * Created by ens15bsf on 2015-10-21.
  */
-public class ChatWindow extends JFrame implements GModelObserver
+public class ChatWindow extends JFrame implements GModelObserver, ConnectionObserver
 {
 
   private Gchat model;
@@ -43,9 +44,6 @@ public class ChatWindow extends JFrame implements GModelObserver
     JScrollPane scrollUSR = new JScrollPane( userlistVP );
     scrollUSR.setAutoscrolls( true );
 
-    for ( GUser usr : model.getUsers() )
-      listUsers.add( usr );
-
     // panel for messages
     messageList = new JPanel();
     messageList.setAutoscrolls( false );
@@ -64,9 +62,6 @@ public class ChatWindow extends JFrame implements GModelObserver
     topPanel.setDividerLocation( 600 );
 
     messageList.setAutoscrolls( true );
-
-    for ( GMessageDisplay gmsg : model.getMessages() )
-      messageList.add( gmsg );
 
     // create the panel with the text input and the join button
     JPanel bottomPanel = new JPanel();
@@ -137,8 +132,8 @@ public class ChatWindow extends JFrame implements GModelObserver
   public void newMessage ()
   {
     messageList.removeAll();
-    for ( GMessageDisplay msg : model.getMessages() )
-      messageList.add( msg );
+    for ( GMessage msg : model.getMessages() )
+      messageList.add( new GMessageDisplay( model.getUser( msg.getAuthor() ), msg ) );
 
     messageList.add( Box.createVerticalGlue() );
     messageList.updateUI();
@@ -153,5 +148,40 @@ public class ChatWindow extends JFrame implements GModelObserver
       listUsers.add( usr );
     listUsers.add( Box.createVerticalGlue() );
     listUsers.updateUI();
+  }
+
+  /**
+   * Get notified when a user is connected
+   *
+   * @param uid New user ID
+   */
+  @Override
+  public void connected ( String uid )
+  {
+    newUser();
+    newMessage();
+    setVisible( true );
+  }
+
+  /**
+   * Get notified when the current is trying to join a group
+   *
+   * @param uid username
+   */
+  @Override
+  public void connecting ( String uid )
+  {
+    // DO NOTHING
+  }
+
+  /**
+   * Get notified when an user get disconnected
+   *
+   * @param uid disconnected user ID
+   */
+  @Override
+  public void disconnected ( String uid )
+  {
+    setVisible( false );
   }
 }

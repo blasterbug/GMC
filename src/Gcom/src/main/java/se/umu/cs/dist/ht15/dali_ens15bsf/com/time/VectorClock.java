@@ -1,4 +1,4 @@
-package se.umu.cs.dist.ht15.dali_ens15bsf.time;
+package se.umu.cs.dist.ht15.dali_ens15bsf.com.time;
 
 import java.io.Serializable;
 import java.util.HashMap;

@@ -1,5 +1,7 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
+import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,18 +14,18 @@ public class GMessageDisplay extends JPanel
   private String content;
 
 
-  public GMessageDisplay ( GUser user, String msg )
+  public GMessageDisplay ( GUser user, GMessage msg )
   {
     super();
     from = user;
-    content = msg;
+    content = msg.getContent();
 
     GroupLayout layout = new GroupLayout( this );
     setLayout( layout );
     JTextArea username = new JTextArea( from.toString() );
     username.setEditable( false );
     username.setLayout( new BoxLayout( username, BoxLayout.PAGE_AXIS ) );
-    JTextArea message = new JTextArea( msg );
+    JTextArea message = new JTextArea( content );
     message.setEditable( false );
     message.setWrapStyleWord( true );
     message.setLineWrap( true );
