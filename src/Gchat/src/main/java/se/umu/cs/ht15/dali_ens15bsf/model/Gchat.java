@@ -10,6 +10,8 @@ import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionObserver;
 import java.rmi.RemoteException;
 import java.util.*;
 
+//import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
+
 /**
  * Created by ens15bsf on 2015-10-28.
  * model class for the Gchat
