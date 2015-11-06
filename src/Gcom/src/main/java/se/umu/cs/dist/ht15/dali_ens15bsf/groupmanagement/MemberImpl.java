@@ -58,6 +58,14 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	}
 
 	@Override
+	public void leaveGroup(String gid) throws RemoteException {
+		for ( RemoteMember rm : view.values() ) 
+			rm.removeFromView(this.getRemoteMember(), this.id);
+		view.clear();
+
+	}
+
+	@Override
 	public RemoteMember getLeader() {
 		return this.leader;
 	}

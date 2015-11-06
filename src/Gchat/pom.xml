@@ -1,7 +1,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>se.umu.cs.dist.ht15.dali_ens15bsf</groupId>
+    <groupId>se.umu.cs.ht15.dali_ens15bsf</groupId>
     <artifactId>Gchat</artifactId>
     <packaging>jar</packaging>
     <version>0.1b</version>
@@ -15,7 +15,7 @@
                 <updatePolicy>always</updatePolicy>
                 <checksumPolicy>fail</checksumPolicy>
             </releases>
-            <id>Gcom</id>
+            <id>se.umu.cs.dist.ht15.dali_ens15bsf</id>
             <url>http://www8.cs.umu.se/~dali/repository</url>
             <layout>default</layout>
         </repository>

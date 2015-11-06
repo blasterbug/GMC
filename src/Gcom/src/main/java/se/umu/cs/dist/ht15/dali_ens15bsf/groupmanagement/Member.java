@@ -17,9 +17,11 @@ public interface Member<T extends Serializable> {
 	public void setId(String id);
 	public void connectToNameserver() throws RemoteException, NamingServiceUnavailableException;
 	public void joinGroup(String gid) throws RemoteException;
+	public void leaveGroup(String gid) throws RemoteException;
 	public void updateIdFromNameServer() throws RemoteException;
 	public String getId();
 	public RemoteMember getLeader();
 	public void addToView(RemoteMember m, String id);
 	public void removeFromView(RemoteMember m, String id);
+
 }

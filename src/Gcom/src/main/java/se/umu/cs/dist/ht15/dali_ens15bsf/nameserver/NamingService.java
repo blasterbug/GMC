@@ -4,6 +4,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 
 import java.io.Serializable;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -154,5 +155,15 @@ public class NamingService implements Serializable, NamingServiceRemote
     //id += Integer.toHexString( dice.nextInt() );
     //idMap.add( id, member )
     //return id;
+  }
+
+  @Override
+  public void destroy() throws RemoteException { 
+	try {
+		directory.unbind(SERVICE_NAME);
+	} catch (NotBoundException e) {
+		//Not a problem
+	}
+	
   }
 }

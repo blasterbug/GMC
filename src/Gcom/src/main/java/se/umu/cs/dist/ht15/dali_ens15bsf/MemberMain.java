@@ -29,7 +29,7 @@ public class MemberMain {
 						BufferedReader in = new BufferedReader(reader);
 						String input = in.readLine();
 						Message msg = new Message(m.getId(), input);
-						m.sendMessage(msg);
+						m.sendMessage(input);
 						inChar = System.in.read();
 					} catch (Exception e) {
 						System.out.println("Couldn't read message input: "+e.getMessage());

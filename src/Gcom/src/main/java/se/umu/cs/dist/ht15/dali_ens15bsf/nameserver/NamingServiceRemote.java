@@ -53,4 +53,10 @@ public interface NamingServiceRemote extends Remote
    */
   public String getMyId ( RemoteMember member ) throws RemoteException;
 
+
+  /**
+    * Called to unbind the nameserver
+    */
+  public void destroy() throws RemoteException;
+
 }
