@@ -66,18 +66,18 @@ public class GcomFactory
     return new GcomProxy( odr, str );
   }
 
-  public GcomDebug createGcomDebug( Gcom gcom ) throws NamingServiceUnavailableException, RemoteException
+  public static GcomDebug createGcomDebug( Gcom gcom ) throws NamingServiceUnavailableException, RemoteException
   {
     return new GcomDebug( gcom );
   }
 
-  public GcomDebug createGcomDebug( OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
+  public static GcomDebug createGcomDebug( OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
   {
     return new GcomDebug( createGcom( order, mltStr ) );
   }
 
-  public GcomDebugGUI getDebugGui( Gcom module )
+  public static GcomDebugGUI getDebugGui( Gcom module ) throws RemoteException, NamingServiceUnavailableException
   {
-    return new GcomDebugGUI( module );
+    return new GcomDebugGUI( createGcomDebug( module ) );
   }
 }

@@ -1,6 +1,7 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui.GcomDebugGUI;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GJoinMessage;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
@@ -30,7 +31,7 @@ public class Gchat implements GcomObserver
   private String groupName;
   //private ChatState state; // TODO state pattern
 
-  public Gchat ( String uid, String gid)
+  public Gchat ( String uid, String gid, boolean debug )
   {
 
     users = new HashMap<String, GUser>();
@@ -45,9 +46,14 @@ public class Gchat implements GcomObserver
 
     try
     {
-      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.UNORDERED, MulticastStrategyEnum.RELIABLE_MULTICAST );
+      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
       gcomMb.addObserver( this );
       gcomMb.connect();
+      if ( debug )
+      {
+        GcomDebugGUI debugGUI = GcomFactory.getDebugGui( gcomMb );
+        debugGUI.setVisible( true );
+      }
     }
     catch ( RemoteException | NamingServiceUnavailableException e )
     {

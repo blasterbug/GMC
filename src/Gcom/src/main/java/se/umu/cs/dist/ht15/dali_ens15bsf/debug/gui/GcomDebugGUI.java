@@ -40,7 +40,7 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
     JPanel comStuff = new JPanel();
     GroupLayout comLayout = new GroupLayout( comStuff );
     comStuff.setLayout( comLayout );
-
+    add( comStuff );
     // ## Incoming messages
     comIncomimgMsg = new List();
     comIncomimgMsg.setFocusable( false );
@@ -58,6 +58,23 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
     comInfo.setFocusable( false );
     JScrollPane comInfoScroll = new JScrollPane( comInfo );
     comInfoScroll.setBorder( BorderFactory.createTitledBorder( "Communication Info" ) );
+
+    comLayout.setAutoCreateContainerGaps( false );
+    comLayout.setAutoCreateGaps( false );
+    comLayout.setVerticalGroup(
+            comLayout.createSequentialGroup()
+                    .addComponent( comIMScroll )
+                    .addComponent( comOMScroll )
+                    .addComponent( comInfoScroll )
+    );
+    comLayout.setHorizontalGroup(
+            comLayout.createSequentialGroup()
+                    .addGroup( comLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
+                                    .addComponent( comIMScroll )
+                                    .addComponent( comOMScroll )
+                                    .addComponent( comInfoScroll )
+                    )
+    );
 
     // ######## ORDERING MODULE DATA
     //TODO
