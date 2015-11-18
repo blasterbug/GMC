@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
+//import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
+
 /**
  * Created by ens15bsf on 2015-10-28.
  * model class for the Gchat
