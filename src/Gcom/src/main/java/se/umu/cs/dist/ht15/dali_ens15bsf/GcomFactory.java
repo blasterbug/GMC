@@ -4,6 +4,7 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicReliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.TreeBaseMulticast;
+import se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui.GcomDebugGUI;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
@@ -63,5 +64,20 @@ public class GcomFactory
         break;
     }
     return new GcomProxy( odr, str );
+  }
+
+  public GcomDebug createGcomDebug( Gcom gcom ) throws NamingServiceUnavailableException, RemoteException
+  {
+    return new GcomDebug( gcom );
+  }
+
+  public GcomDebug createGcomDebug( OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
+  {
+    return new GcomDebug( createGcom( order, mltStr ) );
+  }
+
+  public GcomDebugGUI getDebugGui( Gcom module )
+  {
+    return new GcomDebugGUI( module );
   }
 }

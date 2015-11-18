@@ -1,7 +1,6 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.*;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GJoinMessage;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
@@ -9,7 +8,10 @@ import se.umu.cs.ht15.dali_ens15bsf.model.msg.GTextMessage;
 import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionObserver;
 
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Vector;
 
 /**
  * Created by ens15bsf on 2015-10-28.
@@ -41,7 +43,7 @@ public class Gchat implements GcomObserver
 
     try
     {
-      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.UNRELIABLE_MULTICAST );
+      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.UNORDERED, MulticastStrategyEnum.RELIABLE_MULTICAST );
       gcomMb.addObserver( this );
       gcomMb.connect();
     }

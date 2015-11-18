@@ -19,19 +19,40 @@ import java.util.Vector;
  * Gcom is a middleware designed in a peer-to-peer approach.
  * All nodes, the member are huddled in groups.
  */
-public class GcomProxy<T extends Serializable> implements Observer, Gcom
+class GcomProxy<T extends Serializable> implements Observer, Gcom
 {
-  private NamingServiceRemote nsRemote;
-  private MemberImpl mbr;
-  private Vector<GcomObserver> observers;
+  protected NamingServiceRemote nsRemote;
+  protected MemberImpl mbr;
+  protected Vector<GcomObserver> observers;
+  protected final Orderer order;
+  protected final MulticastStrategy ms;
 
 
+  /**
+   * Create a Gcom module object
+   * @param order Ordering strategy used to order the messages
+   * @param ms Multicast strategy used to send messages to peers
+   * @throws RemoteException
+   * @throws NamingServiceUnavailableException
+   */
   public GcomProxy( Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
   {
+    this.order = order;
+    this.ms = ms;
     nsRemote = NamingServerFactory.NamingService();
     observers = new Vector<GcomObserver>();
     mbr = new MemberImpl( order, ms );
     mbr.addObserver( this );
+  }
+
+  protected Orderer getOrderingStrategy()
+  {
+    return order;
+  }
+
+  protected MulticastStrategy getMulticastStrategy()
+  {
+    return ms;
   }
 
   /**
