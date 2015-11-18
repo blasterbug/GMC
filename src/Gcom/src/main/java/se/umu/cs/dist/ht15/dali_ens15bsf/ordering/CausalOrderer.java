@@ -42,7 +42,7 @@ public class CausalOrderer extends Orderer {
 			senderClock.updateTime(senderId, orderSeqNr);
 			if (VectorClock.compare(senderClock, orderClock) <= 0) {
 				deliver(msg, senderId);
-				orderClock.increment(senderId);
+				orderClock.updateClock(senderClock);
 				didDeliver = true;
 
 			} else {

@@ -4,7 +4,7 @@
   <groupId>se.umu.cs.dist.ht15.dali_ens15bsf</groupId>
   <artifactId>Gcom</artifactId>
   <packaging>jar</packaging>
-  <version>1.1</version>
+  <version>4.2</version>
   <name>Gcom</name>
   <url>http://maven.apache.org</url>
   <build>
@@ -28,4 +28,10 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+          <repository>
+              <id>dali_repo</id>
+              <url>file:/Home/staff/dali/public_html/repository//</url>
+          </repository>
+   </distributionManagement>
 </project>

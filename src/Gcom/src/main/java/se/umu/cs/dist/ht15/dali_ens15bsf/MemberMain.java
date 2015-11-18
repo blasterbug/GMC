@@ -5,6 +5,8 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.UnorderedStrategy;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
+import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -14,7 +16,7 @@ public class MemberMain {
 		public static void main(String [] args) {
 			System.out.println("Initiating member");	
 			try {
-				Member m = new MemberImpl(new UnorderedStrategy(), new BasicReliableMulticast());
+				Member m = new MemberImpl(new CausalOrderer(), new BasicReliableMulticast());
 				System.out.println("Connecting to server");	
 				m.connectToNameserver();
 				System.out.println("Joining group Bingo");
