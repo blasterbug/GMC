@@ -168,7 +168,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 
 	@Override
 	public void receiveMessage(Message m) {
-//		System.out.println("Bngko");	
+		//System.out.println("Bngko");	
 		orderer.addMessage( m );
 	}
 
