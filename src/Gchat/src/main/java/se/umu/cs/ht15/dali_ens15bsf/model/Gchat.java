@@ -126,7 +126,6 @@ public class Gchat implements GcomObserver
 
   public void sendMessage ( String content )
   {
-    System.out.println(user);
     gcomMb.send(new GTextMessage( user, content ) );
   }
 
@@ -147,7 +146,7 @@ public class Gchat implements GcomObserver
     if ( msg.isJoinMessage() )
     {
       // broadcast my name
-      if ( ( msg.getAuthor().equals(  user ) ) )
+      if ( !( msg.getAuthor().equals( user ) ) )
       {
         gcomMb.send( new GJoinMessage( user, groupName ) );
       }

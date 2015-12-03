@@ -7,27 +7,27 @@ import java.util.Vector;
 /**
  * Created by ens15bsf on 03/12/15.
  */
-public class UserListModel implements ListModel<GUser>
+public class GchatListModel<T> implements ListModel
 {
-  private Vector<GUser> users;
+  private Vector<T> list;
   private Vector<ListDataListener> listDataListeners;
 
-  public UserListModel()
+  public GchatListModel ()
   {
-    users = new Vector<>();
+    list = new Vector<>();
     listDataListeners = new Vector<>();
   }
 
   @Override
   public int getSize ()
   {
-    return users.size();
+    return list.size();
   }
 
   @Override
-  public GUser getElementAt ( int i )
+  public T getElementAt ( int i )
   {
-    return users.get( i );
+    return list.get( i );
   }
 
   @Override
@@ -42,18 +42,18 @@ public class UserListModel implements ListModel<GUser>
     listDataListeners.remove( listDataListener );
   }
 
-  public void addUser( GUser user )
+  public void addElement( T item )
   {
-    users.add( user );
+    list.add( item );
   }
 
-  public void RemoveUser( GUser user )
+  public void RemoveUser( T item )
   {
-    users.remove( user );
+    list.remove( item );
   }
 
   public void removeAll ()
   {
-    users.removeAllElements();
+    list.removeAllElements();
   }
 }

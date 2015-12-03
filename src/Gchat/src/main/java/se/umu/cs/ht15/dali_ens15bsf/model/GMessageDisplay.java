@@ -3,7 +3,6 @@ package se.umu.cs.ht15.dali_ens15bsf.model;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 /**
@@ -20,7 +19,6 @@ public class GMessageDisplay extends JPanel
     super();
     from = user;
     content = msg.getContent();
-
     GroupLayout layout = new GroupLayout( this );
     setLayout( layout );
     JTextArea username = new JTextArea( from.toString() );
@@ -62,6 +60,6 @@ public class GMessageDisplay extends JPanel
 
   public String toString ()
   {
-    return from + " said " + content;
+    return from + " : " + content;
   }
 }

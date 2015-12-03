@@ -16,11 +16,11 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
 {
 
   private Gchat model;
-  private UserListModel listUsersModel;
+  private GchatListModel<GUser> listUsersModel;
   private JPanel messageList;
-  private JTextArea chatInput;
-  private JScrollPane scrollMSG;
   private BoxLayout listLayout;
+  private JScrollPane scrollMSG;
+  private JTextArea chatInput;
 
 
   public ChatWindow ( Gchat chat )
@@ -32,15 +32,12 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
     model.addConnectionObserver( this );
 
     // Create a spilt panel for the list of users
-    listUsersModel = new UserListModel();
-    JList listUsers = new JList( listUsersModel );
-    listUsers.setCellRenderer( new GUserListCellRender() );
-    listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
+    listUsersModel = new GchatListModel<>();
+    JList usersList = new JList( listUsersModel );
+    usersList.setCellRenderer( new GUserListCellRender() );
+    usersList.setLayout( new BoxLayout( usersList, BoxLayout.PAGE_AXIS ) );
     //listUsers.setFixedCellHeight( 60 );
-    listUsers.setLayoutOrientation( JList.HORIZONTAL_WRAP );
-    //listUsers.setModel( new DefaultComboBoxModel<GUser>() );
-    JScrollPane scrollUSR = new JScrollPane( listUsers );
-    scrollUSR.setAutoscrolls( true );
+    usersList.setLayoutOrientation( JList.VERTICAL );
 
     // panel for messages
     messageList = new JPanel();
@@ -53,13 +50,13 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
     scrollMSG = new JScrollPane( viewportMessages );
 
     //Create a split pane with the two scroll panes in it.
-    JSplitPane topPanel = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT, scrollMSG, scrollUSR );
-    topPanel.updateUI();
+    JSplitPane topPanel = new JSplitPane( JSplitPane.HORIZONTAL_SPLIT, scrollMSG,new ScrollPane().add( usersList ) );
+    //topPanel.updateUI();
     topPanel.setAutoscrolls( true );
     topPanel.setOneTouchExpandable( true );
     topPanel.setDividerLocation( 600 );
 
-    messageList.setAutoscrolls( true );
+    scrollMSG.setAutoscrolls( true );
 
     // create the panel with the text input and the join button
     JPanel bottomPanel = new JPanel();
@@ -126,7 +123,6 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
   }
 
 
-  @Override
   public void newMessage ()
   {
     messageList.removeAll();
@@ -142,7 +138,7 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
   {
     listUsersModel.removeAll();
     for ( GUser usr : model.getUsers() )
-      listUsersModel.addUser( usr );
+      listUsersModel.addElement( usr );
   }
 
   /**
