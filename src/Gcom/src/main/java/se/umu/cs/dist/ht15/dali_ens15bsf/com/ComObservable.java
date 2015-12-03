@@ -70,6 +70,4 @@ public class ComObservable
     for ( ComObserver ob : observers )
       ob.notifyObservers( msg );
   }
-
-
 }

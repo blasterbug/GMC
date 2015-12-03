@@ -11,9 +11,22 @@ import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 public class AppChat
 {
 
+  private static final String HELP_MSG =
+          "Run the Gchat\n debug : run apps with debug features\n";
+
   public static void main ( String[] args ) throws UnableToJoinException
   {
-    Gchat chatModel = new Gchat( RandomNames.getRandomUserName(), RandomNames.getRandomGroupName() , true );
+    boolean debugApp = true;
+    if ( 0 < args.length )
+    {
+      if ( args[0].equals( "help" ) )
+        System.out.println(HELP_MSG);
+      else if ( args[0].equals( "debug" ) )
+        debugApp = true;
+      else
+        debugApp = false;
+    }
+    Gchat chatModel = new Gchat( RandomNames.getRandomUserName(), RandomNames.getRandomGroupName(), debugApp );
     ConnectionWindow connectionWindow = new ConnectionWindow( chatModel );
     ChatWindow chatView = new ChatWindow( chatModel );
     connectionWindow.setVisible( true );

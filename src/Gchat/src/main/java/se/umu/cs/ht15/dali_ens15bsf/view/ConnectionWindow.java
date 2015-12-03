@@ -3,6 +3,8 @@ package se.umu.cs.ht15.dali_ens15bsf.view;
 
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.ConnectAction;
+import se.umu.cs.ht15.dali_ens15bsf.view.listeners.FocusObserver;
+import se.umu.cs.ht15.dali_ens15bsf.view.listeners.SwitchSelectedGroup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,35 +13,42 @@ import java.awt.*;
  * Created by ens15bsf on 2015-10-13.
  * Code for the app demonstration of Gcom Module
  */
-public class ConnectionWindow extends JFrame implements ConnectionObserver
+public class ConnectionWindow extends JFrame implements ConnectionObserver, FocusObserver
+
 {
   public final static String CREATE_GROUP = "Create a new group?";
 
   private JTextField userName;
   private JTextField newGroupName;
-  private String[] listGroups;
-  private JList<String> groups;
+  private DefaultListModel listGroupsModel;
+  private JList groups;
+  private boolean groupsChoosen;
 
   public ConnectionWindow ( Gchat model )
   {
 
     // create the windows
     super( "Gchat - Join a group" );
+    groupsChoosen = false;
     model.addConnectionObserver( this );
-    listGroups = model.getAvailableGroups();
+    listGroupsModel = new DefaultListModel();
+    for ( String group : model.getAvailableGroups() )
+      listGroupsModel.addElement( group );
 
     // Create a panel for the list of available groups
-    JScrollPane list = new JScrollPane();
-    groups = new JList<String>( listGroups );
+    JScrollPane listAvailableGroups = new JScrollPane();
+    if ( listGroupsModel.isEmpty() )
+      listAvailableGroups.setEnabled( false );
+    groups = new JList( listGroupsModel );
+    groups.addFocusListener( new SwitchSelectedGroup( this, true ) );
     groups.setSelectedIndex( 0 );
-    list.getViewport().setView( groups );
-    System.out.println(listGroups.length);
-    if ( listGroups.length == 0 )
+    listAvailableGroups.getViewport().setView( groups );
+    if ( listGroupsModel.size() == 0 )
     {
       groups.setEnabled( false );
       groups.setFocusable( false );
     }
-    list.setPreferredSize( new Dimension( 220, 100 ) );
+    listAvailableGroups.setPreferredSize( new Dimension( 220, 100 ) );
     groups.setAutoscrolls( true );
 
     // create the panel with the text input and the join button
@@ -52,6 +61,7 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     // define the components of the panel to create a group
     // a text area
     newGroupName = new JTextField( model.getGroupName(), 30 );
+    newGroupName.addFocusListener( new SwitchSelectedGroup( this, false ) );
     // and a button
     JLabel newGroupLabel = new JLabel( "Join : " );
     // add the components to the bottom panel
@@ -127,13 +137,13 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
 
     mainLayout.setVerticalGroup(
             mainLayout.createSequentialGroup()
-                    .addComponent( list )
+                    .addComponent( listAvailableGroups )
                     .addComponent( bottomPanel )
     );
     mainLayout.setHorizontalGroup(
             mainLayout.createSequentialGroup()
                     .addGroup( mainLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
-                            .addComponent( list )
+                            .addComponent( listAvailableGroups )
                             .addComponent( bottomPanel ) )
     );
 
@@ -157,7 +167,11 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
 
   public String getGroupConnection ()
   {
-    return groups.getSelectedValue();
+    // Buggy
+    if ( groupsChoosen )
+      return (String)groups.getSelectedValue();
+    else
+      return newGroupName.getText();
   }
 
   public String getUserName ()
@@ -165,25 +179,12 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     return userName.getText();
   }
 
-  public String newGroupName ()
-  {
-    return newGroupName.getText();
-  }
 
   public void addGroup ( String newGroup )
   {
-    String[] newListGroups = new String[listGroups.length + 1];
-    int i = 0;
-    while ( i < listGroups.length )
-    {
-      newListGroups[i] = listGroups[i];
-      i++;
-    }
-    newListGroups[i] = newGroup;
-    listGroups = newListGroups;
-    groups.setListData( listGroups );
-    groups.setSelectedIndex( i );
-    groups.updateUI();
+    listGroupsModel.addElement( newGroup );
+    groups.setEnabled( true );
+    groups.setFocusable( true );
   }
 
   /**
@@ -214,5 +215,11 @@ public class ConnectionWindow extends JFrame implements ConnectionObserver
     getRootPane().getGlassPane().setVisible( false );
     setEnabled( true );
     setVisible( true );
+  }
+
+  @Override
+  public void getFocus ( boolean state )
+  {
+    groupsChoosen = state;
   }
 }

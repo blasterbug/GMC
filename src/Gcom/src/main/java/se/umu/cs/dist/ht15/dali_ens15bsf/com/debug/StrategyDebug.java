@@ -89,20 +89,22 @@ public class StrategyDebug extends MulticastStrategy
    * @param group Group to send the message
    * @throws UnreachableRemoteObjectException
    */
+
   @Override
   public void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
+    /*
     if ( mixDelivering )
     {
       sendQueue.add( new Pair<ComMessage, Collection>( msg, group ) );
-      Collections.shuffle( sendQueue );
     }
     // randomly deliver message
     if ( mixDelivering && dice.nextBoolean() )
     {
       Pair<ComMessage, Collection> toSend = sendQueue.pop();
       core.send( toSend.getLeft(), toSend.getRight() );
-    }
+    }*/
+    core.send( msg, group );
   }
 
   /**
@@ -117,10 +119,14 @@ public class StrategyDebug extends MulticastStrategy
     try
     {
       incomingQueue.add( msg );
-      // if random receiving is atived, then deliver messages if the dice want to
-      if ( mixReceiving && dice.nextBoolean() )
+      // if random receiving is activated
+      if ( mixReceiving )
       {
-        core.receive( incomingQueue.pop() );
+        // shuffle the messages queue
+        Collections.shuffle( incomingQueue );
+        // then deliver messages if the dice wants to
+        if ( dice.nextBoolean() )
+          core.receive( incomingQueue.pop() );
       }
       else
       {

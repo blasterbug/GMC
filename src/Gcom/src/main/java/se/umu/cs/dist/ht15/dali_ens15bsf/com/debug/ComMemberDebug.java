@@ -26,7 +26,7 @@ public class ComMemberDebug extends ComMember
   {
     super( new StrategyDebug( strategy ), mbr );
     delayedMessages = new LinkedList<ComMessage>();
-    messageDelay = 0;
+    messageDelay = 5000;
   }
 
   /**
@@ -72,15 +72,15 @@ public class ComMemberDebug extends ComMember
   @Override
   public void post ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
-    try
-    {
-      Thread.sleep( messageDelay );
-    } catch ( InterruptedException e )
-    {
-      e.printStackTrace();
-    }
-    super.post( msg, group );
+    System.out.println("canari");
+    new DelayedPost( this, msg, group, messageDelay ).runWithDelay();
+    System.out.println("canari II");
+  }
+
+  public void postDebug ( ComMessage toSend, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
+  {
+    super.post( toSend, group );
     for ( ComDebugObserver obs : observers )
-      obs.notifyOutgoingMessage( msg );
+      obs.notifyOutgoingMessage( toSend );
   }
 }

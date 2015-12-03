@@ -76,8 +76,10 @@ public class GcomFactory
     return new GcomDebug( createGcom( order, mltStr ) );
   }
 
-  public static GcomDebugGUI getDebugGui( Gcom module ) throws RemoteException, NamingServiceUnavailableException
+  public static GcomDebugGUI getDebugGui( GcomDebug module ) throws RemoteException, NamingServiceUnavailableException
   {
-    return new GcomDebugGUI( createGcomDebug( module ) );
+    GcomDebugGUI gui = new GcomDebugGUI( module );
+    module.addObserver( gui );
+    return gui;
   }
 }

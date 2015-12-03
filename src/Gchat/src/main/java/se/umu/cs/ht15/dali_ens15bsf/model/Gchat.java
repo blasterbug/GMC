@@ -8,6 +8,7 @@ import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GTextMessage;
 import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionObserver;
 
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,14 +47,19 @@ public class Gchat implements GcomObserver
 
     try
     {
-      gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
-      gcomMb.addObserver( this );
-      gcomMb.connect();
       if ( debug )
       {
-        GcomDebugGUI debugGUI = GcomFactory.getDebugGui( gcomMb );
+        gcomMb = GcomFactory.createGcomDebug( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
+        GcomDebugGUI debugGUI = GcomFactory.getDebugGui( (GcomDebug)gcomMb );
+        debugGUI.setSize( new Dimension( 600, 200 ) );
         debugGUI.setVisible( true );
       }
+      else
+      {
+        gcomMb = GcomFactory.createGcom( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
+      }
+      gcomMb.addObserver( this );
+      gcomMb.connect();
     }
     catch ( RemoteException | NamingServiceUnavailableException e )
     {
