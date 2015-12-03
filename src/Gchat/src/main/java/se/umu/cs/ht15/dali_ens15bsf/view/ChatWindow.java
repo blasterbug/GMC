@@ -1,10 +1,7 @@
 package se.umu.cs.ht15.dali_ens15bsf.view;
 
 
-import se.umu.cs.ht15.dali_ens15bsf.model.GMessageDisplay;
-import se.umu.cs.ht15.dali_ens15bsf.model.GModelObserver;
-import se.umu.cs.ht15.dali_ens15bsf.model.GUser;
-import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
+import se.umu.cs.ht15.dali_ens15bsf.model.*;
 import se.umu.cs.ht15.dali_ens15bsf.model.msg.GMessage;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.EnterToSend;
 import se.umu.cs.ht15.dali_ens15bsf.view.listeners.SendAction;
@@ -19,7 +16,7 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
 {
 
   private Gchat model;
-  private JList<GUser> listUsers;
+  private UserListModel listUsersModel;
   private JPanel messageList;
   private JTextArea chatInput;
   private JScrollPane scrollMSG;
@@ -35,14 +32,14 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
     model.addConnectionObserver( this );
 
     // Create a spilt panel for the list of users
-    listUsers = new JList<GUser>();
+    listUsersModel = new UserListModel();
+    JList listUsers = new JList( listUsersModel );
+    listUsers.setCellRenderer( new GUserListCellRender() );
     listUsers.setLayout( new BoxLayout( listUsers, BoxLayout.PAGE_AXIS ) );
-    listUsers.setFixedCellHeight( 60 );
+    //listUsers.setFixedCellHeight( 60 );
     listUsers.setLayoutOrientation( JList.HORIZONTAL_WRAP );
-    listUsers.setModel( new DefaultComboBoxModel<GUser>() );
-    JViewport userlistVP = new JViewport();
-    userlistVP.setView( listUsers );
-    JScrollPane scrollUSR = new JScrollPane( userlistVP );
+    //listUsers.setModel( new DefaultComboBoxModel<GUser>() );
+    JScrollPane scrollUSR = new JScrollPane( listUsers );
     scrollUSR.setAutoscrolls( true );
 
     // panel for messages
@@ -143,11 +140,9 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
 
   public void newUser ()
   {
-    //listUsers.removeAll();
+    listUsersModel.removeAll();
     for ( GUser usr : model.getUsers() )
-      listUsers.add( usr );
-    listUsers.add( Box.createVerticalGlue() );
-    listUsers.updateUI();
+      listUsersModel.addUser( usr );
   }
 
   /**

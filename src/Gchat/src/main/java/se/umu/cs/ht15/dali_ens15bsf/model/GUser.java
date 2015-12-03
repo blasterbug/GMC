@@ -1,6 +1,5 @@
 package se.umu.cs.ht15.dali_ens15bsf.model;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.Random;
@@ -8,7 +7,7 @@ import java.util.Random;
 /**
  * Created by ens15bsf on 2015-10-28.
  */
-public class GUser extends JLabel implements Serializable
+public class GUser implements Serializable
 {
 
   private static final long serialVersionUID = -6777933872396080915L;
@@ -20,14 +19,9 @@ public class GUser extends JLabel implements Serializable
 
   public GUser ( String name )
   {
-    super( name );
+    super();
     this.gname = name;
-    setLayout( new BoxLayout( this, BoxLayout.PAGE_AXIS ) );
     color = chooseColor();
-    setBackground( color.brighter() );
-    setForeground( color.darker() );
-    //setBorder( BorderFactory.createLineBorder( color ) );
-    //setSize( 20, 300 );
   }
 
   private static Color chooseColor ()

@@ -65,6 +65,7 @@ public class Gchat implements GcomObserver
     {
       System.err.println( "Can't connect to the Naming Server..." );
       e.printStackTrace();
+      System.exit( 1 );
     }
 
   }
