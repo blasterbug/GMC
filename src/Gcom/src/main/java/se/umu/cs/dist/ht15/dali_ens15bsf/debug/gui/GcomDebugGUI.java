@@ -1,9 +1,9 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Gcom;
+import se.umu.cs.dist.ht15.dali_ens15bsf.GcomDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComDebugObserver;
-import se.umu.cs.dist.ht15.dali_ens15bsf.GcomDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 
@@ -18,14 +18,15 @@ import java.rmi.RemoteException;
 public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugObserver
 {
 
-  private List comIncomimgMsg;
-  private List comOutgoingMsg;
-  private List comInfo;
+  private DefaultListModel<String> comIncomimgModel;
+  private DefaultListModel<String> comOutgoingModel;
+  private DefaultListModel<String> comInfoModel;
   private TextArea delay;
 
   public GcomDebugGUI ( Gcom model )
   {
 
+    super( "Gcom debug GUI" );
     try
     {
       GcomDebug debugModel = new GcomDebug( model );
@@ -42,21 +43,24 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
     comStuff.setLayout( comLayout );
     add( comStuff );
     // ## Incoming messages
-    comIncomimgMsg = new List();
-    comIncomimgMsg.setFocusable( false );
-    JScrollPane comIMScroll = new JScrollPane( comIncomimgMsg );
+    comIncomimgModel = new DefaultListModel();
+    JList comIncomimgMsgList = new JList( comIncomimgModel );
+    comIncomimgMsgList.setFocusable( false );
+    JScrollPane comIMScroll = new JScrollPane( comIncomimgMsgList );
     comIMScroll.setBorder( BorderFactory.createTitledBorder( "Incoming messages" ) );
 
     // ## Outgoing messages
-    comOutgoingMsg = new List();
-    comOutgoingMsg.setFocusable( false );
-    JScrollPane comOMScroll = new JScrollPane( comOutgoingMsg );
+    comOutgoingModel = new DefaultListModel();
+    JList comOutgoingMsgList = new JList( comOutgoingModel );
+    comOutgoingMsgList.setFocusable( false );
+    JScrollPane comOMScroll = new JScrollPane( comOutgoingMsgList );
     comOMScroll.setBorder( BorderFactory.createTitledBorder( "Outgoing messages" ) );
 
     // ## other com info
-    comInfo = new List();
-    comInfo.setFocusable( false );
-    JScrollPane comInfoScroll = new JScrollPane( comInfo );
+    comInfoModel = new DefaultListModel();
+    JList comInfoList = new JList<String>();
+    comInfoList.setFocusable( false );
+    JScrollPane comInfoScroll = new JScrollPane( comInfoList );
     comInfoScroll.setBorder( BorderFactory.createTitledBorder( "Communication Info" ) );
 
     comLayout.setAutoCreateContainerGaps( false );
@@ -83,31 +87,31 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
   @Override
   public void notifyIncomingMessage ( ComMessage msg )
   {
-    comIncomimgMsg.add( msg.toString() );
+    comIncomimgModel.addElement( msg.toString() );
   }
 
   @Override
   public void notifyOutgoingMessage ( ComMessage msg )
   {
-    comOutgoingMsg.add( msg.toString() );
+    comOutgoingModel.addElement( msg.toString() );
   }
 
 
   @Override
   public void notifyOutgoingMessage ( Serializable msg )
   {
-    comOutgoingMsg.add( msg.toString() + "(Sending)" );
+    comOutgoingModel.addElement( msg.toString() + "(Sending)" );
   }
 
   @Override
   public void notifyJoin ( String groupID )
   {
-    comInfo.add( "Joining " + groupID );
+    comInfoModel.addElement( "Joining " + groupID );
   }
 
   @Override
   public void notifyConnect ()
   {
-  comInfo.add( "connected" );
+  comInfoModel.addElement( "connected" );
   }
 }
