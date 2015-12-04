@@ -1,0 +1,136 @@
+\documentclass[10pt, titlepage, oneside, a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[UKenglish]{babel}
+\usepackage[UKenglish]{isodate}
+\usepackage{algorithm2e}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usepackage[margin=2cm]{caption}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb, graphicx, fancyhdr}
+\usepackage{mathrsfs,amsmath}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{float}
+\usepackage{epsf}
+\usepackage{qtree}
+\addtolength{\textheight}{20mm}
+\addtolength{\voffset}{-5mm}
+\renewcommand{\sectionmark}[1]{\markleft{#1}}
+
+\newcommand{\Section}[1]{\section{#1}\vspace{-8pt}}
+\newcommand{\Subsection}[1]{\vspace{-4pt}\subsection{#1}\vspace{-8pt}}
+\newcommand{\Subsubsection}[1]{\vspace{-4pt}\subsubsection{#1}\vspace{-8pt}}
+
+\newcommand{\mylistings}{\hspace{16px}\lstinputlisting[basicstyle=\ttfamily, numbers=left]}
+
+\newcounter{appendixpage}
+\newenvironment{appendices}{
+    \setcounter{appendixpage}{\arabic{page}}
+    \stepcounter{appendixpage}
+}{
+}
+
+\newcommand{\appitem}[2]{
+    \stepcounter{section}
+    \addtocontents{toc}{\protect\contentsline{section}{\numberline{\Alph{section}}#1}{\arabic{appendixpage}}}
+    \addtocounter{appendixpage}{#2}
+}
+
+\newcommand{\appsubitem}[2]{
+    \stepcounter{subsection}
+    \addtocontents{toc}{\protect\contentsline{subsection}{\numberline{\Alph{section}.\arabic{subsection}}#1}{\arabic{appendixpage}}}
+    \addtocounter{appendixpage}{#2}
+}
+
+\newcommand{\matlablistings}{
+    \hspace{16px}\lstinputlisting[language=matlab, commentstyle=\color{mygray}, basicstyle=\ttfamily\scriptsize, numbers=left]}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.6,0.6,0.6}
+% \definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+
+
+\def\inst{Computing Science}
+\def\typeofdoc{Project report}
+\def\course{Distributed Systems 7.5 Credits}
+\def\pretitle{5DV147 - Project}
+\def\title{Group communication}
+\def\name{Adam Dahlgren, Benjamin Sientzoff}
+\def\username{\{dali, ens15bsf\}}
+\def\email{\username{}@cs.umu.se}
+\def\path{edu/5DV147/assignments/1/}
+\def\graders{P-O \"{O}stberg, Ewnetu Bayuh Lakew}
+
+\def\fullpath{\raisebox{1pt}{$\scriptstyle \sim$}\username/\path}
+
+\begin{document}
+
+    \begin{titlepage}
+        \thispagestyle{empty}
+        \begin{large}
+            \begin{tabular}{@{}p{\textwidth}@{}}
+                \textbf{UME\AA \ \ UNIVERSITY \hfill \today} \\
+                \textbf{Department of \inst} \\
+                \textbf{\typeofdoc} \\
+            \end{tabular}
+        \end{large}
+        \vspace{10mm}
+        \begin{center}
+            \LARGE{\pretitle} \\
+            \huge{\textbf{\course}}\\
+            \vspace{10mm}
+            \LARGE{\title} \\
+            \vspace{15mm}
+            \begin{large}
+                \begin{tabular}{ll}
+                    \textbf{Name} & \name \\
+                    \\
+                    \textbf{E-mail} & \texttt{\email} \\
+                    \\
+                    \textbf{Path} & \texttt{\fullpath} \\
+                \end{tabular}
+            \end{large}
+            \vfill
+            \large{\textbf{Grading}}\\
+            \mbox{\large{\graders}}
+        \end{center}
+    \end{titlepage}
+
+    \lfoot{\footnotesize{A. Dahlgren}}
+    \rfoot{\footnotesize{\today}}
+    \lhead{\sc\footnotesize\title}
+    \rhead{\nouppercase{\sc\footnotesize\leftmark}}
+    \pagestyle{fancy}
+    \renewcommand{\headrulewidth}{0.2pt}
+    \renewcommand{\footrulewidth}{0.2pt}
+
+    \newpage
+
+    \pagenumbering{arabic}
+
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{10pt}
+
+    	\Section{Introduction}
+		\input{intro.tex}
+	
+	\Section{Method}
+		\input{method.tex}
+
+	\Section{System description}
+		\input{sysdesc.tex}
+
+	\Section{Test protocol}
+		\input{test_protocol.tex}
+		
+	\Section{Results}
+		\input{results.tex}
+		
+	\Section{Discussion}
+		\input{discussion.tex}
+\end{document}
