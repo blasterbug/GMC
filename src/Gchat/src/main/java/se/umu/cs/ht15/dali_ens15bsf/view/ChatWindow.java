@@ -34,6 +34,7 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
     // Create a spilt panel for the list of users
     listUsersModel = new GchatListModel<>();
     JList usersList = new JList( listUsersModel );
+    usersList.setBorder( BorderFactory.createTitledBorder( "Users" ) );
     usersList.setCellRenderer( new GUserListCellRender() );
     //usersList.setLayout( new BoxLayout( usersList, BoxLayout.PAGE_AXIS ) );
     //listUsers.setFixedCellHeight( 60 );
