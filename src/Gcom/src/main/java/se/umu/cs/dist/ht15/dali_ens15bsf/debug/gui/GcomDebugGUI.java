@@ -1,16 +1,16 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Gcom;
-import se.umu.cs.dist.ht15.dali_ens15bsf.GcomDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
-import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
-import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by ens15bsf on 2015-11-04.
@@ -27,7 +27,7 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
   {
 
     super( "Gcom debug GUI" );
-    try
+    /*try
     {
       GcomDebug debugModel = new GcomDebug( model );
     }
@@ -35,7 +35,7 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
     {
       e.printStackTrace();
       System.exit( 1 );
-    }
+    }*/
 
     // ######## COM MODULE DATA
     JPanel comStuff = new JPanel();
@@ -58,13 +58,13 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
 
     // ## other com info
     comInfoModel = new DefaultListModel();
-    JList comInfoList = new JList<String>();
+    JList comInfoList = new JList<String>( comInfoModel );
     comInfoList.setFocusable( false );
     JScrollPane comInfoScroll = new JScrollPane( comInfoList );
     comInfoScroll.setBorder( BorderFactory.createTitledBorder( "Communication Info" ) );
 
     comLayout.setAutoCreateContainerGaps( false );
-    comLayout.setAutoCreateGaps( false );
+    comLayout.setAutoCreateGaps( true );
     comLayout.setVerticalGroup(
             comLayout.createSequentialGroup()
                     .addComponent( comIMScroll )
@@ -85,33 +85,45 @@ public class GcomDebugGUI extends JFrame implements ComDebugObserver, GcomDebugO
   }
 
   @Override
-  public void notifyIncomingMessage ( ComMessage msg )
+  public void notifyIncomingComMessage ( ComMessage msg )
   {
-    comIncomimgModel.addElement( msg.toString() );
+    comIncomimgModel.addElement( "(" + currentTime() + ") " + msg.toString() );
   }
 
   @Override
-  public void notifyOutgoingMessage ( ComMessage msg )
+  public void notifyOutgoingComMessage ( ComMessage msg )
   {
-    comOutgoingModel.addElement( msg.toString() );
+    comOutgoingModel.addElement( "(" + currentTime() + ") " + msg.toString() );
   }
 
 
   @Override
   public void notifyOutgoingMessage ( Serializable msg )
   {
-    comOutgoingModel.addElement( msg.toString() + "(Sending)" );
+    comOutgoingModel.addElement( "(" + currentTime() + ") " + msg.toString() );
+  }
+
+  @Override
+  public void notifyIncomingMessage ( Serializable msg )
+  {
+    comIncomimgModel.addElement( "(" + currentTime() + ") " + msg.toString() );
   }
 
   @Override
   public void notifyJoin ( String groupID )
   {
-    comInfoModel.addElement( "Joining " + groupID );
+    comInfoModel.addElement( "(" + currentTime() + ") Joining " + groupID );
   }
 
   @Override
   public void notifyConnect ()
   {
-  comInfoModel.addElement( "connected" );
+    comInfoModel.addElement( "(" + currentTime() + ") connected" );
+  }
+
+  private String currentTime ()
+  {
+    DateFormat formattor = new SimpleDateFormat("HH:mm:ss");
+    return formattor.format( new Date() );
   }
 }

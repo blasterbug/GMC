@@ -7,6 +7,6 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
  */
 public interface ComDebugObserver
 {
-  public void notifyIncomingMessage( ComMessage msg );
-  public void notifyOutgoingMessage( ComMessage msg );
+  public void notifyIncomingComMessage( ComMessage msg );
+  public void notifyOutgoingComMessage( ComMessage msg );
 }

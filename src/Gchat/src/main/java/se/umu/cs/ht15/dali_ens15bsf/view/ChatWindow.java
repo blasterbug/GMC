@@ -35,7 +35,7 @@ public class ChatWindow extends JFrame implements GModelObserver, ConnectionObse
     listUsersModel = new GchatListModel<>();
     JList usersList = new JList( listUsersModel );
     usersList.setCellRenderer( new GUserListCellRender() );
-    usersList.setLayout( new BoxLayout( usersList, BoxLayout.PAGE_AXIS ) );
+    //usersList.setLayout( new BoxLayout( usersList, BoxLayout.PAGE_AXIS ) );
     //listUsers.setFixedCellHeight( 60 );
     usersList.setLayoutOrientation( JList.VERTICAL );
 

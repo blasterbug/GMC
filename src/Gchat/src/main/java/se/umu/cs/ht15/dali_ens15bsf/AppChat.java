@@ -16,15 +16,22 @@ public class AppChat
 
   public static void main ( String[] args ) throws UnableToJoinException
   {
-    boolean debugApp = true;
+    boolean debugApp = false;
     if ( 0 < args.length )
     {
-      if ( args[0].equals( "help" ) )
-        System.out.println(HELP_MSG);
-      else if ( args[0].equals( "debug" ) )
-        debugApp = true;
-      else
-        debugApp = false;
+      switch ( args[0] )
+      {
+        case "help" :
+          System.out.println(HELP_MSG);
+          System.exit( 0 );
+          break;
+        case "debug" :
+          System.out.println( "Debug mode" );
+          debugApp = true;
+          break;
+        default:
+          debugApp = false;
+      }
     }
     Gchat chatModel = new Gchat( RandomNames.getRandomUserName(), RandomNames.getRandomGroupName(), debugApp );
     ConnectionWindow connectionWindow = new ConnectionWindow( chatModel );

@@ -50,7 +50,7 @@ public class ComMemberDebug extends ComMember
   {
     super.deliver( msg );
     for ( ComDebugObserver obs : observers )
-      obs.notifyIncomingMessage( msg );
+      obs.notifyIncomingComMessage( msg );
   }
 
   /**
@@ -81,6 +81,6 @@ public class ComMemberDebug extends ComMember
   {
     super.post( toSend, group );
     for ( ComDebugObserver obs : observers )
-      obs.notifyOutgoingMessage( toSend );
+      obs.notifyOutgoingComMessage( toSend );
   }
 }
