@@ -3,42 +3,42 @@
 \Subsection{Ordering}
 % Testing of causal ordering
 	% Connect two clients, send message, connect third client, send message from first, shows vector clock set correctly.
-	\texbf{Tests}:
+	\textbf{Tests}:
 	\textbf{Shows}:
 
-	\begin{table}{ll}
+	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
 		Connect client $c_1$ & Nameserver should register client as leader \\
 		Connect client $c_2$ & Leader should be notified of join \\
 		$c_1$ sends message & Both receive message \\
 		Connect client $c_3$ & $c_1$, $c_2$ should be notified \\
 		$c_1$ sends message & All receive message \\
-	\end{table}
+	\end{tabular}
 	% Connect two clients, send message, connect third client, send message from third, shows vector clock set correctly.
 
-	\texbf{Tests}:
+	\textbf{Tests}:
 	\textbf{Shows}:
 
-	\begin{table}{ll}
+	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
 		Connect client $c_1$ & Nameserver should register client as leader \\
 		Connect client $c_2$ & Leader should be notified of join \\
 		$c_1$ sends message & Both receive message \\
 		Connect client $c_3$ & $c_1$, $c_2$ should be notified \\
 		$c_3$ sends message & All receive message \\
-	\end{table}
+	\end{tabular}
 	% Connect three clients, send message from first, hold at second, send from third, release at second
-	\texbf{Tests}:
+	\textbf{Tests}:
 	\textbf{Shows}:
 
-	\begin{table}{ll}
+	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
 		Connect clients $c_1$, $c_2$, $c_3$ & All connected\\
 		$c_1$ sends message $m_1$ & -\\
 		$c_2$ holds message $m_1$ & $m_1$ delivered at $c_1$ and $c_3$ \\
 		$c_3$ sends message $m_2$ & $m_2$ delivered at $c_1$ and $c_3$ \\
 		Release $m_1$ at $c_2$ & $m_1$ and $m_2$ delivered at $c_2$ \\
-	\end{table}
+	\end{tabular}
 
 % Testing of FIFO ordering
 
@@ -47,27 +47,27 @@
 \Subsection{Election}
 % Testing of re-election
 	% Connect three clients, check nameserver, send message, disconnect first client, check nameserver for new leader, connect new client
-	\texbf{Tests}:
+	\textbf{Tests}:
 	\textbf{Shows}:
 
-	\begin{table}{ll}
+	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
 		Connect clients $c_1$, $c_2$, $c_3$ & All connected, $c_1$ leader in nameserver \\
 		$c_1$ sends message $m_1$ & All receive \\
 		Disconnect $c_1$ & A new leader should be found in nameserver \\
-	\end{table}
+	\end{tabular}
 
 	% Same but crash
-	\texbf{Tests}:
+	\textbf{Tests}:
 	\textbf{Shows}:
 
-	\begin{table}{ll}
+	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
 		Connect clients $c_1$, $c_2$, $c_3$ & All connected, $c_1$ leader in nameserver \\
 		$c_1$ sends message $m_1$ & All receive \\
 		Crash $c_1$ & - \\
 		$c_2$ sends message $m_2$ & All receive, election should be initiated and new leader should be shown in nameserver \\
-	\end{table}
+	\end{tabular}
 
 
 
