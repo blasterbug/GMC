@@ -39,7 +39,7 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMember
     JList DelayedMsgList = new JList( IncomingWaitingMessages );
     DelayedMsgList.setFocusable( false );
     JScrollPane delayedMsgSP = new JScrollPane( DelayedMsgList );
-    delayedMsgSP.setBorder( BorderFactory.createTitledBorder( "Incoming messages" ) );
+    delayedMsgSP.setBorder( BorderFactory.createTitledBorder( "Waiting messages" ) );
     // ## Incoming messages (send to the messages order)
     IncomingDeliveredMessages = new DefaultListModel();
     JList IncomimgMsgList = new JList( IncomingDeliveredMessages );
