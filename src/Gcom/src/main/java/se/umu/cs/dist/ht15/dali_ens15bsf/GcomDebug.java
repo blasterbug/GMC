@@ -14,11 +14,15 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
 {
 
   private Vector<GcomDebugObserver> observers;
+  //private Orderer orderDebug;
+  //private MulticastStrategy multicasterDebug;
 
   public GcomDebug ( Gcom module ) throws RemoteException, NamingServiceUnavailableException
   {
     super( ((GcomProxy)module).getOrderingStrategy() , ((GcomProxy)module).getMulticastStrategy() );
     module.addObserver( this );
+    //orderDebug = getOrderingStrategy();
+    //multicasterDebug = getMulticastStrategy();
     observers = new Vector<>();
   }
 
