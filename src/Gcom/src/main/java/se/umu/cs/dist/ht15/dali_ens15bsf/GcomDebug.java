@@ -10,14 +10,19 @@ import java.util.Vector;
 /**
  * Created by ens15bsf on 2015-11-18.
  */
-public class GcomDebug<T> extends GcomProxy
+public class GcomDebug<T> extends GcomProxy implements GcomObserver
 {
 
   private Vector<GcomDebugObserver> observers;
+  //private Orderer orderDebug;
+  //private MulticastStrategy multicasterDebug;
 
   public GcomDebug ( Gcom module ) throws RemoteException, NamingServiceUnavailableException
   {
     super( ((GcomProxy)module).getOrderingStrategy() , ((GcomProxy)module).getMulticastStrategy() );
+    module.addObserver( this );
+    //orderDebug = getOrderingStrategy();
+    //multicasterDebug = getMulticastStrategy();
     observers = new Vector<>();
   }
 
@@ -52,6 +57,13 @@ public class GcomDebug<T> extends GcomProxy
     super.send( msg );
   }
 
+  @Override
+  public void newMessage ( Message msg )
+  {
+    for ( GcomDebugObserver obs : observers )
+      obs.notifyIncomingMessage( msg );
+  }
+
   /**
    * Join a group of member
    *
@@ -60,9 +72,9 @@ public class GcomDebug<T> extends GcomProxy
   @Override
   public void join ( String groupid ) throws CantJoinException
   {
+    super.join( groupid );
     for ( GcomDebugObserver obs : observers )
       obs.notifyJoin( groupid );
-    super.join( groupid );
   }
 
   /**
@@ -73,7 +85,6 @@ public class GcomDebug<T> extends GcomProxy
   @Override
   public void connect () throws NamingServiceUnavailableException
   {
-
     for ( GcomDebugObserver obs : observers )
       obs.notifyConnect();
     super.connect();

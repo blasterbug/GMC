@@ -9,5 +9,5 @@ import java.io.Serializable;
 public interface GcomObserver<T extends Serializable>
 {
   public void newMessage( Message<T> msg );
-  public void join( String gid );
+  public void join( String gid ) throws CantJoinException;
 }

@@ -8,6 +8,7 @@ import java.io.Serializable;
 public interface GcomDebugObserver
 {
   public void notifyOutgoingMessage ( Serializable msg );
+  public void notifyIncomingMessage ( Serializable msg );
   public void notifyJoin( String groupID );
   public void notifyConnect();
 }

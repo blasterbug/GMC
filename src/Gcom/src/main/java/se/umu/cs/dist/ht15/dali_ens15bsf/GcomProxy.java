@@ -101,11 +101,13 @@ class GcomProxy<T extends Serializable> implements Observer, Gcom
    */
   public void join( String groupid ) throws CantJoinException
   {
+    System.out.println("hello");
     try
     {
       mbr.joinGroup( groupid );
     } catch ( RemoteException e )
     {
+      System.err.println( e.getMessage() );
       throw new CantJoinException( e.getMessage() );
     }
     for ( GcomObserver obs : observers )
