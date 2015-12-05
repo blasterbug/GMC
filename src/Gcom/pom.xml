@@ -29,7 +29,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>se.umu.cs.dist.ht15.dali_ens15bsf.MemberMain</mainClass>
+                            <mainClass>se.umu.cs.dist.ht15.dali_ens15bsf.NameserverMain</mainClass>
                         </manifest>
                     </archive>
 

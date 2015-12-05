@@ -51,7 +51,7 @@ public class Gchat implements GcomObserver
       {
         gcomMb = GcomFactory.createGcomDebug( OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
         GcomDebugGUI debugGUI = GcomFactory.getDebugGui( (GcomDebug)gcomMb );
-        debugGUI.setSize( new Dimension( 600, 200 ) );
+        debugGUI.setSize( new Dimension( 600, 500 ) );
         debugGUI.setVisible( true );
       }
       else

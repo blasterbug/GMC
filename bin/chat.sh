@@ -4,5 +4,5 @@
 #
 
 cd ../src/Gchat/
-mvn package
+# mvn package
 java -jar target/Gchat-jar-with-dependencies.jar $1
