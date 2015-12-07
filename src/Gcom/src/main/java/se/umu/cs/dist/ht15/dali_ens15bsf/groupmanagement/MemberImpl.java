@@ -17,7 +17,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	private Map<String, RemoteMember> view;
 //	private Collection<RemoteMember> view;
 	private Orderer orderer;
-	private ComMember self;
+	protected ComMember self;
 	private RemoteMember leader;
 	private String id;
 	private NamingServiceRemote nameserver;

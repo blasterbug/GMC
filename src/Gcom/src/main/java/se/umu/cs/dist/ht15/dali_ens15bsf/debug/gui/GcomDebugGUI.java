@@ -6,6 +6,9 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComMemberDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,10 +20,10 @@ import java.util.Date;
 public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMemberDebugObserver
 {
 
-  private DefaultListModel<String> IncomingWaitingMessages;
-  private DefaultListModel<String> IncomingDeliveredMessages;
-  private DefaultListModel<String> OutgoingMessagesMessages;
-  private DefaultListModel<String> comInfoModel;
+  private DefaultListModel<String> incomingWaitingMessages;
+  private DefaultListModel<String> incomingDeliveredMessages;
+  private DefaultListModel<String> outgoingMessagesMessages;
+  private DefaultListModel<String> infoModel;
 
   public GcomDebugGUI ( GcomDebug model )
   {
@@ -34,28 +37,38 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMember
     comStuff.setLayout( comLayout );
     add( comStuff );
     // ## Incoming waiting queue
-    // ## Incoming messages (send to the messages order)
-    IncomingWaitingMessages = new DefaultListModel();
-    JList DelayedMsgList = new JList( IncomingWaitingMessages );
-    DelayedMsgList.setFocusable( false );
-    JScrollPane delayedMsgSP = new JScrollPane( DelayedMsgList );
+    incomingWaitingMessages = new DefaultListModel();
+    final JList delayedMsgList = new JList( incomingWaitingMessages );
+    delayedMsgList.setFocusable( false );
+    delayedMsgList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION  );
+    JScrollPane delayedMsgSP = new JScrollPane( delayedMsgList );
     delayedMsgSP.setBorder( BorderFactory.createTitledBorder( "Waiting messages" ) );
+    // panel for the buttons
+    JButton wmRemove = new JButton( "remove" );
+    JButton wmSend = new JButton( "deliver" );
+    JPanel wmPanel = new JPanel();
+    wmPanel.setLayout( new BoxLayout( wmPanel,BoxLayout.LINE_AXIS ) );
+    wmPanel.add( Box.createHorizontalGlue() );
+    wmPanel.add( wmRemove );
+    wmPanel.add( Box.createRigidArea( new Dimension( 5, 0 ) ) );
+    wmPanel.add( wmSend );
+    wmPanel.add( Box.createRigidArea( new Dimension( 5, 0 ) ) );
     // ## Incoming messages (send to the messages order)
-    IncomingDeliveredMessages = new DefaultListModel();
-    JList IncomimgMsgList = new JList( IncomingDeliveredMessages );
-    IncomimgMsgList.setFocusable( false );
-    JScrollPane incomingMsgSP = new JScrollPane( IncomimgMsgList );
+    incomingDeliveredMessages = new DefaultListModel();
+    JList incomimgMsgList = new JList( incomingDeliveredMessages );
+    incomimgMsgList.setFocusable( false );
+    JScrollPane incomingMsgSP = new JScrollPane( incomimgMsgList );
     incomingMsgSP.setBorder( BorderFactory.createTitledBorder( "Delivered messages" ) );
     // ## Outgoing messages
-    OutgoingMessagesMessages = new DefaultListModel();
-    JList OutgoingMsgList = new JList( OutgoingMessagesMessages );
-    OutgoingMsgList.setFocusable( false );
-    JScrollPane outgoingMsgSP = new JScrollPane( OutgoingMsgList );
+    outgoingMessagesMessages = new DefaultListModel();
+    JList outgoingMsgList = new JList( outgoingMessagesMessages );
+    outgoingMsgList.setFocusable( false );
+    JScrollPane outgoingMsgSP = new JScrollPane( outgoingMsgList );
     outgoingMsgSP.setBorder( BorderFactory.createTitledBorder( "Outgoing messages" ) );
 
     // ## other com info
-    comInfoModel = new DefaultListModel();
-    JList comInfoList = new JList<String>( comInfoModel );
+    infoModel = new DefaultListModel();
+    JList comInfoList = new JList<String>( infoModel );
     comInfoList.setFocusable( false );
     JScrollPane comInfoScroll = new JScrollPane( comInfoList );
     comInfoScroll.setBorder( BorderFactory.createTitledBorder( "Communication Info" ) );
@@ -65,6 +78,7 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMember
     comLayout.setVerticalGroup(
             comLayout.createSequentialGroup()
                     .addComponent( delayedMsgSP )
+                    .addComponent( wmPanel )
                     .addComponent( incomingMsgSP )
                     .addComponent( outgoingMsgSP )
                     .addComponent( comInfoScroll )
@@ -73,12 +87,36 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMember
             comLayout.createSequentialGroup()
                     .addGroup( comLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
                                     .addComponent( delayedMsgSP )
+                                    .addComponent( wmPanel )
                                     .addComponent( incomingMsgSP )
                                     .addComponent( outgoingMsgSP )
                                     .addComponent( comInfoScroll )
                     )
     );
 
+    wmRemove.addActionListener( new ActionListener()
+    {
+      public void actionPerformed( ActionEvent e )
+      {
+        if ( ! delayedMsgList.isSelectionEmpty() )
+          incomingWaitingMessages.remove( delayedMsgList.getSelectedIndex() );
+      }
+    } );
+
+    wmSend.addActionListener( new ActionListener()
+    {
+      @Override
+      public void actionPerformed( ActionEvent e )
+      {
+        if ( ! delayedMsgList.isSelectionEmpty() )
+        {
+          incomingWaitingMessages.remove( delayedMsgList.getSelectedIndex() );
+          //notifyIncomingMessage( incomingWaitingMessages.get( delayedMsgList.getSelectedIndex() ) );
+          incomingWaitingMessages.remove( delayedMsgList.getSelectedIndex() );
+        }
+
+      }
+    } );
 
 
     // ######## ORDERING MODULE DATA
@@ -89,25 +127,25 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMember
   @Override
   public void notifyOutgoingMessage ( Serializable msg )
   {
-    OutgoingMessagesMessages.addElement( currentTime() + " : " + msg.toString() );
+    outgoingMessagesMessages.addElement( currentTime() + " : " + msg.toString() );
   }
 
   @Override
   public void notifyIncomingMessage ( Serializable msg )
   {
-    IncomingDeliveredMessages.addElement( currentTime() + " : " + msg.toString() );
+    incomingDeliveredMessages.addElement( currentTime() + " : " + msg.toString() );
   }
 
   @Override
   public void notifyJoin ( String groupID )
   {
-    comInfoModel.addElement( "(" + currentTime() + ") Joining " + groupID );
+    infoModel.addElement( "(" + currentTime() + ") Joining " + groupID );
   }
 
   @Override
   public void notifyConnect ()
   {
-    comInfoModel.addElement( "(" + currentTime() + ") connected" );
+    infoModel.addElement( "(" + currentTime() + ") connected" );
   }
 
   private String currentTime ()
@@ -119,6 +157,6 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMember
   @Override
   public void notifyQueued ( int i, ComMessage msg )
   {
-
+    incomingWaitingMessages.addElement( currentTime() + " : " + msg.toString() );
   }
 }
