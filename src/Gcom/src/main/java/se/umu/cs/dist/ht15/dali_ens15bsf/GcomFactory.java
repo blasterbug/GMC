@@ -5,7 +5,6 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.TreeBaseMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui.GcomDebugGUI;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImplDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
@@ -86,7 +85,7 @@ public class GcomFactory
   public static GcomDebugGUI getDebugGui( GcomDebug module ) throws RemoteException, NamingServiceUnavailableException
   {
     GcomDebugGUI gui = new GcomDebugGUI( module );
-    ((MemberImplDebug)module.mbr).addObserverComMemberDebug( gui );
+    //((MemberImplDebug)module.mbr).addObserverComMemberDebug( gui );
     module.addObserver( gui );
     return gui;
   }

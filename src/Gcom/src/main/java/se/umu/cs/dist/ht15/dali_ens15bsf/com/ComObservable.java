@@ -6,7 +6,7 @@ import java.util.Vector;
  * Created by ens15bsf on 2015-10-13.
  * Observer pattern for the communication layer in Gcom
  */
-public class ComObservable
+class ComObservable
 {
   private Vector<ComObserver> observers;
 

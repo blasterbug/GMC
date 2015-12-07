@@ -101,7 +101,6 @@ class GcomProxy<T extends Serializable> implements Observer, Gcom
    */
   public void join( String groupid ) throws CantJoinException
   {
-    System.out.println("hello");
     try
     {
       mbr.joinGroup( groupid );

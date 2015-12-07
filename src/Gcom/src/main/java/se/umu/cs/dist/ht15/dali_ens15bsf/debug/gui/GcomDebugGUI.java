@@ -2,7 +2,6 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.GcomDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComMemberDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
 
 import javax.swing.*;
@@ -17,7 +16,7 @@ import java.util.Date;
 /**
  * Created by ens15bsf on 2015-11-04.
  */
-public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMemberDebugObserver
+public class GcomDebugGUI extends JFrame implements GcomDebugObserver//, ComMemberDebugObserver
 {
 
   private DefaultListModel<String> incomingWaitingMessages;
@@ -154,7 +153,7 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComMember
     return formattor.format( new Date() );
   }
 
-  @Override
+  //@Override
   public void notifyQueued ( int i, ComMessage msg )
   {
     incomingWaitingMessages.addElement( currentTime() + " : " + msg.toString() );
