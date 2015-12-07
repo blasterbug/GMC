@@ -122,6 +122,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	@Override
 	public void removeFromView(RemoteMember m, String id) {
 		view.remove(id);
+		this.handleUnavailableMember(m);
 	}
 
 	/**
