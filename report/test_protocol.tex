@@ -3,8 +3,9 @@
 \Subsection{Ordering}
 % Testing of causal ordering
 	% Connect two clients, send message, connect third client, send message from first, shows vector clock set correctly.
-	\textbf{Tests}:
-	\textbf{Shows}:
+	\textbf{Prerequisite}: Causal order, basic multicast
+	\textbf{Tests}: Messaging, causal ordering
+	\textbf{Shows}: vector clock set correctly when joining already communicating group
 
 	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
@@ -16,9 +17,9 @@
 	\end{tabular}
 	% Connect two clients, send message, connect third client, send message from third, shows vector clock set correctly.
 
-	\textbf{Tests}:
-	\textbf{Shows}:
-
+	\textbf{Prerequisite}: Causal order, basic multicast
+	\textbf{Tests}: Messaging, causal ordering
+	\textbf{Shows}: vector clock set correctly when joining already communicating group
 	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
 		Connect client $c_1$ & Nameserver should register client as leader \\
@@ -27,9 +28,12 @@
 		Connect client $c_3$ & $c_1$, $c_2$ should be notified \\
 		$c_3$ sends message & All receive message \\
 	\end{tabular}
+
+
 	% Connect three clients, send message from first, hold at second, send from third, release at second
-	\textbf{Tests}:
-	\textbf{Shows}:
+	\textbf{Prerequisite}: Causal order, basic multicast
+	\textbf{Tests}: Casual ordering
+	\textbf{Shows}: 
 
 	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
