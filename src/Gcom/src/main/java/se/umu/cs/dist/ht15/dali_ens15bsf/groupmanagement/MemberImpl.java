@@ -2,6 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFactory;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
@@ -12,7 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class MemberImpl extends Observable implements Member, ComObserver, Observer
+public class MemberImpl extends Member implements ComObserver, Observer
 {
 	private Map<String, RemoteMember> view;
 //	private Collection<RemoteMember> view;
