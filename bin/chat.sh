@@ -4,5 +4,11 @@
 #
 
 cd ../src/Gchat/
-# mvn package
-java -jar target/Gchat-jar-with-dependencies.jar $1
+if [ "$1" == "compile" ]
+  then
+    mvn package
+    debug="$2"
+  else
+    debug="$1"
+fi
+java -jar target/Gchat-jar-with-dependencies.jar $debug
