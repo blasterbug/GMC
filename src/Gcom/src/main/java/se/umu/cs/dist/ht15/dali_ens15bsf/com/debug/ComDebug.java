@@ -65,8 +65,6 @@ public final class ComDebug implements ComObserver, Serializable
     DelayedComMessage msg = delayedQueue.remove( messageIndex );
     for ( ComObserver obs : coreObservers )
       obs.notifyObservers( msg.getContent() );
-    for ( ComDebugObserver obs : debugObservers )
-      obs.notifyunQueued( messageIndex );
   }
 
   /**

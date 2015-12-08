@@ -18,21 +18,21 @@ class ComObservable<T extends ComObserver>
   /**
    * Register a new observer to the observable object
    *
-   * @param ob observer to register
+   * @param obs observer to register
    */
-  public void addObserver ( T ob )
+  public void addObserver ( T obs )
   {
-    observers.add( ob );
+    observers.add( obs );
   }
 
   /**
    * Remove an observer to the observable object
    *
-   * @param ob observer to remove
+   * @param obs observer to remove
    */
-  public void removeObserver ( T ob )
+  public void removeObserver ( T obs )
   {
-    observers.remove( ob );
+    observers.remove( obs );
   }
 
   /**
@@ -60,7 +60,7 @@ class ComObservable<T extends ComObserver>
   }
 
   public void notifyNewLeader(RemoteMember newLead, String groupId) {
-	  for ( ComObserver ob : observers ) {
+    for ( ComObserver ob : observers ) {
 		  ob.notifyNewLeader( newLead, groupId );
 	  }
   }

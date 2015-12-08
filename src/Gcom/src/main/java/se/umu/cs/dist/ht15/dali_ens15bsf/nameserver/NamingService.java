@@ -70,7 +70,7 @@ public class NamingService implements Serializable, NamingServiceRemote
       // just ask to the leader for joining the group
       //m.join(leader, leader.getId());
       leader.join( m, m.getId() );
-      System.out.println( "Member [" + m.getId() + "] joining leader [" + leader.getId() + "] of group [" + groupName + "]" );
+      System.out.println( "Member [" + m.getId() + " joined [" + groupName + "] lead by [" + leader.getId() + "]" );
     }
     else
     {
@@ -134,8 +134,10 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public void updateLeader ( String groupName, RemoteMember newLeader ) throws RemoteException
   {
+    if ( null == groups.get( groupName ) )
+      System.out.println( groupName + "all ready registered");
     groups.put( groupName, newLeader );
-    System.out.println( "Server : Member " + newLeader.getId() + " is the new leader of the group " + groupName );
+    System.out.println( "Server : Member " + newLeader.getId() + " is the new leader of " + groupName );
   }
 
   /**

@@ -107,7 +107,7 @@ public class MemberImpl extends Member implements Observer
 				if (!key.equals(id))
 					m.addToView(rm,key);
 			} catch (RemoteException e) {
-				System.out.println("Failed to join: " + e.getMessage());
+				System.err.println("Failed to join\n" + e.getMessage());
 			}
 		}
 //		System.out.println("Putting ["+id+"] to "+this.id);	
@@ -160,11 +160,11 @@ public class MemberImpl extends Member implements Observer
 				Collection<RemoteMember> tmp = self.getUnreachableRemoteObjects();
 				System.out.println("Handling unreachables " + tmp.size());	
 				for ( RemoteMember rm : tmp ) {
-					System.out.println("Handling " +rm);	
+					System.out.println("Handling " +rm.getId());
 					handleUnavailableMember(rm);
 				}
 			} catch (RemoteException ex) {
-				System.out.println("ERROR " + ex.getMessage());	
+				System.err.println(ex.getMessage());
 			}
 
 		}
@@ -220,7 +220,15 @@ public class MemberImpl extends Member implements Observer
 
 	@Override
 	public void notifyNewLeader ( RemoteMember newLeader, String groupId) {
-		System.out.println("Setting new leader");	
+		System.out.println("Setting new leader");
+		try
+		{
+			System.err.println( newLeader.getId() + " : " + groupId );
+		}
+		catch ( RemoteException e )
+		{
+			System.err.println( "New leader is crap" );
+		}
 		this.groups.put( groupId, newLeader );
 	}
 
@@ -234,19 +242,19 @@ public class MemberImpl extends Member implements Observer
 		this.removeFromView(m, id);
 	}
 
-	private void handleUnavailableMember(RemoteMember member) throws RemoteException {
+	private void handleUnavailableMember(RemoteMember memberToRemove) throws RemoteException {
 		RemoteMember lead = groups.get(this.groupId);
 
 		//view.remove(member.getId());
 		String idToRemove = "";
-		for ( String id : view.keySet() ) {
-			if (view.get(id).equals(member)) {
+		for ( String id : view.keySet() ) { // use view.values() ?
+			if (view.get(id).equals(memberToRemove)) {
 				idToRemove = id;
 				view.remove(id);
 				break;
 			}
 		}
-		if ( lead != null && member.equals(lead)) {
+		if ( lead != null && memberToRemove.equals(lead)) {
 			nameserver.updateLeader(this.groupId,this.getRemoteMember());
 			for ( RemoteMember rm : view.values()) {
 				rm.updateLeader(lead, this.groupId);
@@ -254,6 +262,6 @@ public class MemberImpl extends Member implements Observer
 		}
 
 		for ( RemoteMember rm : view.values() ) 
-			rm.removeFromView(member, idToRemove);
+			rm.removeFromView(memberToRemove, idToRemove);
 	}
 }
