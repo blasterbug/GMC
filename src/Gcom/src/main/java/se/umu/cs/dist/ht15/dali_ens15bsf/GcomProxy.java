@@ -1,6 +1,8 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
+import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFactory;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
@@ -22,7 +24,8 @@ import java.util.Vector;
 class GcomProxy<T extends Serializable> implements Observer, Gcom
 {
   protected NamingServiceRemote nsRemote;
-  protected MemberImpl mbr;
+  protected Member mbr;
+  protected ComMember comMember;
   protected Vector<GcomObserver> observers;
   protected final Orderer order;
   protected final MulticastStrategy ms;
@@ -41,7 +44,9 @@ class GcomProxy<T extends Serializable> implements Observer, Gcom
     this.ms = ms;
     nsRemote = NamingServerFactory.NamingService();
     observers = new Vector<GcomObserver>();
-    mbr = new MemberImpl( order, ms );
+    comMember = new ComMember( ms );
+    mbr = new MemberImpl( order, comMember );
+    comMember.addObserver( mbr );
     mbr.addObserver( this );
   }
 

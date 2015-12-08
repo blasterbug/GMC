@@ -3,15 +3,13 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui;
 import se.umu.cs.dist.ht15.dali_ens15bsf.GcomDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
+import se.umu.cs.dist.ht15.dali_ens15bsf.debug.TimeUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by ens15bsf on 2015-11-04.
@@ -126,36 +124,32 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver//, ComMemb
   @Override
   public void notifyOutgoingMessage ( Serializable msg )
   {
-    outgoingMessagesMessages.addElement( currentTime() + " : " + msg.toString() );
+    outgoingMessagesMessages.addElement( TimeUtils.currentTime() + " : " + msg.toString() );
   }
 
   @Override
   public void notifyIncomingMessage ( Serializable msg )
   {
-    incomingDeliveredMessages.addElement( currentTime() + " : " + msg.toString() );
+    incomingDeliveredMessages.addElement( TimeUtils.currentTime() + " : " + msg.toString() );
   }
 
   @Override
   public void notifyJoin ( String groupID )
   {
-    infoModel.addElement( "(" + currentTime() + ") Joining " + groupID );
+    infoModel.addElement( "(" + TimeUtils.currentTime() + ") Joining " + groupID );
   }
 
   @Override
   public void notifyConnect ()
   {
-    infoModel.addElement( "(" + currentTime() + ") connected" );
+    infoModel.addElement( "(" + TimeUtils.currentTime() + ") connected" );
   }
 
-  private String currentTime ()
-  {
-    DateFormat formattor = new SimpleDateFormat("HH:mm:ss");
-    return formattor.format( new Date() );
-  }
+
 
   //@Override
   public void notifyQueued ( int i, ComMessage msg )
   {
-    incomingWaitingMessages.addElement( currentTime() + " : " + msg.toString() );
+    incomingWaitingMessages.addElement( TimeUtils.currentTime() + " : " + msg.toString() );
   }
 }

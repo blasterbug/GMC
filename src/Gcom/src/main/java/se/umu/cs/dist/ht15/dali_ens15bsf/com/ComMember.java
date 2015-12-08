@@ -23,13 +23,12 @@ public class ComMember extends ComObservable implements RemoteMember, Serializab
    *
    * @param strategy Strategy to use for multicasting messages
    */
-  public ComMember ( MulticastStrategy strategy, ComObserver mbr )
+  public ComMember ( MulticastStrategy strategy )
   {
 	  super();
     group = new ArrayList<RemoteMember>();
     multicastStrategy = strategy;
     multicastStrategy.setOwner( this );
-    super.addObserver( mbr );
     this.id = null;
   }
 
@@ -92,8 +91,6 @@ public class ComMember extends ComObservable implements RemoteMember, Serializab
    * @param ob observer to register
    */
   public void addObserver(ComObserver ob) {
-    System.out.println("OB");
-    System.out.println(this);	
     super.addObserver( ob );
   }
 

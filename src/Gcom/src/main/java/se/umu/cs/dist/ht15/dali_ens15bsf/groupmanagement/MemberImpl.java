@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class MemberImpl extends Member implements ComObserver, Observer
+public class MemberImpl extends Member implements Observer
 {
 	private Map<String, RemoteMember> view;
 //	private Collection<RemoteMember> view;
@@ -25,13 +25,13 @@ public class MemberImpl extends Member implements ComObserver, Observer
 	private Map<String, RemoteMember> groups;
 	private String groupId; // Will be superseded by above line once full support is implemented
 
-	public MemberImpl(Orderer o, MulticastStrategy strg) throws RemoteException{
+	public MemberImpl(Orderer o, ComMember remoteObject) throws RemoteException{
 		view = new HashMap<String, RemoteMember>();
 //		view = new ArrayList<RemoteMember>();
 		groups = new HashMap<String, RemoteMember>();
 		orderer = o;
 
-		self = new ComMember(strg, this);
+		self = remoteObject;
 		UnicastRemoteObject.exportObject(self, 0);
 		//System.out.println(self);
 		orderer.addObserver( this );

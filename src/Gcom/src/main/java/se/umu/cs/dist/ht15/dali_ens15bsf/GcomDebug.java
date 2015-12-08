@@ -1,7 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComMemberDebugObserver;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
@@ -24,6 +24,7 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
   public GcomDebug( Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
   {
     super( order, ms );
+    //mbr = new MemberImplDebug( mbr );
     //mbr = new MemberImplDebug( order, ms );
   }
 
@@ -49,7 +50,7 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
    * Register a new observer to the com layer
    * @param obs observer
    */
-  public void addObserverComDebug( ComMemberDebugObserver obs )
+  public void addObserverComDebug( ComDebugObserver obs )
   {
     //((MemberImplDebug)mbr).addObserverComMemberDebug( obs );
   }
@@ -58,7 +59,7 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
    * Delete a new observer to the com layer
    * @param obs observer
    */
-  public void removeObserverComDebug( ComMemberDebugObserver obs )
+  public void removeObserverComDebug( ComDebugObserver obs )
   {
     //((MemberImplDebug)mbr).removeObserverComMemberDebug( obs );
   }

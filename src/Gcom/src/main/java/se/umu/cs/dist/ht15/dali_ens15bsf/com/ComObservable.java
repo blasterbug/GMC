@@ -6,12 +6,12 @@ import java.util.Vector;
  * Created by ens15bsf on 2015-10-13.
  * Observer pattern for the communication layer in Gcom
  */
-class ComObservable
+class ComObservable<T extends ComObserver>
 {
-  private Vector<ComObserver> observers;
+  private Vector<T> observers;
 
   public ComObservable() {
-	  observers = new Vector<ComObserver>();
+	  observers = new Vector<T>();
   }
 
 
@@ -20,9 +20,8 @@ class ComObservable
    *
    * @param ob observer to register
    */
-  public void addObserver ( ComObserver ob )
+  public void addObserver ( T ob )
   {
-//System.out.println("OB2");
     observers.add( ob );
   }
 

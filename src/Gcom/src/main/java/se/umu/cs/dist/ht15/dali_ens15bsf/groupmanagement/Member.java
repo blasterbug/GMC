@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 
@@ -9,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Observable;
 
-public abstract class Member<T extends Serializable> extends Observable
+public abstract class Member<T extends Serializable> extends Observable implements ComObserver
 {
 	public abstract void join(RemoteMember m, String id);
 	public abstract void sendMessage(T content);
