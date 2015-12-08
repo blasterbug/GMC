@@ -2,10 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
@@ -57,7 +54,9 @@ public class MemberTest {
 		try{	
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			Member m = new MemberImpl(causal, strg);
+			ComMember cm = new ComMember( strg );
+			Member m = new MemberImpl(causal, cm);
+			cm.addObserver( m );
 		}catch(RemoteException e) {
 			Assert.fail(e.getMessage());
 		}
@@ -68,12 +67,16 @@ public class MemberTest {
 		try{
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			Member m = new MemberImpl(causal, strg);
+			ComMember cm = new ComMember( strg );
+			Member m = new MemberImpl(causal, cm);
+			cm.addObserver( m );
 	
 			Orderer causal2 = new CausalOrderer();
 			MulticastStrategy strg2 = new BasicUnreliableMulticast();
-	
-			Member m2 = new MemberImpl(causal2, strg2);
+
+			ComMember cm2 = new ComMember( strg2 );
+			Member m2 = new MemberImpl(causal2, cm2);
+			cm2.addObserver( m2 );
 			m.join(m2.getRemoteMember(), "id1");
 	
 			Assert.assertTrue(m.getView().contains(m2.getRemoteMember()));
@@ -88,7 +91,9 @@ public class MemberTest {
 		try{
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			Member m = new MemberImpl(causal, strg);
+			ComMember cm = new ComMember( strg );
+			Member m = new MemberImpl(causal, cm);
+			cm.addObserver( m );
 
 			Assert.assertTrue(m.getRemoteMember() !=null);
 		}catch(RemoteException e) {
@@ -102,8 +107,9 @@ public class MemberTest {
 		try{
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-	
-			Member m = new MemberImpl(causal, strg);
+			ComMember cm = new ComMember( strg );
+			Member m = new MemberImpl(causal, cm);
+			cm.addObserver( m );
 
 			ComMessage<Message> msg = new ComMessage<Message>(causal.prepareMessage(new Message("id1", "m1")));
 			msg.setSource(m.getRemoteMember());
@@ -119,14 +125,16 @@ public class MemberTest {
 		try {
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-
-			Member m1 = new MemberImpl(causal, strg);
+			ComMember cm1 = new ComMember( strg );
+			Member m1 = new MemberImpl(causal, cm1);
+			cm1.addObserver( m1 );
 			m1.setId("id1");
 
 			Orderer causal2 = new CausalOrderer();
 			MulticastStrategy strg2 = new BasicUnreliableMulticast();
-	
-			Member m2 = new MemberImpl(causal2, strg2);
+			ComMember cm2 = new ComMember( strg2 );
+			Member m2 = new MemberImpl(causal2, cm2);
+			cm2.addObserver( m2 );
 			m2.setId("id2");
 	
 			Message msg1 = new Message("id1", "test message");
@@ -155,10 +163,19 @@ public class MemberTest {
 			MulticastStrategy s3 = new BasicUnreliableMulticast();
 			MulticastStrategy s4 = new BasicUnreliableMulticast();
 
-			MemberImpl m1 = new MemberImpl(c1, s1);
-			Member m2 = new MemberImpl(c2, s2);
-			Member m3 = new MemberImpl(c3, s3);
-			Member m4 = new MemberImpl(c4, s4);
+			ComMember cm1 = new ComMember( s1 );
+			ComMember cm2 = new ComMember( s2 );
+			ComMember cm3 = new ComMember( s3 );
+			ComMember cm4 = new ComMember( s4 );
+
+			MemberImpl m1 = new MemberImpl(c1, cm1);
+			cm1.addObserver( m1 );
+			Member m2 = new MemberImpl(c2, cm2);
+			cm2.addObserver( m2 );
+			Member m3 = new MemberImpl(c3, cm3);
+			cm3.addObserver( m3 );
+			Member m4 = new MemberImpl(c4, cm4);
+			cm4.addObserver( m4 );
 
 			m1.setId("id1");
 			m2.setId("id2");
