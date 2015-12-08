@@ -6,24 +6,33 @@ import java.util.Vector;
  * Created by ens15bsf on 2015-10-13.
  * Observer pattern for the communication layer in Gcom
  */
-public class ComObservable
+class ComObservable<T extends ComObserver>
 {
-  private Vector<ComObserver> observers;
+  private Vector<T> observers;
 
   public ComObservable() {
-	  observers = new Vector<ComObserver>();
+	  observers = new Vector<T>();
   }
 
 
   /**
    * Register a new observer to the observable object
    *
-   * @param ob observer to register
+   * @param obs observer to register
    */
-  public void addObserver ( ComObserver ob )
+  public void addObserver ( T obs )
   {
-//System.out.println("OB2");
-    observers.add( ob );
+    observers.add( obs );
+  }
+
+  /**
+   * Remove an observer to the observable object
+   *
+   * @param obs observer to remove
+   */
+  public void removeObserver ( T obs )
+  {
+    observers.remove( obs );
   }
 
   /**
@@ -51,7 +60,7 @@ public class ComObservable
   }
 
   public void notifyNewLeader(RemoteMember newLead, String groupId) {
-	  for ( ComObserver ob : observers ) {
+    for ( ComObserver ob : observers ) {
 		  ob.notifyNewLeader( newLead, groupId );
 	  }
   }

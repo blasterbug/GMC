@@ -1,11 +1,9 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComMemberDebugObserver;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComDebug;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImplDebug;
-import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFactory;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.Orderer;
 
@@ -19,25 +17,19 @@ import java.util.Vector;
 public class GcomDebug<T> extends GcomProxy implements GcomObserver
 {
 
-  private Vector<GcomDebugObserver> observers = new Vector<>();;
+  private Vector<GcomDebugObserver> observers = new Vector<>();
+  private ComDebug comDebuger;
   //private Orderer orderDebug;
   //private MulticastStrategy multicasterDebug;
 
 
-  public GcomDebug ( Gcom module ) throws RemoteException, NamingServiceUnavailableException
+  public GcomDebug( String id, Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
   {
-    super( ((GcomProxy)module).getOrderingStrategy() , ((GcomProxy)module).getMulticastStrategy() );
-    module.addObserver( this );
-    ((GcomProxy) module).mbr = new MemberImplDebug( ((GcomProxy)module).getOrderingStrategy() , ((GcomProxy)module).getMulticastStrategy() );
-    //orderDebug = getOrderingStrategy();
-    //multicasterDebug = getMulticastStrategy();
-
-  }
-
-  public GcomDebug( Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
-  {
-    super( order, ms );
-    mbr = new MemberImplDebug( order, ms );
+    super( id, order, ms );
+    comMember.removeObserver( mbr );
+    comDebuger = new ComDebug( comMember, mbr );
+    comDebuger.addCoreObserver( mbr );
+    //comMember.addObserver( mbr );
   }
 
   /**
@@ -62,18 +54,30 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
    * Register a new observer to the com layer
    * @param obs observer
    */
-  public void addObserverComDebug( ComMemberDebugObserver obs )
+  public void addComDebugObserver( ComDebugObserver obs )
   {
-    ((MemberImplDebug)mbr).addObserverComMemberDebug( obs );
+    comDebuger.addDebugObserver( obs );
   }
 
   /**
    * Delete a new observer to the com layer
    * @param obs observer
    */
-  public void removeObserverComDebug( ComMemberDebugObserver obs )
+  public void removeComDebugObserver( ComDebugObserver obs )
   {
-    ((MemberImplDebug)mbr).removeObserverComMemberDebug( obs );
+    comDebuger.removeDebugObserver( obs );
+  }
+
+  public void deliverWaitingMessage( int indexWaitingMsg )
+  {
+    try
+    {
+      comDebuger.deliver( indexWaitingMsg );
+    }
+    catch ( RemoteException e )
+    {
+      System.err.println( e.getMessage() );
+    }
   }
 
   /**

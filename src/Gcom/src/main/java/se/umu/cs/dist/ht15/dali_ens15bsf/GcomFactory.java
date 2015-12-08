@@ -5,7 +5,6 @@ import se.umu.cs.dist.ht15.dali_ens15bsf.com.BasicUnreliableMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.MulticastStrategy;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.TreeBaseMulticast;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui.GcomDebugGUI;
-import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImplDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.FifoOrderer;
@@ -73,21 +72,22 @@ public class GcomFactory
    * @return Gcom module
    * @throws RemoteException
    */
-  public static Gcom createGcom( OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
+  public static Gcom createGcom( String id, OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
   {
-      return new GcomProxy( createOrderer( order ), createMulticastStrategy( mltStr ) );
+      return new GcomProxy( id, createOrderer( order ), createMulticastStrategy( mltStr ) );
   }
 
-  public static GcomDebug createGcomDebug( OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
+  public static GcomDebug createGcomDebug(String id, OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
   {
-    return new GcomDebug( createOrderer( order ), createMulticastStrategy( mltStr ) );
+    return new GcomDebug( id, createOrderer( order ), createMulticastStrategy( mltStr ) );
   }
 
   public static GcomDebugGUI getDebugGui( GcomDebug module ) throws RemoteException, NamingServiceUnavailableException
   {
     GcomDebugGUI gui = new GcomDebugGUI( module );
-    ((MemberImplDebug)module.mbr).addObserverComMemberDebug( gui );
+    //((MemberImplDebug)module.mbr).addObserverComMemberDebug( gui );
     module.addObserver( gui );
+    module.addComDebugObserver( gui );
     return gui;
   }
 }

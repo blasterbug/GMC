@@ -12,7 +12,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Random;
 
 
 /**
@@ -38,7 +37,7 @@ public class NamingService implements Serializable, NamingServiceRemote
   protected UnicastRemoteObject server;
   /// Registry of remote objects
   protected Registry directory;
-  protected Random dice;
+  //protected Random dice;
   //protected HashMap<String, RemoteMember> idMap;
   private int memberCounter = 0;
 
@@ -50,7 +49,7 @@ public class NamingService implements Serializable, NamingServiceRemote
    */
   public NamingService () throws RemoteException, AlreadyBoundException
   {
-    dice = new Random();
+    //dice = new Random();
     groups = new HashMap<String, RemoteMember>();
     //idMap = new HashMap<String, RemoteMember>();
     // make the server reachable
@@ -70,21 +69,21 @@ public class NamingService implements Serializable, NamingServiceRemote
     {
       // just ask to the leader for joining the group
       //m.join(leader, leader.getId());
-      leader.join( m, m.getId());
-      System.out.println("Member ["+m+"] joining leader ["+leader+"] of group ["+groupName+"]");
+      leader.join( m, m.getId() );
+      System.out.println( "Member [" + m.getId() + " joined [" + groupName + "] lead by [" + leader.getId() + "]" );
     }
     else
     {
       // register the group, with the leader
       groups.put( groupName, m );
-      System.out.println( "Server : new leader " + m.toString() + "for group " + groupName );
+      System.out.println( "Server : new leader " + m.getId() + "for group " + groupName );
       // and ask to the leader to join
       m.join( m, m.getId() );
       // m is the leader
       leader = m;
     }
     //directory.rebind( m.toString(), m );
-    System.out.println( "Server : Member " + m.toString() + " registered in group " + groupName );
+    System.out.println( "Server : Member " + m.getId() + " registered in group " + groupName );
     return leader;
   }
 
@@ -96,7 +95,8 @@ public class NamingService implements Serializable, NamingServiceRemote
     // check if all the leaders are alive
     for ( String gid : groups.keySet() )
     {
-      try {
+      try
+      {
         groups.get( gid ).getId();
         groupsLL.add( new String( gid ) );
       }
@@ -108,7 +108,7 @@ public class NamingService implements Serializable, NamingServiceRemote
         groups.remove( gid );
       }
     }
-    System.out.println(groupsLL);
+    System.out.println( groupsLL );
     return groupsLL;
   }
 
@@ -134,8 +134,10 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public void updateLeader ( String groupName, RemoteMember newLeader ) throws RemoteException
   {
+    if ( null == groups.get( groupName ) )
+      System.out.println( groupName + "all ready registered");
     groups.put( groupName, newLeader );
-    System.out.println( "Server : Member " + newLeader.toString() + " is the new leader of the group " + groupName );
+    System.out.println( "Server : Member " + newLeader.getId() + " is the new leader of " + groupName );
   }
 
   /**
@@ -148,9 +150,10 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public String getMyId ( RemoteMember member ) throws RemoteException
   {
-    String id = Integer.toString(memberCounter);
-    memberCounter++;
-    return id;
+    //String id = Integer.toString( memberCounter );
+    //memberCounter++;
+    //return id;
+    return member.getId();
     //String id = member.toString();
     //id += Integer.toHexString( dice.nextInt() );
     //idMap.add( id, member )
@@ -158,12 +161,16 @@ public class NamingService implements Serializable, NamingServiceRemote
   }
 
   @Override
-  public void destroy() throws RemoteException { 
-	try {
-		directory.unbind(SERVICE_NAME);
-	} catch (NotBoundException e) {
-		//Not a problem
-	}
-	
+  public void destroy () throws RemoteException
+  {
+    try
+    {
+      directory.unbind( SERVICE_NAME );
+    }
+    catch ( NotBoundException e )
+    {
+      //Not a problem
+    }
+
   }
 }

@@ -2,6 +2,7 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFactory;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException;
@@ -12,7 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class MemberImpl extends Observable implements Member, ComObserver, Observer
+public class MemberImpl extends Member implements Observer
 {
 	private Map<String, RemoteMember> view;
 //	private Collection<RemoteMember> view;
@@ -24,13 +25,13 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 	private Map<String, RemoteMember> groups;
 	private String groupId; // Will be superseded by above line once full support is implemented
 
-	public MemberImpl(Orderer o, MulticastStrategy strg) throws RemoteException{
+	public MemberImpl(Orderer o, ComMember remoteObject) throws RemoteException{
 		view = new HashMap<String, RemoteMember>();
 //		view = new ArrayList<RemoteMember>();
 		groups = new HashMap<String, RemoteMember>();
 		orderer = o;
 
-		self = new ComMember(strg, this);
+		self = remoteObject;
 		UnicastRemoteObject.exportObject(self, 0);
 		//System.out.println(self);
 		orderer.addObserver( this );
@@ -106,7 +107,7 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 				if (!key.equals(id))
 					m.addToView(rm,key);
 			} catch (RemoteException e) {
-				System.out.println("Failed to join: " + e.getMessage());
+				System.err.println("Failed to join\n" + e.getMessage());
 			}
 		}
 //		System.out.println("Putting ["+id+"] to "+this.id);	
@@ -159,11 +160,11 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 				Collection<RemoteMember> tmp = self.getUnreachableRemoteObjects();
 				System.out.println("Handling unreachables " + tmp.size());	
 				for ( RemoteMember rm : tmp ) {
-					System.out.println("Handling " +rm);	
+					System.out.println("Handling " +rm.getId());
 					handleUnavailableMember(rm);
 				}
 			} catch (RemoteException ex) {
-				System.out.println("ERROR " + ex.getMessage());	
+				System.err.println(ex.getMessage());
 			}
 
 		}
@@ -219,7 +220,15 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 
 	@Override
 	public void notifyNewLeader ( RemoteMember newLeader, String groupId) {
-		System.out.println("Setting new leader");	
+		System.out.println("Setting new leader");
+		try
+		{
+			System.err.println( newLeader.getId() + " : " + groupId );
+		}
+		catch ( RemoteException e )
+		{
+			System.err.println( "New leader is crap" );
+		}
 		this.groups.put( groupId, newLeader );
 	}
 
@@ -233,19 +242,19 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		this.removeFromView(m, id);
 	}
 
-	private void handleUnavailableMember(RemoteMember member) throws RemoteException {
+	private void handleUnavailableMember(RemoteMember memberToRemove) throws RemoteException {
 		RemoteMember lead = groups.get(this.groupId);
 
 		//view.remove(member.getId());
 		String idToRemove = "";
-		for ( String id : view.keySet() ) {
-			if (view.get(id).equals(member)) {
+		for ( String id : view.keySet() ) { // use view.values() ?
+			if (view.get(id).equals(memberToRemove)) {
 				idToRemove = id;
 				view.remove(id);
 				break;
 			}
 		}
-		if ( lead != null && member.equals(lead)) {
+		if ( lead != null && memberToRemove.equals(lead)) {
 			nameserver.updateLeader(this.groupId,this.getRemoteMember());
 			for ( RemoteMember rm : view.values()) {
 				rm.updateLeader(lead, this.groupId);
@@ -253,6 +262,6 @@ public class MemberImpl extends Observable implements Member, ComObserver, Obser
 		}
 
 		for ( RemoteMember rm : view.values() ) 
-			rm.removeFromView(member, idToRemove);
+			rm.removeFromView(memberToRemove, idToRemove);
 	}
 }

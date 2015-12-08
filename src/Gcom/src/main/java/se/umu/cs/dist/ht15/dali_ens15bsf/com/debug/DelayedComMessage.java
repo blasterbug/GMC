@@ -1,31 +1,41 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com.debug;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.debug.TimeUtils;
 
-import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created by ens15bsf on 04/12/15.
  */
-public class DelayedComMessage<T>
+public class DelayedComMessage extends ComMessage<ComMessage>
 {
-  private Collection<RemoteMember> view;
-  private ComMessage msg;
+  private long timestamp;
 
-  public DelayedComMessage ( ComMessage message, Collection<RemoteMember> group  )
+  public DelayedComMessage ( ComMessage message  )
   {
-    msg = message;
-    view = group;
+    super( message );
+    timestamp = new Date().getTime();
   }
 
   public ComMessage getContent()
   {
-    return msg;
+    return super.content;
   }
 
-  public Collection<RemoteMember> getView()
+  public long getTime()
   {
-    return view;
+    return timestamp;
+  }
+
+  /**
+   * Get a string representation of the message
+   *
+   * @return String representation of the message
+   */
+  @Override
+  public String toString ()
+  {
+    return "(" + TimeUtils.getTime( timestamp ) + ") " + super.toString();
   }
 }

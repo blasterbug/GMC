@@ -76,9 +76,17 @@ public class ElectionTest {
 	@Test
 	public void testDisconnectingLeader() {
 		try {
-			Member lead = new MemberImpl(new UnorderedStrategy(), new BasicReliableMulticast());
-			Member m1 = new MemberImpl(new UnorderedStrategy(), new BasicReliableMulticast());
-			Member m2 = new MemberImpl(new UnorderedStrategy(), new BasicReliableMulticast());
+			ComMember comLeader = new ComMember( new BasicReliableMulticast(), "leader" );
+			Member lead = new MemberImpl(new UnorderedStrategy(), comLeader);
+			comLeader.addObserver( lead );
+
+			ComMember comM1 = new ComMember( new BasicReliableMulticast(), "m1" );
+			Member m1 = new MemberImpl(new UnorderedStrategy(), comM1);
+			comM1.addObserver( m1 );
+
+			ComMember comM2 = new ComMember( new BasicReliableMulticast(), "m2" );
+			Member m2 = new MemberImpl(new UnorderedStrategy(), comM2);
+			comM1.addObserver( m2 );
 
 			lead.connectToNameserver();
 			m1.connectToNameserver();

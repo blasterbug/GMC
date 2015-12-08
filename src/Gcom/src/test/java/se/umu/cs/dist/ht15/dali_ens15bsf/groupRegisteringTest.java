@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingService;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceRemote;
@@ -29,8 +30,10 @@ public class groupRegisteringTest implements ComObserver
     
     try
     {
-      ComObserver m = new MemberImpl(causal, tree);
-      ComMember mbr1 = new ComMember( tree, m );
+
+      ComMember mbr1 = new ComMember( tree, "mbr1" );
+      ComObserver m = new MemberImpl(causal, mbr1);
+      mbr1.addObserver( m );
       mbr1.addObserver( new groupRegisteringTest() );
       Registry dictionary = LocateRegistry.getRegistry( NamingService.SERVER_PORT );
       NamingServiceRemote server = (NamingServiceRemote) dictionary.lookup( NamingService.SERVICE_NAME );

@@ -14,14 +14,14 @@ public class NamingServerFactory
   private static NamingServiceRemote ns;
 
 
-  public static NamingServiceRemote NamingService() throws NamingServiceUnavailableException
+  public static NamingServiceRemote NamingService () throws NamingServiceUnavailableException
   {
     if ( null == ns )
     {
       try
       {
         Registry dictionary = LocateRegistry.getRegistry( NamingService.SERVER_PORT );
-        ns = (NamingServiceRemote) dictionary.lookup(NamingService.SERVICE_NAME);
+        ns = (NamingServiceRemote) dictionary.lookup( NamingService.SERVICE_NAME );
       }
       catch ( RemoteException | NotBoundException e )
       {
