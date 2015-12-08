@@ -24,6 +24,7 @@ target/
 *.aux
 *.toc
 *.pdf
+*.out
 
 
 # IDEA stuff
