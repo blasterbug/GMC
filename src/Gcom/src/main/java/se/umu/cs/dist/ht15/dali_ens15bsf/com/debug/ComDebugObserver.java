@@ -6,4 +6,6 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.com.debug;
 public interface ComDebugObserver
 {
   void notifyQueued ( int i, String msg );
+
+  void notifyunQueued ( int messageIndex );
 }

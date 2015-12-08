@@ -63,9 +63,10 @@ public final class ComDebug implements ComObserver, Serializable
   public void deliver( int messageIndex ) throws RemoteException
   {
     DelayedComMessage msg = delayedQueue.remove( messageIndex );
-    //coreDebug.deliver( msg.getContent() );
     for ( ComObserver obs : coreObservers )
       obs.notifyObservers( msg.getContent() );
+    for ( ComDebugObserver obs : debugObservers )
+      obs.notifyunQueued( messageIndex );
   }
 
   /**

@@ -55,8 +55,8 @@ public interface NamingServiceRemote extends Remote
 
 
   /**
-    * Called to unbind the nameserver
-    */
-  public void destroy() throws RemoteException;
+   * Called to unbind the nameserver
+   */
+  public void destroy () throws RemoteException;
 
 }

@@ -31,7 +31,7 @@ public class groupRegisteringTest implements ComObserver
     try
     {
 
-      ComMember mbr1 = new ComMember( tree );
+      ComMember mbr1 = new ComMember( tree, "mbr1" );
       ComObserver m = new MemberImpl(causal, mbr1);
       mbr1.addObserver( m );
       mbr1.addObserver( new groupRegisteringTest() );

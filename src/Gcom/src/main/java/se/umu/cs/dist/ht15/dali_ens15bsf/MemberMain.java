@@ -15,7 +15,7 @@ public class MemberMain {
 		public static void main(String [] args) {
 			System.out.println("Initiating member");	
 			try {
-				ComMember comMember = new ComMember( new BasicReliableMulticast() );
+				ComMember comMember = new ComMember( new BasicReliableMulticast(), "id" );
 				Member m = new MemberImpl(new CausalOrderer(), comMember);
 				comMember.addObserver( m );
 				System.out.println("Connecting to server");	

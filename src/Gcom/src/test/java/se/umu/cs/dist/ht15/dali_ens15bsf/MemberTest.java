@@ -54,7 +54,7 @@ public class MemberTest {
 		try{	
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			ComMember cm = new ComMember( strg );
+			ComMember cm = new ComMember( strg, "id" );
 			Member m = new MemberImpl(causal, cm);
 			cm.addObserver( m );
 		}catch(RemoteException e) {
@@ -67,19 +67,19 @@ public class MemberTest {
 		try{
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			ComMember cm = new ComMember( strg );
-			Member m = new MemberImpl(causal, cm);
-			cm.addObserver( m );
+			ComMember cm1 = new ComMember( strg, "m1" );
+			Member m1 = new MemberImpl(causal, cm1);
+			cm1.addObserver( m1 );
 	
 			Orderer causal2 = new CausalOrderer();
 			MulticastStrategy strg2 = new BasicUnreliableMulticast();
 
-			ComMember cm2 = new ComMember( strg2 );
+			ComMember cm2 = new ComMember( strg2, "m2" );
 			Member m2 = new MemberImpl(causal2, cm2);
 			cm2.addObserver( m2 );
-			m.join(m2.getRemoteMember(), "id1");
+			m1.join(m2.getRemoteMember(), "id1");
 	
-			Assert.assertTrue(m.getView().contains(m2.getRemoteMember()));
+			Assert.assertTrue(m1.getView().contains(m2.getRemoteMember()));
 		}catch(RemoteException e) {
 			Assert.fail(e.getMessage());
 		}
@@ -91,7 +91,7 @@ public class MemberTest {
 		try{
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			ComMember cm = new ComMember( strg );
+			ComMember cm = new ComMember( strg, "m0" );
 			Member m = new MemberImpl(causal, cm);
 			cm.addObserver( m );
 
@@ -107,7 +107,7 @@ public class MemberTest {
 		try{
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			ComMember cm = new ComMember( strg );
+			ComMember cm = new ComMember( strg, "id" );
 			Member m = new MemberImpl(causal, cm);
 			cm.addObserver( m );
 
@@ -125,14 +125,14 @@ public class MemberTest {
 		try {
 			Orderer causal = new CausalOrderer();
 			MulticastStrategy strg = new BasicUnreliableMulticast();
-			ComMember cm1 = new ComMember( strg );
+			ComMember cm1 = new ComMember( strg, "id1" );
 			Member m1 = new MemberImpl(causal, cm1);
 			cm1.addObserver( m1 );
 			m1.setId("id1");
 
 			Orderer causal2 = new CausalOrderer();
 			MulticastStrategy strg2 = new BasicUnreliableMulticast();
-			ComMember cm2 = new ComMember( strg2 );
+			ComMember cm2 = new ComMember( strg2, "id2" );
 			Member m2 = new MemberImpl(causal2, cm2);
 			cm2.addObserver( m2 );
 			m2.setId("id2");
@@ -163,10 +163,10 @@ public class MemberTest {
 			MulticastStrategy s3 = new BasicUnreliableMulticast();
 			MulticastStrategy s4 = new BasicUnreliableMulticast();
 
-			ComMember cm1 = new ComMember( s1 );
-			ComMember cm2 = new ComMember( s2 );
-			ComMember cm3 = new ComMember( s3 );
-			ComMember cm4 = new ComMember( s4 );
+			ComMember cm1 = new ComMember( s1, "id1" );
+			ComMember cm2 = new ComMember( s2, "id2" );
+			ComMember cm3 = new ComMember( s3, "id3" );
+			ComMember cm4 = new ComMember( s4, "id4" );
 
 			MemberImpl m1 = new MemberImpl(c1, cm1);
 			cm1.addObserver( m1 );

@@ -2,6 +2,9 @@ package se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.GcomDebug;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComObserver;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
+import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.TimeUtils;
 
@@ -10,11 +13,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
+import java.rmi.RemoteException;
 
 /**
  * Created by ens15bsf on 2015-11-04.
  */
-public class GcomDebugGUI extends JFrame implements GcomDebugObserver//, ComMemberDebugObserver
+public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugObserver, ComObserver
 {
 
   private DefaultListModel<String> incomingWaitingMessages;
@@ -22,7 +26,7 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver//, ComMemb
   private DefaultListModel<String> outgoingMessagesMessages;
   private DefaultListModel<String> infoModel;
 
-  public GcomDebugGUI ( GcomDebug model )
+  public GcomDebugGUI ( final GcomDebug model )
   {
 
     super( "Gcom debug GUI" );
@@ -107,9 +111,10 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver//, ComMemb
       {
         if ( ! delayedMsgList.isSelectionEmpty() )
         {
-          incomingWaitingMessages.remove( delayedMsgList.getSelectedIndex() );
+          int selectedMsg = delayedMsgList.getSelectedIndex();
+          //incomingDeliveredMessages.addElement( incomingWaitingMessages.get( selectedMsg ) );
+          model.deliverWaitingMessage( selectedMsg );
           //notifyIncomingMessage( incomingWaitingMessages.get( delayedMsgList.getSelectedIndex() ) );
-          incomingWaitingMessages.remove( delayedMsgList.getSelectedIndex() );
         }
 
       }
@@ -145,11 +150,84 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver//, ComMemb
     infoModel.addElement( "(" + TimeUtils.currentTime() + ") connected" );
   }
 
-
-
-  //@Override
-  public void notifyQueued ( int i, ComMessage msg )
+  @Override
+  public void notifyQueued ( int i, String msg )
   {
     incomingWaitingMessages.addElement( TimeUtils.currentTime() + " : " + msg.toString() );
+  }
+
+  @Override
+  public void notifyunQueued ( int messageIndex )
+  {
+    incomingWaitingMessages.remove( messageIndex );
+  }
+
+  /**
+   * Notify Observers when a new incoming message arrive
+   *
+   * @param msg message to give to the Observer
+   */
+  @Override
+  public void notifyObservers ( ComMessage msg )
+  {
+    incomingDeliveredMessages.addElement( TimeUtils.currentTime() + " : " + msg.toString() );
+  }
+
+  /**
+   * Notify observer when new member want to join a group
+   *
+   * @param member  New member joining to the group
+   * @param groupID Group name to join
+   */
+  @Override
+  public void notifyNewMember ( RemoteMember member, String groupID )
+  {
+    try
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : " + member.getId() + " joined " + groupID );
+    }
+    catch ( RemoteException e )
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : A new member joined " + groupID );
+    }
+  }
+
+  @Override
+  public void notifyAddToView ( RemoteMember m, String id )
+  {
+    try
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : " + m.getId() + " added to " + id );
+    }
+    catch ( RemoteException e )
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : A new member added to " + id );
+    }
+  }
+
+  @Override
+  public void notifyNewLeader ( RemoteMember newLeader, String groupId )
+  {
+    try
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : " + newLeader.getId() + " is new leader of " + groupId );
+    }
+    catch ( RemoteException e )
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : There is new leader of " + groupId );
+    }
+  }
+
+  @Override
+  public void notifyRemoveFromView ( RemoteMember m, String id )
+  {
+    try
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : " + m.getId() + " was removed from " + id );
+    }
+    catch ( RemoteException e )
+    {
+      infoModel.addElement( TimeUtils.currentTime() + " : a member wa remove from " + id );
+    }
   }
 }

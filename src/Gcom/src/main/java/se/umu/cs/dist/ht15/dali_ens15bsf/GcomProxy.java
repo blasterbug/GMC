@@ -38,13 +38,13 @@ class GcomProxy<T extends Serializable> implements Observer, Gcom
    * @throws RemoteException
    * @throws NamingServiceUnavailableException
    */
-  public GcomProxy( Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
+  public GcomProxy( String id, Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
   {
     this.order = order;
     this.ms = ms;
     nsRemote = NamingServerFactory.NamingService();
     observers = new Vector<GcomObserver>();
-    comMember = new ComMember( ms );
+    comMember = new ComMember( ms, id );
     mbr = new MemberImpl( order, comMember );
     comMember.addObserver( mbr );
     mbr.addObserver( this );

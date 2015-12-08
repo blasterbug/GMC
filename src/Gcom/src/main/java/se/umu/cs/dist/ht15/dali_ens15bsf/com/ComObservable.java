@@ -26,6 +26,16 @@ class ComObservable<T extends ComObserver>
   }
 
   /**
+   * Remove an observer to the observable object
+   *
+   * @param ob observer to remove
+   */
+  public void removeObserver ( T ob )
+  {
+    observers.remove( ob );
+  }
+
+  /**
    * Notify observer when a new member wants to joint a group
    *
    * @param newM    joining member
