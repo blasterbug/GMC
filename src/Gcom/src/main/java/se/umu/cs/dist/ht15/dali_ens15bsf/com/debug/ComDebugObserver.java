@@ -7,5 +7,7 @@ public interface ComDebugObserver
 {
   void notifyQueued ( int i, String msg );
 
-  void notifyunQueued ( int messageIndex );
+  void notifyUnqueued ( int messageIndex );
+
+  void notifyDropped( int message );
 }

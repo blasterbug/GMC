@@ -1,9 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.debug.gui;
 
 import se.umu.cs.dist.ht15.dali_ens15bsf.GcomDebug;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComObserver;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.RemoteMember;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.debug.ComDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.GcomDebugObserver;
 import se.umu.cs.dist.ht15.dali_ens15bsf.debug.TimeUtils;
@@ -13,12 +10,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 /**
  * Created by ens15bsf on 2015-11-04.
  */
-public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugObserver, ComObserver
+public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugObserver
 {
 
   private DefaultListModel<String> incomingWaitingMessages;
@@ -43,17 +39,35 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugO
     delayedMsgList.setFocusable( false );
     delayedMsgList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION  );
     JScrollPane delayedMsgSP = new JScrollPane( delayedMsgList );
-    delayedMsgSP.setBorder( BorderFactory.createTitledBorder( "Waiting messages" ) );
     // panel for the buttons
     JButton wmRemove = new JButton( "remove" );
     JButton wmSend = new JButton( "deliver" );
+    JPanel wmButtonsPanel = new JPanel();
+    wmButtonsPanel.setLayout( new BoxLayout( wmButtonsPanel, BoxLayout.LINE_AXIS ) );
+    wmButtonsPanel.add( Box.createHorizontalGlue() );
+    wmButtonsPanel.add( wmRemove );
+    wmButtonsPanel.add( Box.createRigidArea( new Dimension( 5, 0 ) ) );
+    wmButtonsPanel.add( wmSend );
+    wmButtonsPanel.add( Box.createRigidArea( new Dimension( 5, 0 ) ) );
+
     JPanel wmPanel = new JPanel();
-    wmPanel.setLayout( new BoxLayout( wmPanel,BoxLayout.LINE_AXIS ) );
-    wmPanel.add( Box.createHorizontalGlue() );
-    wmPanel.add( wmRemove );
-    wmPanel.add( Box.createRigidArea( new Dimension( 5, 0 ) ) );
-    wmPanel.add( wmSend );
-    wmPanel.add( Box.createRigidArea( new Dimension( 5, 0 ) ) );
+    wmPanel.setBorder(  BorderFactory.createTitledBorder( "Waiting messages" ) );
+    GroupLayout wmPanelLayout = new GroupLayout( wmPanel );
+    wmPanel.setLayout( wmPanelLayout );
+    wmPanelLayout.setAutoCreateContainerGaps( false );
+    wmPanelLayout.setAutoCreateGaps( true );
+    wmPanelLayout.setVerticalGroup(
+            wmPanelLayout.createSequentialGroup()
+                    .addComponent( delayedMsgSP )
+                    .addComponent( wmButtonsPanel )
+    );
+    wmPanelLayout.setHorizontalGroup(
+            wmPanelLayout.createSequentialGroup()
+                    .addGroup( wmPanelLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
+                                    .addComponent( delayedMsgSP )
+                                    .addComponent( wmButtonsPanel )
+                    )
+    );
     // ## Incoming messages (send to the messages order)
     incomingDeliveredMessages = new DefaultListModel();
     JList incomimgMsgList = new JList( incomingDeliveredMessages );
@@ -78,7 +92,6 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugO
     comLayout.setAutoCreateGaps( true );
     comLayout.setVerticalGroup(
             comLayout.createSequentialGroup()
-                    .addComponent( delayedMsgSP )
                     .addComponent( wmPanel )
                     .addComponent( incomingMsgSP )
                     .addComponent( outgoingMsgSP )
@@ -87,7 +100,6 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugO
     comLayout.setHorizontalGroup(
             comLayout.createSequentialGroup()
                     .addGroup( comLayout.createParallelGroup( GroupLayout.Alignment.CENTER )
-                                    .addComponent( delayedMsgSP )
                                     .addComponent( wmPanel )
                                     .addComponent( incomingMsgSP )
                                     .addComponent( outgoingMsgSP )
@@ -100,7 +112,11 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugO
       public void actionPerformed( ActionEvent e )
       {
         if ( ! delayedMsgList.isSelectionEmpty() )
-          incomingWaitingMessages.remove( delayedMsgList.getSelectedIndex() );
+        {
+          int selectedMsg = delayedMsgList.getSelectedIndex();
+          //incomingWaitingMessages.remove( selectedMsg );
+          model.dropWaitingMessage( selectedMsg );
+        }
       }
     } );
 
@@ -114,7 +130,7 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugO
           int selectedMsg = delayedMsgList.getSelectedIndex();
           //incomingDeliveredMessages.addElement( incomingWaitingMessages.get( selectedMsg ) );
           model.deliverWaitingMessage( selectedMsg );
-          //notifyIncomingMessage( incomingWaitingMessages.get( delayedMsgList.getSelectedIndex() ) );
+          //notifyIncomingMessage( incomingWaitingMessages.get( selectedMsg ) );
         }
 
       }
@@ -157,77 +173,17 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugO
   }
 
   @Override
-  public void notifyunQueued ( int messageIndex )
+  public void notifyDropped ( int messageIndex )
   {
-    incomingWaitingMessages.remove( messageIndex );
-  }
-
-  /**
-   * Notify Observers when a new incoming message arrive
-   *
-   * @param msg message to give to the Observer
-   */
-  @Override
-  public void notifyObservers ( ComMessage msg )
-  {
-    incomingDeliveredMessages.addElement( TimeUtils.currentTime() + " : " + msg.toString() );
-  }
-
-  /**
-   * Notify observer when new member want to join a group
-   *
-   * @param member  New member joining to the group
-   * @param groupID Group name to join
-   */
-  @Override
-  public void notifyNewMember ( RemoteMember member, String groupID )
-  {
-    try
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : " + member.getId() + " joined " + groupID );
-    }
-    catch ( RemoteException e )
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : A new member joined " + groupID );
-    }
+    String msg = incomingWaitingMessages.remove( messageIndex );
+    infoModel.addElement( TimeUtils.currentTime() + " : " + msg + "(dropped)" );
   }
 
   @Override
-  public void notifyAddToView ( RemoteMember m, String id )
+  public void notifyUnqueued( int messageIndex )
   {
-    try
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : " + m.getId() + " added to " + id );
-    }
-    catch ( RemoteException e )
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : A new member added to " + id );
-    }
+    String msg = incomingWaitingMessages.remove( messageIndex );
+    incomingDeliveredMessages.addElement( TimeUtils.currentTime() + " : " + msg );
   }
 
-  @Override
-  public void notifyNewLeader ( RemoteMember newLeader, String groupId )
-  {
-    try
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : " + newLeader.getId() + " is new leader of " + groupId );
-    }
-    catch ( RemoteException e )
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : There is new leader of " + groupId );
-    }
-  }
-
-  @Override
-  public void notifyRemoveFromView ( RemoteMember m, String id )
-  {
-    try
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : " + m.getId() + " was removed from " + id );
-    }
-    catch ( RemoteException e )
-    {
-      infoModel.addElement( TimeUtils.currentTime() + " : a member wa remove from " + id );
-    }
-  }
 }

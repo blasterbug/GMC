@@ -123,11 +123,13 @@ public class MemberImpl extends Member implements Observer
 	@Override
 	public void removeFromView(RemoteMember m, String id) {
 		view.remove(id);
+		/*
 		try {
 			this.handleUnavailableMember(m);
 		} catch (RemoteException e) {
 			System.err.println(e.getMessage());	
 		}
+		*/
 	}
 
 	/**
@@ -227,9 +229,12 @@ public class MemberImpl extends Member implements Observer
 		}
 		catch ( RemoteException e )
 		{
-			System.err.println( "New leader is crap" );
+			System.err.println( "Bad leader" );
 		}
-		this.groups.put( groupId, newLeader );
+		finally
+		{
+			this.groups.put( groupId, newLeader );
+		}
 	}
 
 	@Override
