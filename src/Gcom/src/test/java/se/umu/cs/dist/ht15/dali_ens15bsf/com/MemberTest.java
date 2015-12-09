@@ -1,8 +1,8 @@
-package se.umu.cs.dist.ht15.dali_ens15bsf;
+package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
+import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.Member;
 import se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement.MemberImpl;
 import se.umu.cs.dist.ht15.dali_ens15bsf.ordering.CausalOrderer;
