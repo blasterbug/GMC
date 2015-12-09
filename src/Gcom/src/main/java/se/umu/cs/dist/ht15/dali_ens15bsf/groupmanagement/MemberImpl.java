@@ -35,8 +35,8 @@ public class MemberImpl extends Member implements Observer
 	}
 
 	@Override
-	public void connectToNameserver() throws RemoteException, NamingServiceUnavailableException {
-		nameserver = NamingServerFactory.NamingService();
+	public void connectToNameserver( String nameServer ) throws RemoteException, NamingServiceUnavailableException {
+		nameserver = NamingServerFactory.NamingService( nameServer );
 	}
 
 	@Override

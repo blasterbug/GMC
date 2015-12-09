@@ -1,6 +1,6 @@
 #!/bin/bash
-
-# Run the Naming Server
+# Run the name server
+# author : Benjamin Sientzoff (ens15bsf)
 #
 
 cd ../src/Gcom/

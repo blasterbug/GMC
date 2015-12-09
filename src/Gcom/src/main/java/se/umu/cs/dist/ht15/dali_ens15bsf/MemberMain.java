@@ -19,7 +19,7 @@ public class MemberMain {
 				Member m = new MemberImpl(new CausalOrderer(), comMember);
 				comMember.addObserver( m );
 				System.out.println("Connecting to server");	
-				m.connectToNameserver();
+				m.connectToNameserver( "localhost" );
 				System.out.println("Joining group Bingo");
 				m.updateIdFromNameServer();
 				m.joinGroup("Bingo");

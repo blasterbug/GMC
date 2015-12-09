@@ -12,8 +12,9 @@ public interface Gcom<T extends Serializable>
 {
   /**
    * Connect the member to the NameServer, should be called first.
+   * @param nameServer Host name of the name server
    */
-  public void connect() throws NamingServiceUnavailableException;
+  public void connect( String nameServer) throws NamingServiceUnavailableException;
 
   /**
    * Get the list of all available group

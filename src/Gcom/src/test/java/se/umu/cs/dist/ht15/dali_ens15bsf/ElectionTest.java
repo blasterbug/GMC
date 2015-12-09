@@ -88,9 +88,9 @@ public class ElectionTest {
 			Member m2 = new MemberImpl(new UnorderedStrategy(), comM2);
 			comM1.addObserver( m2 );
 
-			lead.connectToNameserver();
-			m1.connectToNameserver();
-			m2.connectToNameserver();
+			lead.connectToNameserver( null );
+			m1.connectToNameserver( null );
+			m2.connectToNameserver( null );
 
 			lead.updateIdFromNameServer();
 			m1.updateIdFromNameServer();
