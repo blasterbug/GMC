@@ -61,6 +61,11 @@ public class ComMember extends ComObservable implements RemoteMember, Serializab
     multicastStrategy.send( msg, group );
   }
 
+  public void queue( ComMessage msg ) throws RemoteException
+  {
+    super.notify( msg );
+  }
+
   /**
    * Receive a Communication message from another node
    *
@@ -70,9 +75,14 @@ public class ComMember extends ComObservable implements RemoteMember, Serializab
   @Override
   public void deliver ( ComMessage msg ) throws RemoteException
   {
-    //multicastStrategy.receive( msg );
-    //owner.receiveMessage( (Message)msg.getContent() );
-    super.notify( msg );
+    try
+    {
+      multicastStrategy.receive( msg );
+    }
+    catch ( UnreachableRemoteObjectException e )
+    {
+      throw new RemoteException( e.getMessage() );
+    }
   }
 
   /**
@@ -85,7 +95,6 @@ public class ComMember extends ComObservable implements RemoteMember, Serializab
   @Override
   public synchronized void join ( RemoteMember newM, String groupID ) throws RemoteException
   {
-//    System.out.println("HEY");
     //owner.join(newM, groupID);
     super.notifyJoin( newM, groupID );
   }
@@ -132,6 +141,7 @@ public class ComMember extends ComObservable implements RemoteMember, Serializab
   public void setId ( String id )
   {
     this.id = id;
+    multicastStrategy.updateNodeId();
   }
 
   @Override

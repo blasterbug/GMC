@@ -81,9 +81,9 @@ public class Gchat implements GcomObserver
   {
     //gcomMb.connect();
     //addUser( user );
-    gcomMb.send( new GJoinMessage( user, groupName ) );
     for ( ConnectionObserver observer : connectionObs )
       observer.connected( user );
+    gcomMb.send( new GJoinMessage( user, groupName ) );
   }
 
   public Collection<GUser> getUsers ()
@@ -142,11 +142,11 @@ public class Gchat implements GcomObserver
   @Override
   public void newMessage ( Message message )
   {
-    GMessage msg = (GMessage)message.getContent();
+    GMessage msg = (GMessage)(message.getContent());
     if ( msg.isJoinMessage() )
     {
       // broadcast my name
-      if ( !( msg.getAuthor().equals( user ) ) )
+      if ( !( msg.getAuthor().equals( user ) ) && !(users.keySet().contains( msg.getAuthor() )) )
       {
         gcomMb.send( new GJoinMessage( user, groupName ) );
       }

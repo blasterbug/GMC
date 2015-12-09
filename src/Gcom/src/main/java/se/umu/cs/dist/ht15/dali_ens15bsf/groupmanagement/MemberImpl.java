@@ -100,6 +100,7 @@ public class MemberImpl extends Member implements Observer
 				RemoteMember rm = view.get(key);
 				if(!(key.equals(this.id))) {
 					rm.addToView(m,id);
+					//System.out.println( id + " : " + m.getId() + " joined " + id );
 				}
 				if (!key.equals(id))
 					m.addToView(rm,key);

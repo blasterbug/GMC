@@ -34,7 +34,8 @@ public class TreeBaseMulticast extends MulticastStrategy
   @Override
   public void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
-    // if the message has not a source,
+    updatePath( msg );
+    // if the message has no source,
     // i.e. This member is the source
     if ( null == msg.source )
     {
@@ -52,7 +53,7 @@ public class TreeBaseMulticast extends MulticastStrategy
     try
     {
       child = ( (ArrayList<RemoteMember>) view ).get( idx - 1 );
-      child.deliver( msg );
+      child.queue( msg );
       lastSend.add( msg );
     } catch ( IndexOutOfBoundsException e )
     {
@@ -66,7 +67,7 @@ public class TreeBaseMulticast extends MulticastStrategy
     try
     {
       child = ( (ArrayList<RemoteMember>) view ).get( idx + 1 );
-      child.deliver( msg );
+      child.queue( msg );
       lastSend.add( msg );
     } catch ( IndexOutOfBoundsException e )
     {
@@ -91,6 +92,7 @@ public class TreeBaseMulticast extends MulticastStrategy
   @Override
   public void receive ( ComMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
+    printPath( msg );
     // if I am the sender
     if ( lastSend.contains( msg ) )
     {
@@ -99,10 +101,10 @@ public class TreeBaseMulticast extends MulticastStrategy
     }
     else
     {
-      // deliver it
-      owner.deliver( msg );
       // then broadcast it to the sub-tree
       this.send( msg, view );
     }
+    // deliver it
+    owner.queue( msg );
   }
 }

@@ -136,7 +136,7 @@ public class GcomDebugGUI extends JFrame implements GcomDebugObserver, ComDebugO
       }
     } );
 
-
+    setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
     // ######## ORDERING MODULE DATA
     //TODO
     // Maybe not so useful
