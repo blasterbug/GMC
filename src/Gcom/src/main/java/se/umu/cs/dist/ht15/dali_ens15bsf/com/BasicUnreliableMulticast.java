@@ -30,6 +30,7 @@ public class BasicUnreliableMulticast extends MulticastStrategy
   @Override
   public void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
+    updatePath( msg );
     // update the view, i.e. the group
     view = new ArrayList<RemoteMember>( group );
     // the message is send from here
@@ -61,11 +62,10 @@ public class BasicUnreliableMulticast extends MulticastStrategy
   @Override
   public void receive ( ComMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
+    printPath( msg );
     // if I am not the sender
-    if ( owner != msg.getSource() )
-    {
+    //if ( owner != msg.getSource() )
       // get the message
-      owner.deliver( msg );
-    }
+      owner.queue( msg );
   }
 }

@@ -1,6 +1,7 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  * Created by ens15bsf on 2015-10-07.
@@ -11,6 +12,7 @@ public class ComMessage<T extends Serializable> implements Serializable
   private static final long serialVersionUID = 5554064569627466554L;
   protected final T content;
   protected RemoteMember source;
+  protected LinkedList<String> path;
 
   /**
    * Create a new CommMessage
@@ -20,6 +22,7 @@ public class ComMessage<T extends Serializable> implements Serializable
   public ComMessage ( T content )
   {
     this.content = content;
+    path = new LinkedList<>();
   }
 
   /**
@@ -57,8 +60,26 @@ public class ComMessage<T extends Serializable> implements Serializable
    *
    * @param sender Remote member who sends the message
    */
-  public void setSource ( RemoteMember sender )
+  void setSource ( RemoteMember sender )
   {
     source = sender;
+  }
+
+  /**
+   * Get the path used by the message
+   * @return The list of the node used by the message
+   */
+  protected LinkedList<String> getPath()
+  {
+    return path;
+  }
+
+  /**
+   * Add a node to the path
+   * @param nodeId
+   */
+  protected void addToPath( String nodeId )
+  {
+    path.addLast( nodeId );
   }
 }

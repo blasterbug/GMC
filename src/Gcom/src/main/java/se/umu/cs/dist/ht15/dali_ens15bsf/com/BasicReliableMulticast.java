@@ -26,7 +26,9 @@ public class BasicReliableMulticast extends BasicUnreliableMulticast
   @Override
   public void receive ( ComMessage msg ) throws RemoteException, UnreachableRemoteObjectException
   {
+    super.printPath( msg );
     // if the message was not previously received
+    if ( msg.getPath().contains( nodeID ) )
     if ( !( receivedBefore.contains( msg ) ) )
     {
       // if the process is not the sender
@@ -38,6 +40,6 @@ public class BasicReliableMulticast extends BasicUnreliableMulticast
       }
 
     }
-    owner.deliver( msg );
+    owner.queue( msg );
   }
 }

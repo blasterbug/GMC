@@ -12,12 +12,19 @@ public interface RemoteMember extends Remote, Serializable
 {
 
   /**
-   * Receive a Communication message from another node
+   * Deliver a Communication message
    *
    * @param msg Message to receive
    * @throws RemoteException
    */
   public void deliver ( ComMessage msg ) throws RemoteException;
+
+  /**
+   * Receive a Communication message from another node
+   * @param msg
+   * @throws RemoteException
+   */
+  public void queue( ComMessage msg ) throws RemoteException;
 
   /**
    * Join a group
