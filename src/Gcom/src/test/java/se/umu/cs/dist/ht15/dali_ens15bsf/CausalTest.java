@@ -278,6 +278,7 @@ public class CausalTest {
 
 	@Test
 	public void shouldPrepareMessage() {
+		System.out.println("In prepare test");	
 		CausalOrderer causal = new CausalOrderer();
 
 		DummyObserver dummy = new DummyObserver();

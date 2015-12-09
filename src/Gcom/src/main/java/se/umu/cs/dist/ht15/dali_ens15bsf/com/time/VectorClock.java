@@ -56,38 +56,40 @@ public class VectorClock extends HashMap<String, Integer> implements Serializabl
 		* @return 0 -> c1 == c2, -1 -> c1 < c2, 1-> c2 < c1 , 2 -> concurrent
 	  */
 
-	public static int compare(VectorClock c1, VectorClock c2) {
-		boolean isLargerRight = true;
-		boolean isLargerLeft = true;
+	public int compare(VectorClock c2) {
+		boolean isLessLeft = true;
+		boolean isGreaterLeft = true;
 		boolean isEqual = true;
 
-		for (String key : c1.keySet()) {
+		for (String key : this.keySet()) {
 			if (c2.containsKey(key)) {
-				if(c1.get(key) < c2.get(key) ) {
-					isLargerLeft = false;
+				if(this.get(key) < c2.get(key) ) {
+					isGreaterLeft = false;
 					isEqual = false;
-				} else if (c1.get(key) > c2.get(key)){
-					isLargerRight = false;
+				} else if (this.get(key) > c2.get(key)){
+					isLessLeft = false;
 					isEqual = false;
 				}
-			} else if (c1.get(key) > 0) {
-				isLargerRight = false;
+			} else if (this.get(key) != 0) {
 				isEqual = false;
+				isLessLeft = false;
 			}
 		}
-		for (String key2 : c2.keySet()) {
-			if (!c1.containsKey(key2)) {
-				if (c2.get(key2) > 0) {
-					isLargerLeft = false;
-					isEqual = false;
-				}
+
+		for ( String key : c2.keySet()) {
+			if (!this.containsKey(key) && (c2.get(key) != 0)) {
+				isEqual = false;
+				isGreaterLeft = false;
 			}
 		}
+
+
 		if (isEqual)
 			return 0;
-		if (isLargerRight && !isLargerLeft)
+
+		if (isLessLeft && !isGreaterLeft)
 			return -1;
-		if(!isLargerRight && isLargerLeft)
+		if(!isLessLeft && isGreaterLeft)
 			return 1;
 		
 		return 2;
@@ -101,5 +103,13 @@ public class VectorClock extends HashMap<String, Integer> implements Serializabl
 	}
 
 
+	@Override
+	public String toString() {
+		String res ="{";
+		for (String key : super.keySet() )
+			res += key +":"+super.get(key)+",";
+		res += "}";
+		return res;
+	}
 
 }

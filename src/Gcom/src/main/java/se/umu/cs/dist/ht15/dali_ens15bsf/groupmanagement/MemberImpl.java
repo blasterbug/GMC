@@ -1,6 +1,8 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.groupmanagement;
 
+
 import se.umu.cs.dist.ht15.dali_ens15bsf.Message;
+import se.umu.cs.dist.ht15.dali_ens15bsf.CausalMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.*;
 import se.umu.cs.dist.ht15.dali_ens15bsf.com.ComMessage;
 import se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServerFactory;
@@ -126,6 +128,7 @@ public class MemberImpl extends Member implements Observer
 		Message m = new Message( id, content );
 		/* Prepare according to orderer */
 		Message preparedMessage = orderer.prepareMessage(m);
+		System.out.println("Message after prepare "+((CausalMessage)preparedMessage).getClock().toString());	
 		
 		/* Create communication message */
 		ComMessage<Message> msg;
