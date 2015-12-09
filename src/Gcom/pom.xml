@@ -4,7 +4,7 @@
   <groupId>se.umu.cs.dist.ht15.dali_ens15bsf</groupId>
   <artifactId>Gcom</artifactId>
   <packaging>jar</packaging>
-  <version>4.2</version>
+  <version>4.2a</version>
   <name>Gcom</name>
   <url>http://maven.apache.org</url>
   <build>

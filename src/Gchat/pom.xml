@@ -31,7 +31,7 @@
         <dependency>
             <groupId>se.umu.cs.dist.ht15.dali_ens15bsf</groupId>
             <artifactId>Gcom</artifactId>
-            <version>4.2</version>
+            <version>4.2a</version>
         </dependency>
     </dependencies>
 

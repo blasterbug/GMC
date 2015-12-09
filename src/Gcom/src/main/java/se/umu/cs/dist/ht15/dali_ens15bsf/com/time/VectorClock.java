@@ -56,13 +56,15 @@ public class VectorClock extends HashMap<String, Integer> implements Serializabl
 		* @return 0 -> c1 == c2, -1 -> c1 < c2, 1-> c2 < c1 , 2 -> concurrent
 	  */
 
-	public int compare(VectorClock c2) {
+	public int compare(VectorClock c2, String id ) {
 		boolean isLessLeft = true;
 		boolean isGreaterLeft = true;
 		boolean isEqual = true;
 
 		for (String key : this.keySet()) {
-			if (c2.containsKey(key)) {
+			if(key.equals(id))
+				continue;
+			if (c2.containsKey(key) ) {
 				if(this.get(key) < c2.get(key) ) {
 					isGreaterLeft = false;
 					isEqual = false;
@@ -77,6 +79,8 @@ public class VectorClock extends HashMap<String, Integer> implements Serializabl
 		}
 
 		for ( String key : c2.keySet()) {
+			if(key.equals(id))
+				continue;
 			if (!this.containsKey(key) && (c2.get(key) != 0)) {
 				isEqual = false;
 				isGreaterLeft = false;

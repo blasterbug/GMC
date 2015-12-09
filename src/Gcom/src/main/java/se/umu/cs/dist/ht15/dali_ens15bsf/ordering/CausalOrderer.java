@@ -38,9 +38,9 @@ public class CausalOrderer extends Orderer {
 		Queue q = holdbackQueues.get(senderId);
 
 		/* INCOMING: Terrible code, needs refactoring */
-		System.out.println(senderClock.compare(orderClock));	
+		System.out.println(senderClock.compare(orderClock, senderId));	
 		if ((senderSeqNr == (orderClock.get(senderId)+1) &&
-				orderClock.compare(senderClock) < 1)) {
+				senderClock.compare(orderClock, senderId) < 1)) {
 			System.out.println("DELIVERING FIRST");	
 			deliver(msg, senderId);
 		} else {
@@ -80,7 +80,7 @@ public class CausalOrderer extends Orderer {
 					Integer sendSeq = m.getClock().get(id);
 					Integer orderSeq = orderClock.get(id);
 					if(sendSeq == (orderSeq+1)) {
-						if(orderClock.compare(m.getClock()) < 1){
+						if(m.getClock().compare(orderClock, id) < 1){
 							System.out.println("SECOND DELIVERING");	
 							deliver((CausalMessage) queue.remove(), id);
 							didChange = true;
