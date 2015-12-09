@@ -1,7 +1,6 @@
 package se.umu.cs.dist.ht15.dali_ens15bsf.com;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -9,7 +8,7 @@ import java.util.Collection;
  * Define the strategy to multicast message a message within a group,
  * the <i>source node</i> sends the message to every node in the view.
  */
-public class BasicUnreliableMulticast extends MulticastStrategy
+public class BasicUnreliableMulticast extends MulticastStrategy<ComMessage>
 {
 
   /**
@@ -31,13 +30,11 @@ public class BasicUnreliableMulticast extends MulticastStrategy
   public void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException
   {
     updatePath( msg );
-    // update the view, i.e. the group
-    view = new ArrayList<RemoteMember>( group );
     // the message is send from here
     msg.setSource( owner );
     boolean expt_activated = false;
     // for each member of the group
-    for ( RemoteMember member : view )
+    for ( RemoteMember member : group )
     {
       try
       {

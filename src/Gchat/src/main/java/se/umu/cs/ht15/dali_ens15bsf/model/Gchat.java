@@ -49,14 +49,14 @@ public class Gchat implements GcomObserver
     {
       if ( debug )
       {
-        gcomMb = GcomFactory.createGcomDebug( uid, OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
+        gcomMb = GcomFactory.createGcomDebug( uid, OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.TREE_BASE );
         GcomDebugGUI debugGUI = GcomFactory.getDebugGui( (GcomDebug)gcomMb );
         debugGUI.setSize( new Dimension( 600, 500 ) );
         debugGUI.setVisible( true );
       }
       else
       {
-        gcomMb = GcomFactory.createGcom( uid, OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
+        gcomMb = GcomFactory.createGcom( uid, OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.TREE_BASE );
       }
       gcomMb.addObserver( this );
       gcomMb.connect();

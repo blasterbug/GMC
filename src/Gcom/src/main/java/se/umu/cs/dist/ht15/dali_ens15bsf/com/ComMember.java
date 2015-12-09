@@ -58,6 +58,8 @@ public class ComMember extends ComObservable implements RemoteMember, Serializab
     {
       System.out.println( e.getMessage() );
     }
+    if ( multicastStrategy.getClass() == TreeBaseMulticast.class )
+      msg = new ComTreeMessage<>( msg.getContent() );
     multicastStrategy.send( msg, group );
   }
 

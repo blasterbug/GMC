@@ -13,14 +13,14 @@ import java.util.Map;
  *
  * @serial
  */
-public abstract class MulticastStrategy implements Serializable
+public abstract class MulticastStrategy<T extends ComMessage> implements Serializable
 {
 
   private static final long serialVersionUID = 5225746892740659055L;
   protected String nodeID;
   protected RemoteMember owner;
-  protected ArrayList<RemoteMember> view;
-  protected ArrayList<RemoteMember> unreachableMembers;
+  protected Collection<RemoteMember> view;
+  protected Collection<RemoteMember> unreachableMembers;
   private Map<String, Integer> messagesCounter;
 
 
@@ -31,19 +31,19 @@ public abstract class MulticastStrategy implements Serializable
     unreachableMembers = new ArrayList<>();
   }
 
-  protected final void updatePath ( ComMessage msg )
+  protected final void updatePath ( T msg )
   {
     msg.addToPath( nodeID );
   }
 
 
-  protected final void printPath ( ComMessage msg )
+  protected final void printPath ( T msg )
   {
     Integer counter = messagesCounter.get( msg.toString() );
     if ( null == counter )
       counter = 0;
     messagesCounter.put( msg.toString(), ++counter );
-    System.out.println( "Com : Receiving message from" + owner.toString() + "...\n Passed by : "
+    System.out.println( "Com : Receiving message from " + owner.toString() + "...\nPassed by : "
                     + msg.getPath() + "\nReceived for the " + counter + " time(s)"
     );
   }
@@ -55,7 +55,7 @@ public abstract class MulticastStrategy implements Serializable
    * @param group Group to send the message
    * @throws se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException
    */
-  public abstract void send ( ComMessage msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException;
+  public abstract void send ( T msg, Collection<RemoteMember> group ) throws UnreachableRemoteObjectException;
 
   /**
    * receive a message regarding the used strategy
@@ -64,7 +64,7 @@ public abstract class MulticastStrategy implements Serializable
    * @throws java.rmi.RemoteException
    * @throws se.umu.cs.dist.ht15.dali_ens15bsf.com.UnreachableRemoteObjectException
    */
-  public abstract void receive ( ComMessage msg ) throws RemoteException, UnreachableRemoteObjectException;
+  public abstract void receive ( T msg ) throws RemoteException, UnreachableRemoteObjectException;
 
   /**
    * Choose a remote member for the strategy
