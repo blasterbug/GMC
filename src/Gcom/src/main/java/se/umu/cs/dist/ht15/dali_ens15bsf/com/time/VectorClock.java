@@ -1,11 +1,25 @@
-package se.umu.cs.dist.ht15.dali_ens15bsf.time.clocks;
+package se.umu.cs.dist.ht15.dali_ens15bsf.com.time;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class VectorClock extends HashMap<String, Integer>  {
+public class VectorClock extends HashMap<String, Integer> implements Serializable
+{
+
+	private static final long serialVersionUID = -1976421449766444371L;
 
 	public VectorClock() {
 		super();
+	}
+
+	public VectorClock(VectorClock c) {
+		for (String key : c.keySet() ) {
+			super.put(key, c.get(key));
+		}
+	}
+
+	public void updateTime(String id, Integer time) {
+		super.put(id, time);
 	}
 
 	public void increment(String id) {
@@ -28,8 +42,18 @@ public class VectorClock extends HashMap<String, Integer>  {
 		return i;
 	}
 
+	public static int compareId(VectorClock c1, VectorClock c2, String id) {
+		int v1 = c1.get(id).intValue();
+		int v2 = c2.get(id).intValue();
+		if (v1 == v2)
+			return 0;
+		if (v1 < v2)
+			return -1;
+		return 1;
+	}
+
 	/**
-		* @return 0 == concurrent
+		* @return 0 -> c1 == c2, -1 -> c1 < c2, 1-> c2 < c1 , 2 -> concurrent
 	  */
 
 	public static int compare(VectorClock c1, VectorClock c2) {
@@ -68,5 +92,14 @@ public class VectorClock extends HashMap<String, Integer>  {
 		
 		return 2;
 	}
+
+
+	public void updateClock(VectorClock clock) {
+		for (String key : clock.keySet() ) 
+			if ( !super.containsKey(key) || super.get(key) < clock.get(key))
+				this.updateTime(key, clock.get(key));
+	}
+
+
 
 }

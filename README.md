@@ -1,4 +1,4 @@
-# GMC
+# GMC [![Build Status](https://travis-ci.org/blasterbug/GMC.svg?branch=develop)](https://travis-ci.org/blasterbug/GMC)
 GMC is a middleware for group communication based on a peer-to-peer system.  
 This is yet another job for UmU.
 

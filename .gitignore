@@ -18,3 +18,16 @@ target/
 .nfs*
 *.swp
 *.swo
+
+# LaTeX files
+*.log
+*.aux
+*.toc
+*.pdf
+*.out
+
+
+# IDEA stuff
+.idea/
+.eclipse*
+*.iml

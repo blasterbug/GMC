@@ -1,0 +1,65 @@
+\section{Problem}
+
+\paragraph{}{
+	GCom is a middle ware for group communication. It means,
+ GCom has to be scallable and robust.
+}
+
+\subsection{Requirements}
+
+\paragraph{Scalability}{
+	To be scallable, GCom uses Peer to Peer based features.
+ Typically, data is not centralized on a server but shared 
+ between the nodes within groups. The implementation of the
+ middleware uses Java programming language and Java RMI API to
+ ensure portability over different operation systems.
+}
+
+\paragraph{Transparency}{
+	The front end user, or the programmer who will use our
+ library, GCom should be seen as a service they can use to
+ exchange messages between several computer regardless the
+ type of the used networks or the type of the application.
+ GCom must offer a simple interface and hide how, for
+ instance, messages are delivered.
+}
+
+\paragraph{Openness}{
+	GCom must be designed to be extensible. Adding or changing 
+ components should not be a problem. for instance, using a FIFO
+ or a causal order for messages delivering should interface or
+ compromise the whole application.
+}
+
+\paragraph{Quality of Service (QoS)}{
+	If one or several nodes failed, the other nodes must keep
+ working and processing data. In the same way as, If a part of
+ the network is down, remaining nodes must work.
+}
+
+\subsection{Efficiency and fault tolerance}
+
+\paragraph{}{
+	GCom is a middleware, so to be useful, GCom must process
+ data and handle common errors quickly. Regardless the number 
+ of connected nodes in a group, adding or removing members within
+ the group as well as electing a new leader must be done
+ quickly and don't be noticed by front-end users.
+}
+
+\paragraph{}{
+	When nodes fail, every node must be notified that a node
+ is down and should no more be reached. As well, for new nodes,
+ every nodes should know when a new node joined the group. The
+ same strategy must be applied for leaders. When a new leader is
+ elected, every group members must be notified and considering
+ the new leader. Finally, when a leader is down, a new one must
+ be elected only by the group members.
+}
+
+\paragraph{}{
+	Several questions must be solved during the application
+ development. For instance, how elect a new leader? How often?
+ What happen when the group is cut into pieces (because of a
+ network failure) and then the network is once again reliable?
+}
