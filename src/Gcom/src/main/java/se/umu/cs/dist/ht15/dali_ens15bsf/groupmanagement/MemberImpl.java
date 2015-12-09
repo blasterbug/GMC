@@ -16,7 +16,6 @@ import java.util.*;
 public class MemberImpl extends Member implements Observer
 {
 	private Map<String, RemoteMember> view;
-//	private Collection<RemoteMember> view;
 	private Orderer orderer;
 	protected ComMember self;
 	private RemoteMember leader;
@@ -27,13 +26,11 @@ public class MemberImpl extends Member implements Observer
 
 	public MemberImpl(Orderer o, ComMember remoteObject) throws RemoteException{
 		view = new HashMap<String, RemoteMember>();
-//		view = new ArrayList<RemoteMember>();
 		groups = new HashMap<String, RemoteMember>();
 		orderer = o;
 
 		self = remoteObject;
 		UnicastRemoteObject.exportObject(self, 0);
-		//System.out.println(self);
 		orderer.addObserver( this );
 	}
 
@@ -92,7 +89,6 @@ public class MemberImpl extends Member implements Observer
 
 	@Override
 	public synchronized void join(RemoteMember m, String id) {
-//		System.out.println("Remote member ["+id+"] is joining "+this.id);
 		if(view.keySet().contains(id) && view.get(id).equals(m))
 			return;
 
@@ -101,7 +97,6 @@ public class MemberImpl extends Member implements Observer
 			try {
 				RemoteMember rm = view.get(key);
 				if(!(key.equals(this.id))) {
-//					System.out.println("Joining "+rm.getId() + " in "+this.id);
 					rm.addToView(m,id);
 				}
 				if (!key.equals(id))
@@ -110,24 +105,17 @@ public class MemberImpl extends Member implements Observer
 				System.err.println("Failed to join\n" + e.getMessage());
 			}
 		}
-//		System.out.println("Putting ["+id+"] to "+this.id);	
 	}
 
 
 	@Override
 	public synchronized void addToView(RemoteMember m, String id) {
-//		System.out.println("Adding ["+id+"] to view in "+this.id);	
 		view.put(id, m);
 	}
 
 	@Override
 	public void removeFromView(RemoteMember m, String id) {
 		view.remove(id);
-		try {
-			this.handleUnavailableMember(m);
-		} catch (RemoteException e) {
-			System.err.println(e.getMessage());	
-		}
 	}
 
 	/**
@@ -143,24 +131,15 @@ public class MemberImpl extends Member implements Observer
 		ComMessage<Message> msg;
 		msg = new ComMessage(preparedMessage);
 
-		/*
-		System.out.println("Current view");	
-		for ( String rm : view.keySet()) {
-			System.out.print(rm+" ");
-		}
-		System.out.println();	
-		*/
-			 
 		/* Send message to view */
 		try {
 			self.post(msg, view.values());
 		} catch(UnreachableRemoteObjectException exp) {
-	//		exp.printStackTrace();
 			try {
 				Collection<RemoteMember> tmp = self.getUnreachableRemoteObjects();
 				System.out.println("Handling unreachables " + tmp.size());	
 				for ( RemoteMember rm : tmp ) {
-					System.out.println("Handling " +rm.getId());
+					System.out.println("Handling " +rm.toString());
 					handleUnavailableMember(rm);
 				}
 			} catch (RemoteException ex) {
@@ -169,7 +148,6 @@ public class MemberImpl extends Member implements Observer
 
 		}
 		
-//		System.out.println("BINOG");	
 	}
 
 	@Override
@@ -214,21 +192,13 @@ public class MemberImpl extends Member implements Observer
 	@Override
 	public void notifyNewMember ( RemoteMember member, String groupID )
 	{
-//		System.out.println("Here we go");	
 		join( member, groupID );
 	}
 
 	@Override
 	public void notifyNewLeader ( RemoteMember newLeader, String groupId) {
 		System.out.println("Setting new leader");
-		try
-		{
-			System.err.println( newLeader.getId() + " : " + groupId );
-		}
-		catch ( RemoteException e )
-		{
-			System.err.println( "New leader is crap" );
-		}
+		System.err.println( newLeader.toString() + " : " + groupId );
 		this.groups.put( groupId, newLeader );
 	}
 
@@ -245,7 +215,6 @@ public class MemberImpl extends Member implements Observer
 	private void handleUnavailableMember(RemoteMember memberToRemove) throws RemoteException {
 		RemoteMember lead = groups.get(this.groupId);
 
-		//view.remove(member.getId());
 		String idToRemove = "";
 		for ( String id : view.keySet() ) { // use view.values() ?
 			if (view.get(id).equals(memberToRemove)) {

@@ -15,7 +15,7 @@ import java.util.Vector;
 public final class ComDebug implements ComObserver, Serializable
 {
   private static final long serialVersionUID = 2550506719036192896L;
-  private final Vector<DelayedComMessage> delayedQueue;
+  private final Vector<DelayedComMessage> delayedQueue; // messages queued waiting to be delivered
   private final Vector<ComDebugObserver> debugObservers;
   private final Vector<ComObserver> coreObservers;
   private final ComMember coreDebug;
@@ -36,7 +36,7 @@ public final class ComDebug implements ComObserver, Serializable
     debugObservers = new Vector<>();
     coreObservers = new Vector<>();
     coreDebug = remoteMember;
-    coreObservers.add( groupManager );
+    //coreObservers.add( groupManager );
     remoteMember.addObserver( this );
   }
 
@@ -65,6 +65,8 @@ public final class ComDebug implements ComObserver, Serializable
     DelayedComMessage msg = delayedQueue.remove( messageIndex );
     for ( ComObserver obs : coreObservers )
       obs.notifyObservers( msg.getContent() );
+    for ( ComDebugObserver obs : debugObservers )
+      obs.notifyUnqueued( messageIndex );
   }
 
   /**
@@ -112,5 +114,12 @@ public final class ComDebug implements ComObserver, Serializable
   {
     for ( ComObserver obs : coreObservers )
       obs.notifyRemoveFromView( m, id );
+  }
+
+  public void drop ( int msgIndex )
+  {
+    delayedQueue.remove( msgIndex );
+    for ( ComDebugObserver obs : debugObservers )
+      obs.notifyDropped( msgIndex );
   }
 }

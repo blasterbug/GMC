@@ -12,6 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -37,7 +38,7 @@ public class NamingService implements Serializable, NamingServiceRemote
   protected UnicastRemoteObject server;
   /// Registry of remote objects
   protected Registry directory;
-  //protected Random dice;
+  protected Random dice;
   //protected HashMap<String, RemoteMember> idMap;
   private int memberCounter = 0;
 
@@ -49,7 +50,7 @@ public class NamingService implements Serializable, NamingServiceRemote
    */
   public NamingService () throws RemoteException, AlreadyBoundException
   {
-    //dice = new Random();
+    dice = new Random();
     groups = new HashMap<String, RemoteMember>();
     //idMap = new HashMap<String, RemoteMember>();
     // make the server reachable
@@ -91,7 +92,7 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public LinkedList<String> getGroups () throws RemoteException
   {
-    LinkedList<String> groupsLL = new LinkedList<String>();
+    LinkedList<String> groupsLL = new LinkedList<>();
     // check if all the leaders are alive
     for ( String gid : groups.keySet() )
     {
@@ -103,7 +104,7 @@ public class NamingService implements Serializable, NamingServiceRemote
       // if not
       catch ( RemoteException e )
       {
-        // remote them from the registery
+        // remove them from the registery
         System.out.println( "Server : Group " + gid + " removed" );
         groups.remove( gid );
       }
@@ -134,6 +135,7 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public void updateLeader ( String groupName, RemoteMember newLeader ) throws RemoteException
   {
+    System.out.println(groupName);
     if ( null == groups.get( groupName ) )
       System.out.println( groupName + "all ready registered");
     groups.put( groupName, newLeader );
@@ -150,14 +152,9 @@ public class NamingService implements Serializable, NamingServiceRemote
   @Override
   public String getMyId ( RemoteMember member ) throws RemoteException
   {
-    //String id = Integer.toString( memberCounter );
-    //memberCounter++;
-    //return id;
-    return member.getId();
-    //String id = member.toString();
-    //id += Integer.toHexString( dice.nextInt() );
-    //idMap.add( id, member )
-    //return id;
+    String id = Integer.toString( memberCounter++ );
+    return id;
+
   }
 
   @Override

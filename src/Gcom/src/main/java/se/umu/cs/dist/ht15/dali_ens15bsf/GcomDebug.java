@@ -125,4 +125,9 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
       obs.notifyConnect();
     super.connect();
   }
+
+  public void dropWaitingMessage ( int msgIndex )
+  {
+    comDebuger.drop( msgIndex );
+  }
 }

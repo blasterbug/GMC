@@ -29,7 +29,7 @@ public class ComMessage<T extends Serializable> implements Serializable
    */
   public String toString ()
   {
-    return source.toString() + " send " + content.toString();
+    return content.toString();
   }
 
   /**
