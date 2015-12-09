@@ -23,9 +23,9 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
   //private MulticastStrategy multicasterDebug;
 
 
-  public GcomDebug( String id, Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
+  public GcomDebug( String id, Orderer order, MulticastStrategy ms, String ns ) throws RemoteException, NamingServiceUnavailableException
   {
-    super( id, order, ms );
+    super( id, order, ms, ns );
     comMember.removeObserver( mbr );
     comDebuger = new ComDebug( comMember, mbr );
     comDebuger.addCoreObserver( mbr );
@@ -119,11 +119,11 @@ public class GcomDebug<T> extends GcomProxy implements GcomObserver
    * @throws se.umu.cs.dist.ht15.dali_ens15bsf.nameserver.NamingServiceUnavailableException
    */
   @Override
-  public void connect () throws NamingServiceUnavailableException
+  public void connect ( String nameServer ) throws NamingServiceUnavailableException
   {
     for ( GcomDebugObserver obs : observers )
       obs.notifyConnect();
-    super.connect();
+    super.connect( nameServer );
   }
 
   public void dropWaitingMessage ( int msgIndex )

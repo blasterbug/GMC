@@ -32,7 +32,7 @@ public class Gchat implements GcomObserver
   private String groupName;
   //private ChatState state; // TODO state pattern
 
-  public Gchat ( String uid, String gid, boolean debug )
+  public Gchat ( String uid, String gid, MulticastStrategyEnum multicaster, OrderingStrategyEnum orderer, String hostname, boolean debug )
   {
 
     users = new HashMap<String, GUser>();
@@ -49,17 +49,17 @@ public class Gchat implements GcomObserver
     {
       if ( debug )
       {
-        gcomMb = GcomFactory.createGcomDebug( uid, OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
+        gcomMb = GcomFactory.createGcomDebug( uid, orderer, multicaster, hostname );
         GcomDebugGUI debugGUI = GcomFactory.getDebugGui( (GcomDebug)gcomMb );
         debugGUI.setSize( new Dimension( 600, 500 ) );
         debugGUI.setVisible( true );
       }
       else
       {
-        gcomMb = GcomFactory.createGcom( uid, OrderingStrategyEnum.CAUSAL, MulticastStrategyEnum.RELIABLE_MULTICAST );
+        gcomMb = GcomFactory.createGcom( uid, orderer, multicaster , hostname);
       }
       gcomMb.addObserver( this );
-      gcomMb.connect();
+      gcomMb.connect( hostname );
     }
     catch ( RemoteException | NamingServiceUnavailableException e )
     {
@@ -67,7 +67,6 @@ public class Gchat implements GcomObserver
       e.printStackTrace();
       System.exit( 1 );
     }
-
   }
 
   public void setUserName( String newUID )

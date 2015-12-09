@@ -18,7 +18,7 @@ public abstract class Member<T extends Serializable> extends Observable implemen
 	public abstract Collection<RemoteMember> getView();
 	public abstract RemoteMember getRemoteMember();
 	public abstract void setId(String id);
-	public abstract void connectToNameserver() throws RemoteException, NamingServiceUnavailableException;
+	public abstract void connectToNameserver( String anmeServer ) throws RemoteException, NamingServiceUnavailableException;
 	public abstract void joinGroup(String gid) throws RemoteException;
 	public abstract void leaveGroup(String gid) throws RemoteException;
 	public abstract void updateIdFromNameServer() throws RemoteException;

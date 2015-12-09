@@ -38,11 +38,11 @@ class GcomProxy<T extends Serializable> implements Observer, Gcom
    * @throws RemoteException
    * @throws NamingServiceUnavailableException
    */
-  public GcomProxy( String id, Orderer order, MulticastStrategy ms ) throws RemoteException, NamingServiceUnavailableException
+  public GcomProxy( String id, Orderer order, MulticastStrategy ms, String nameServer ) throws RemoteException, NamingServiceUnavailableException
   {
     this.order = order;
     this.ms = ms;
-    nsRemote = NamingServerFactory.NamingService();
+    nsRemote = NamingServerFactory.NamingService( nameServer );
     observers = new Vector<GcomObserver>();
     comMember = new ComMember( ms, id );
     mbr = new MemberImpl( order, comMember );
@@ -62,13 +62,14 @@ class GcomProxy<T extends Serializable> implements Observer, Gcom
 
   /**
    * Connect the member to the NameServer, should be called first.
+   * @param nameServer Host name of the name server
    * @exception NamingServiceUnavailableException
    */
-  public void connect() throws NamingServiceUnavailableException
+  public void connect( String nameServer ) throws NamingServiceUnavailableException
   {
     try
     {
-      mbr.connectToNameserver();
+      mbr.connectToNameserver( nameServer );
       mbr.updateIdFromNameServer();
     }
     catch ( RemoteException | NamingServiceUnavailableException e )

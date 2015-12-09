@@ -72,14 +72,14 @@ public class GcomFactory
    * @return Gcom module
    * @throws RemoteException
    */
-  public static Gcom createGcom( String id, OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
+  public static Gcom createGcom( String id, OrderingStrategyEnum order, MulticastStrategyEnum mltStr,String nameServer ) throws NamingServiceUnavailableException, RemoteException
   {
-      return new GcomProxy( id, createOrderer( order ), createMulticastStrategy( mltStr ) );
+      return new GcomProxy( id, createOrderer( order ), createMulticastStrategy( mltStr ), nameServer );
   }
 
-  public static GcomDebug createGcomDebug(String id, OrderingStrategyEnum order, MulticastStrategyEnum mltStr ) throws NamingServiceUnavailableException, RemoteException
+  public static GcomDebug createGcomDebug(String id, OrderingStrategyEnum order, MulticastStrategyEnum mltStr, String nameServer ) throws NamingServiceUnavailableException, RemoteException
   {
-    return new GcomDebug( id, createOrderer( order ), createMulticastStrategy( mltStr ) );
+    return new GcomDebug( id, createOrderer( order ), createMulticastStrategy( mltStr ), nameServer );
   }
 
   public static GcomDebugGUI getDebugGui( GcomDebug module ) throws RemoteException, NamingServiceUnavailableException

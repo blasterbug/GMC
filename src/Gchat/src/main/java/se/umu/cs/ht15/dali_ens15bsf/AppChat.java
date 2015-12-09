@@ -1,5 +1,7 @@
 package se.umu.cs.ht15.dali_ens15bsf;
 
+import se.umu.cs.dist.ht15.dali_ens15bsf.MulticastStrategyEnum;
+import se.umu.cs.dist.ht15.dali_ens15bsf.OrderingStrategyEnum;
 import se.umu.cs.ht15.dali_ens15bsf.model.Gchat;
 import se.umu.cs.ht15.dali_ens15bsf.model.UnableToJoinException;
 import se.umu.cs.ht15.dali_ens15bsf.view.ChatWindow;
@@ -11,32 +13,59 @@ import se.umu.cs.ht15.dali_ens15bsf.view.ConnectionWindow;
 public class AppChat
 {
 
-  private static final String HELP_MSG =
-          "Run the Gchat\n debug : run apps with debug features\n";
-
   public static void main ( String[] args ) throws UnableToJoinException
   {
     boolean debugApp = false;
-    if ( 0 < args.length )
+    if ( 2 < args.length )
     {
+      MulticastStrategyEnum multicast;
+      OrderingStrategyEnum ordering;
       switch ( args[0] )
       {
-        case "help" :
-          System.out.println(HELP_MSG);
-          System.exit( 0 );
+        case "unreliable" :
+          multicast = MulticastStrategyEnum.UNRELIABLE_MULTICAST;
           break;
-        case "debug" :
-          System.out.println( "Debug mode" );
-          debugApp = true;
+        case "reliable" :
+          multicast = MulticastStrategyEnum.RELIABLE_MULTICAST;
+          break;
+        case "tree" :
+          multicast = MulticastStrategyEnum.TREE_BASE;
           break;
         default:
-          debugApp = false;
+          multicast = MulticastStrategyEnum.RELIABLE_MULTICAST;
+          System.exit( 1 );
+          break;
       }
+      switch ( args[1] )
+      {
+        case "unordered" :
+          ordering = OrderingStrategyEnum.UNORDERED;
+          break;
+        case "causal" :
+          ordering = OrderingStrategyEnum.CAUSAL;
+          break;
+        case "fifo" :
+          ordering = OrderingStrategyEnum.FIFO;
+          break;
+        default:
+          ordering = OrderingStrategyEnum.CAUSAL;
+          System.exit( 1 );
+          break;
+      }
+      if ( 3 < args.length )
+      {
+        if ( "debug".equals( args[3] ) )
+        {
+          System.out.println( " >> DEBUG MODE << " );
+          debugApp = true;
+        }
+      }
+      Gchat chatModel = new Gchat( RandomNames.getRandomUserName(), RandomNames.getRandomGroupName(), multicast, ordering, args[2], debugApp );
+      ConnectionWindow connectionWindow = new ConnectionWindow( chatModel );
+      ChatWindow chatView = new ChatWindow( chatModel );
+      connectionWindow.setVisible( true );
     }
-    Gchat chatModel = new Gchat( RandomNames.getRandomUserName(), RandomNames.getRandomGroupName(), debugApp );
-    ConnectionWindow connectionWindow = new ConnectionWindow( chatModel );
-    ChatWindow chatView = new ChatWindow( chatModel );
-    connectionWindow.setVisible( true );
-    //System.exit( 0 );
+    else
+      System.exit( 1 );
   }
 }
