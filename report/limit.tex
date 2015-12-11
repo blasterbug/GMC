@@ -1,0 +1,20 @@
+There are a couple of limitations to the Gcom middleware as well as the example Gchat applications.
+This section covers some of them.
+
+\Subsection{Heartbeat}
+	One big limitation of the Gcom middleware is that it does not implement a feature for maintainence of the group, reporting and handling crashed members and similar problems.
+	What is done in the current implementation is that whenever a member is found nonrespondant (e.g. when someone sends it a message) this member is reported as crashed and removed from everyones view.
+	If it was the leader, an election is initiated.
+	One problem with this is that an inactive group the leader can crash and render the group unavailable via the nameserver which in turn lets a joining member start a new group with the same name.
+	A solution to this problem would be to implement a heartbeat that periodically polls the entire group for crashed members and handles accordingly.
+
+\Subsection{Network partitioning}
+	Network partitioning, when a network is split into more than one piece, is one of the more difficult problems to recover from.
+	If this happens to a group in Gcom the two or more subgroups will continue to function but once the network is joined together it is currently not possible to reconstruct the original group correctly.
+
+\Subsection{Multiple groups}
+	A group communication middleware should allow for nodes to be members of more than one group at a time.
+	There is preparation work done in Gcom for this but it is far from fully supported and not possible at the moment.
+
+\Subsection{Nicknames}
+	In the Gchat application, nicknames of everyone in the group aren't shown in the list of users but only displayed when they send a message.
