@@ -2,6 +2,11 @@
 	\texttt{Gcom} is built using a layered arcitecture with three layers; communication, ordering and group manangement as described in Figure \textbf{TODO}.
 	The communication and ordering are completely independent while the group management depend on both of these to function, meaning they are easy to exchange.
 	In all there are three entities in play in an instance of a Gcom application; Members, a leader and a nameserver.
+	Members have the ability to communicate messages and report failures, the leader is the entry point to the group and is registered at the nameserver.
+	The nameserver is the bootstrap for finding leaders to connect to, with the additional responsibility to give out IDs.
+
+	The communication in Gcom is Java \texttt{Remote Method Invocation} to facilitate network communication between members.
+	Each member has the complete view of the group stored and accessible through \texttt{RMI}.
 
 
 	% What components are there?
@@ -14,6 +19,7 @@
 		% RMI
 
 % Communication layer
+\Subsection{Communication}
 	% General structure and design
 
 	% Non-reliable
@@ -22,16 +28,28 @@
 	
 
 % Ordering layer
+\Subsection{Ordering}
 	% General structure and design
+	The ordering layer has the responsibility to hold back messages delivered from the communication module until they can be delivered to the group management layer in the specified order.
+	This module consists of strategies for handling causal ordering and plain unordered delivering.
+	The layer communicates with the other layers using the Observer/Observable pattern making it independent.
 
 	% Unordered
 
 	% Causal
 
 % Group management layer
+\Subsection{Group management}
 	% General structure and design
+	The group management module has the ability to connect to a nameserver, join and leave groups.
+	Creating a new group is done in collaboration with the nameserver on a join with no present leader.
+	The group management layer also have the responsibility to handle failures within the group.
+
 
 	% Join/leave
+	Joining a group is done by sending a group identifier to the nameserver asking for a leader to connect to.
+	Leaving the group is done by notifying all members of the group of the leave.
+
 
 	% Re-election
 	\Subsubsection{Election}
@@ -40,3 +58,4 @@
 		This means that multiple new leaders can elect themselves at the same time, with the last one (in terms of real time) will come out as the leader.
 
 	% Scalability, limitations and partitioning
+
