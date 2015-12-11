@@ -43,10 +43,21 @@
 \paragraph{}{
     The application can be found in the sub-directory \texttt{Gchat}. 
  A script in the \texttt{bin} directory allow you to run the application easily
- by running \texttt{chat.sh}. If need, the application can be (re)compiled by 
- giving \texttt{compile} as an argument of the application. Finally you can run
- the debug mode by adding \texttt{debug} to the arguments.
+ by running \texttt{chat.sh}. The script need in the same order : a multicast 
+ strategy, that defines the way the communication module will send messages to
+ the other nodes, a ordering, that define the way messages will be processed and
+ the host name (or the IP address where the name server runs. \newline 
+ There are three different multicast strategies, the tree base (\texttt{tree}),
+ which is not stable, the unrealible multicast (\texttt{unreliable}) and the
+ reliable one (\texttt{reliable}). \newline
+ As well, there are three different ordering way, \texttt{fifo}, which is the
+ first in, first out way and need to be more tested. \texttt{causal} order and
+ the \texttt{unordered} strategies. \newline
+ If need, the application can be (re)compiled by giving \texttt{compile} as an
+ argument of the application. Finally you can run the debug mode by adding 
+ \texttt{debug} to the arguments.
 }
+
 
 \begin{figure}[h]
     \begin{center}
