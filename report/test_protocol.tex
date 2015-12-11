@@ -32,8 +32,8 @@
 
 
 	% Connect three clients, send message from first, hold at second, send from third, release at second
-	\textbf{Tests}: Casual ordering
-	\textbf{Shows}: 
+	\textbf{Tests}: Casual ordering \\
+	\textbf{Shows}: The logical before-after relationship between vector clocks holds \\
 
 	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
@@ -46,9 +46,8 @@
 
 
 	% Connect three clients, send message from first, hold at second, send from third, release at second, hold at first, send from first 
-	\textbf{Prerequisite}: Causal order, basic multicast
-	\textbf{Tests}: Casual ordering
-	\textbf{Shows}: Concurrent messages are delivered
+	\textbf{Tests}: Casual ordering \\
+	\textbf{Shows}: Concurrent messages are delivered \\
 
 	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
@@ -91,8 +90,9 @@
 		Disconnect $c_1$ & A new leader should be found in nameserver \\
 	\end{tabular}
 
+	\newpage
 	% Same but crash
-	\textbf{Tests}: Group management
+	\textbf{Tests}: Group management \\
 	\textbf{Shows}: Election initiated when leader discovered crashed \\
 
 	\begin{tabular}{ll}
@@ -102,16 +102,6 @@
 		Crash $c_1$ & - \\
 		$c_2$ sends message $m_2$ & Election initiated and new leader should be shown in nameserver \\
 	\end{tabular}
-
-	\begin{tabular}{ll}
-		\texttt{Action} & \texttt{Expected result} \\
-		Connect clients $c_1$, $c_2$, $c_3$ & All connected, $c_1$ leader in nameserver \\
-		$c_1$ sends message $m_1$ & All receive \\
-		Crash $c_1$ & - \\
-		$c_2$ sends message $m_2$ & Election initiated and new leader should be shown in nameserver \\
-	\end{tabular}
-
-
 
 
 % Testing of disconnecting client
