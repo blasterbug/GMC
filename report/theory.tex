@@ -1,6 +1,31 @@
 
 \Subsection{Ordering}
+	Message ordering is a central part of distributed communication to make sure that problems that arise by using unreliable networks does not affect the execution of a distributed system.
+	This middleware handles causal ordering and unordered messaging, both described here.
+
+	\Subsubsection{Causal ordering}
+		Causal message ordering uses logical clocks to timestamp messages.
+		These are vector clocks which contains one entry for all senders, incremented every time a message is sent from that sender.
+		These vector clocks are used to establish a happens-before relationship between messages.
+		This is used to hold messages until all that were logically sent previously are recieved and delivered.
+		It is also possible to detect concurrency in message communication using vector clocks, these should be delivered and not held back.
+		This means that a new member joining must share the vector clock currently existing in the group.
+
+	\Subsubsection{Unordered}
+		This ordering method does exactly what is says, delivers messages as they are received.
 
 \Subsection{Multicast}
 
 \Subsection{Group management}
+	Group management in a distributed system has responsibilities additional to usual group management tasks such as \texttt{join}, \texttt{leave} and \texttt{create} groups.
+	Two things in particular are to be considered
+	\begin{itemize}
+		\item \textbf{Scalability}: How much information does the group management need?
+		\item \textbf{Partitioning}: What happens if part of the group is unable to reach another part of the group?
+	\end{itemize}
+
+	The scalability is an issue as distributed systems should be able to encompass a hugh amount of nodes without affecting performance to a great extent.
+	This means that the amount of information a single node should keep about the group should be minimal.
+
+	The partitioning is a problem which is present for other types of systems as well, but in the case of distributed systems it is necessary to handle this as a system distributed over a network should still function and be perceived as a single unit.
+	Therefore, being able to reconstruct groups and function as separate groups while during the partitioning is important.
