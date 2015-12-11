@@ -7,7 +7,7 @@
 		Causal message ordering uses logical clocks to timestamp messages.
 		These are vector clocks which contains one entry for all senders, incremented every time a message is sent from that sender.
 		These vector clocks are used to establish a happens-before relationship between messages.
-		This is used to hold messages until all that were logically sent previously are recieved and delivered.
+		This is used to hold messages until all that were logically sent previously are received and delivered.
 		It is also possible to detect concurrency in message communication using vector clocks, these should be delivered and not held back.
 		This means that a new member joining must share the vector clock currently existing in the group.
 
@@ -17,29 +17,42 @@
 \Subsection{Multicast}
 
 \paragraph{}{
-    To send the messages to the differents node of the network,
- which are the members of a group, we implemented three differents
- strtategies. There are briefly presented below.
+    To send the messages to the different node of the network,
+ which are the members of a group, we implemented three different
+ strategies. There are briefly presented below.
 }
 
-\begin{itemize}
-    \iten[unreliable multicast] This strategy only send messages
-        to the member of the view...
-    \item[reliable multicast]
-    \item[tree based multicast]
+\paragraph{Unreliable multicast}{
+    This strategy only sends messages to the members of the view
+ and then deliver it to the local member.
+ }
 
+\paragraph{Reliable multicast}{
+    The reliable strategy is based on the unreliable one. It
+ sends messages to all members and keep a track of it. till
+ the node do not receive back the send messages. Then it delivers
+ it to the local member. with such strategy, when we receive a
+ message, we deliver it to the local member and send it to the
+ group members.
+}
 
-\end{itemize}
+\paragraph{Tree based multicast}{
+    The tree based multicast consists in only sending
+ messages to the \textit{children} of a node. The
+ tree is basically the hierarchy that define which node
+ will send the message to the other ones. The tree is
+ recompute for each messages the node has to send.
+}
 
 \Subsection{Group management}
 	Group management in a distributed system has responsibilities additional to usual group management tasks such as \texttt{join}, \texttt{leave} and \texttt{create} groups.
 	Two things in particular are to be considered
 	\begin{itemize}
-		\item \textbf{Scalability}: How much information does the group management need?
+		\item \textbf{Scalability} : How much information does the group management need?
 		\item \textbf{Partitioning}: What happens if part of the group is unable to reach another part of the group?
 	\end{itemize}
 
-	The scalability is an issue as distributed systems should be able to encompass a hugh amount of nodes without affecting performance to a great extent.
+	The scalability is an issue as distributed systems should be able to encompass a huge amount of nodes without affecting performance to a great extent.
 	This means that the amount of information a single node should keep about the group should be minimal.
 
 	The partitioning is a problem which is present for other types of systems as well, but in the case of distributed systems it is necessary to handle this as a system distributed over a network should still function and be perceived as a single unit.
