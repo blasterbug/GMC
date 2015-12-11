@@ -1,11 +1,21 @@
 % Overview
-	\texttt{Gcom} is built using a layered arcitecture with three layers; communication, ordering and group manangement as described in Figure \textbf{TODO}.
+	\texttt{Gcom} is build using a layered architecture with three layers; communication, ordering and group management as described in Figure \ref{fig:archi_gcom}.
 	The communication and ordering are completely independent while the group management depend on both of these to function, meaning they are easy to exchange.
-	In all there are three entities in play in an instance of a Gcom application; Members, a leader and a nameserver.
-	Members have the ability to communicate messages and report failures, the leader is the entry point to the group and is registered at the nameserver.
-	The nameserver is the bootstrap for finding leaders to connect to, with the additional responsibility to give out IDs.
+	In all there are three entities in play in an instance of a Gcom application; Members, a leader and a name server.
+	Members have the ability to communicate messages and report failures, the leader is the entry point to the group and is registered at the name server.
+	The name server is the bootstrap for finding leaders to connect to, with the additional responsibility to give out IDs.
 
-	The communication in Gcom is Java \texttt{Remote Method Invocation} to facilitate network communication between members.
+\begin{figure}
+	\begin{center}
+		\input{figures/architecture}
+	\end{center}
+	\caption{
+		Overview of the Gcom architecture
+		\label{fig:archi_gcom}
+	}
+\end{figure}
+
+	The communication in Gcom is Java \texttt{Remote Method Invocation} (RMI) to facilitate network communication between members.
 	Each member has the complete view of the group stored and accessible through \texttt{RMI}.
 
 
@@ -20,12 +30,43 @@
 
 % Communication layer
 \Subsection{Communication}
+
 	% General structure and design
+\paragraph{}{
+    This layer is in charge of delivering messages over the network and
+ receive it, regarding a multicast strategy. When messages has to be
+ delivered, the module notify the other sub-modules which observe this
+ layer. So, this layer use the observer design pattern to deliver
+ messages when it happens. Below two strategies are presented but
+ a third one is currently available, the tree base multicast strategy.
+ We do not talk about it here cause it was presented in part
+ \ref{part:tree} and it is not part of the mandatory assignment.
+}
 
 	% Non-reliable
-
+\paragraph{Non-reliable multicast}{
+    To send a message to the group, we simply send the message to
+ each members in the group. This way is not reliable because we
+ never check if the messages we send are received and when we receive
+ messages we never check if we already get it or not before notifying
+ the system that there is a new message.\newline
+ This way to communication is the most simple but also the less reliable.
+}
 	% Reliable
-	
+\paragraph{Reliable multicast}{
+    This second strategy is roughly the same as the previous with slight
+ differences that make it reliable. Firstly, each send messages are track
+ till we do not receive it back to acknowledge that it was transmitted.
+ Then, the strategy only notifies the observers when the messages are
+ acknowledged. And, when a node receive a message that he did not
+ send, we send it to all the node. \newline
+}
+
+\paragraph{}{
+    Finally, when a node tries to reach another one which is not
+ reachable, the module notifies the observers which \texttt{remote objects}
+ are not reach anymore to update the view of the group the other layers may have.
+}
 
 % Ordering layer
 \Subsection{Ordering}
