@@ -1,37 +1,37 @@
 % Description of test protocol
 
+
 \Subsection{Ordering}
 % Testing of causal ordering
 	% Connect two clients, send message, connect third client, send message from first, shows vector clock set correctly.
-	\textbf{Prerequisite}: Causal order, basic multicast
-	\textbf{Tests}: Messaging, causal ordering
-	\textbf{Shows}: vector clock set correctly when joining already communicating group
+	%\textbf{Tests}: Messaging, causal ordering
+	%\textbf{Shows}: vector clock set correctly when joining already communicating group
 
-	\begin{tabular}{ll}
-		\texttt{Action} & \texttt{Expected result} \\
-		Connect client $c_1$ & Nameserver should register client as leader \\
-		Connect client $c_2$ & Leader should be notified of join \\
-		$c_1$ sends message & Both receive message \\
-		Connect client $c_3$ & $c_1$, $c_2$ should be notified \\
-		$c_1$ sends message & All receive message \\
-	\end{tabular}
+	%\begin{tabular}{ll}
+	%	\texttt{Action} & \texttt{Expected result} \\
+	%	Connect client $c_1$ & Nameserver should register client as leader \\
+	%	Connect client $c_2$ & Leader should be notified of join \\
+	%	$c_1$ sends message & Both receive message \\
+	%	Connect client $c_3$ & $c_1$, $c_2$ should be notified \\
+	%	$c_1$ sends message & All receive message \\
+	%\end{tabular}
 	% Connect two clients, send message, connect third client, send message from third, shows vector clock set correctly.
 
-	\textbf{Prerequisite}: Causal order, basic multicast
-	\textbf{Tests}: Messaging, causal ordering
-	\textbf{Shows}: vector clock set correctly when joining already communicating group
-	\begin{tabular}{ll}
-		\texttt{Action} & \texttt{Expected result} \\
-		Connect client $c_1$ & Nameserver should register client as leader \\
-		Connect client $c_2$ & Leader should be notified of join \\
-		$c_1$ sends message & Both receive message \\
-		Connect client $c_3$ & $c_1$, $c_2$ should be notified \\
-		$c_3$ sends message & All receive message \\
-	\end{tabular}
+	
+%	\textbf{Prerequisite}: Causal order, basic multicast
+%	\textbf{Tests}: Messaging, causal ordering
+%	\textbf{Shows}: vector clock set correctly when joining already communicating group
+%	\begin{tabular}{ll}
+%		\texttt{Action} & \texttt{Expected result} \\
+%		Connect client $c_1$ & Nameserver should register client as leader \\
+%		Connect client $c_2$ & Leader should be notified of join \\
+%		$c_1$ sends message & Both receive message \\
+%		Connect client $c_3$ & $c_1$, $c_2$ should be notified \\
+%		$c_3$ sends message & All receive message \\
+%	\end{tabular}
 
 
 	% Connect three clients, send message from first, hold at second, send from third, release at second
-	\textbf{Prerequisite}: Causal order, basic multicast
 	\textbf{Tests}: Casual ordering
 	\textbf{Shows}: 
 
@@ -59,6 +59,20 @@
 		$c_1$ sends message $m_3$ & $m_3$ is delivered at $c_1$ and $c_3$. \\
 	\end{tabular}
 
+	\textbf{Tests}: Causal ordering \\
+	\textbf{Shows}: Vector clocks updated correctly when joining a talking group\\
+
+	\begin{tabular}{ll}
+		\texttt{Action} & \texttt{Expected result} \\
+		Connect clients $c_1$, $c_2$, $c_3$ & All connected\\
+		$c_1$ sends message $m_1$ & All receive $m_1$\\
+		$c_3$ sends message $m_2$ & All receive $m_2$ \\
+		$c_3$ disconnects and reconnects & - \\
+		$c_3$ sends message $m_3$ & All receive $m_3$ \\
+		$c_1$ sends message $m_4$ & All receive $m_4$ \\
+	\end{tabular}
+
+
 
 % Testing of FIFO ordering
 
@@ -67,8 +81,8 @@
 \Subsection{Election}
 % Testing of re-election
 	% Connect three clients, check nameserver, send message, disconnect first client, check nameserver for new leader, connect new client
-	\textbf{Tests}:
-	\textbf{Shows}:
+	\textbf{Tests}: Group management \\
+	\textbf{Shows}: Election initiated when leader leaves \\
 
 	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
@@ -78,16 +92,25 @@
 	\end{tabular}
 
 	% Same but crash
-	\textbf{Tests}:
-	\textbf{Shows}:
+	\textbf{Tests}: Group management
+	\textbf{Shows}: Election initiated when leader discovered crashed \\
 
 	\begin{tabular}{ll}
 		\texttt{Action} & \texttt{Expected result} \\
 		Connect clients $c_1$, $c_2$, $c_3$ & All connected, $c_1$ leader in nameserver \\
 		$c_1$ sends message $m_1$ & All receive \\
 		Crash $c_1$ & - \\
-		$c_2$ sends message $m_2$ & All receive, election should be initiated and new leader should be shown in nameserver \\
+		$c_2$ sends message $m_2$ & Election initiated and new leader should be shown in nameserver \\
 	\end{tabular}
+
+	\begin{tabular}{ll}
+		\texttt{Action} & \texttt{Expected result} \\
+		Connect clients $c_1$, $c_2$, $c_3$ & All connected, $c_1$ leader in nameserver \\
+		$c_1$ sends message $m_1$ & All receive \\
+		Crash $c_1$ & - \\
+		$c_2$ sends message $m_2$ & Election initiated and new leader should be shown in nameserver \\
+	\end{tabular}
+
 
 
 
