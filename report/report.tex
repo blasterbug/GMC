@@ -112,6 +112,8 @@
     \renewcommand{\headrulewidth}{0.2pt}
     \renewcommand{\footrulewidth}{0.2pt}
 
+    \tableofcontents
+
     \newpage
 
     \pagenumbering{arabic}
@@ -119,28 +121,33 @@
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{10pt}
 
-    	\Section{Introduction}
+	\section*{Introduction}
+	\addcontentsline{toc}{section}{Introduction}
 		\input{intro.tex}
 
-	\Section{User manual}
+	\section{User manual}
 		\input{manual.tex}
 	
-	\Section{Assumptions and limitations}
+	\section{Assumptions and limitations}
 		\input{limit.tex}
 
-	\Section{Theory}
+	\section{Theory}
 		\input{theory.tex}
 
-	\Section{System description}
+	\section{System description}
 		\input{sysdesc.tex}
 		
-	\Section{Results}
+	\section{Results}
 		\input{results.tex}
 		
-	\Section{Discussion}
+	\section{Discussion}
 		\input{discussion.tex}
 
+	\section*{Conclusion}
+	\addcontentsline{toc}{section}{Conclusion}
+		%\input{discussion.tex}
+
 \appendix
-	\Section{Test protocol}
+	\section{Test protocol}
 		\input{test_protocol.tex}
 \end{document}
