@@ -1,6 +1,12 @@
 % Overview
+	\texttt{Gcom} is built using a layered arcitecture with three layers; communication, ordering and group manangement as described in Figure \textbf{TODO}.
+	The communication and ordering are completely independent while the group management depend on both of these to function, meaning they are easy to exchange.
+	In all there are three entities in play in an instance of a Gcom application; Members, a leader and a nameserver.
+
+
 	% What components are there?
 		% Group members using com. and ordering, nameserver, leader
+
 
 	% What purpose/responsibility do they have?
 
@@ -28,5 +34,9 @@
 	% Join/leave
 
 	% Re-election
+	\Subsubsection{Election}
+		Gcom uses a straightforward and naive election algorithm.
+		Whenever a member detects a crashed leader it elects itself and broadcasts this to the group and nameserver.
+		This means that multiple new leaders can elect themselves at the same time, with the last one (in terms of real time) will come out as the leader.
 
 	% Scalability, limitations and partitioning
