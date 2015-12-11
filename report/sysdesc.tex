@@ -100,3 +100,8 @@
 
 	% Scalability, limitations and partitioning
 
+\Subsection{Debug interface}
+	Gcom and the Gchat application is accompanied by a debug interface which facilitates simulation of network problems such as dropped messages, congestion or slow networks.
+	More specifically, the debug interface is injected between the communication and ordering layer as well as between the ordering and group manangement layer.
+	The debug interface has the ability to hold or remove messages sent from the communication to the ordering and showing which messages has been delivered from the ordering to the group management layer.
+	It is also possible to keep track of the status of the performance of the communication layer in terms of messages received and their path.
