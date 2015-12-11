@@ -44,6 +44,22 @@
 		Release $m_1$ at $c_2$ & $m_1$ and $m_2$ delivered at $c_2$ \\
 	\end{tabular}
 
+
+	% Connect three clients, send message from first, hold at second, send from third, release at second, hold at first, send from first 
+	\textbf{Prerequisite}: Causal order, basic multicast
+	\textbf{Tests}: Casual ordering
+	\textbf{Shows}: Concurrent messages are delivered
+
+	\begin{tabular}{ll}
+		\texttt{Action} & \texttt{Expected result} \\
+		Connect clients $c_1$ and $c_2$ & All connected\\
+		$c_1$ sends message $m_1$ & $c_2$ receives $m_1$\\
+		$c_2$ sends message $m_2$ & $m_2$ delivered at $c_2$ \\
+		$c_1$ holds message $m_2$ & -\\
+		$c_1$ sends message $m_3$ & $m_3$ is delivered at $c_1$ and $c_3$. \\
+	\end{tabular}
+
+
 % Testing of FIFO ordering
 
 % Testing of multicast
