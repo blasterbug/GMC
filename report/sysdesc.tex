@@ -30,6 +30,9 @@
 % Ordering layer
 \Subsection{Ordering}
 	% General structure and design
+	The ordering layer has the responsibility to hold back messages delivered from the communication module until they can be delivered to the group management layer in the specified order.
+	This module consists of strategies for handling causal ordering and plain unordered delivering.
+	The layer communicates with the other layers using the Observer/Observable pattern making it independent.
 
 	% Unordered
 
